@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import { Tajawal, Playfair_Display } from 'next/font/google';
-import './globals.css'; // Global styles
+import { LenisProvider } from '@/components/lenis-provider';
+import './globals.css';
 
 const tajawal = Tajawal({
   subsets: ['arabic'],
@@ -21,7 +22,9 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="ar" dir="rtl" className={`${tajawal.variable} ${playfair.variable}`}>
-      <body className="font-tajawal bg-[#FDF9F3] text-[#2C2C2C]" suppressHydrationWarning>{children}</body>
+      <body className="font-tajawal bg-[#FDF9F3] text-[#2C2C2C]" suppressHydrationWarning>
+        <LenisProvider>{children}</LenisProvider>
+      </body>
     </html>
   );
 }
