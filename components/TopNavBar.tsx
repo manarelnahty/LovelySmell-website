@@ -4,18 +4,19 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { ShoppingBag, User } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import { useCart } from '@/lib/context/CartContext';
 
 export function TopNavBar() {
   const pathname = usePathname();
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const { toggleCart, itemCount } = useCart();
 
   const links = [
-    { name: 'الرئيسية', href: '/' },
-    { name: 'المتجر', href: '/shop' },
-    { name: 'المجموعات', href: '#' },
-    { name: 'المكونات', href: '#' },
-    { name: 'قصتنا', href: '#' },
-    { name: 'تواصل معنا', href: '#' },
+    { name: 'الرئيسية',     href: '/' },
+    { name: 'المتجر',       href: '/shop' },
+    { name: 'تتبع الطلب',  href: '/order-tracking' },
+    { name: 'الشحن والإرجاع', href: '/shipping-policy' },
+    { name: 'السياسات',    href: '/legal-policies' },
   ];
 
   return (
@@ -46,11 +47,17 @@ export function TopNavBar() {
         </ul>
         {/* Actions */}
         <div className="flex items-center gap-2 md:gap-4 text-on-surface flex-shrink-0 font-serif text-sm">
-          <button aria-label="Shopping Bag" className="hover:text-secondary hover:bg-secondary/5 rounded-full transition-all duration-300 ease-out flex items-center justify-center min-h-[44px] min-w-[44px] relative">
+          <button 
+            aria-label="Shopping Bag" 
+            onClick={toggleCart}
+            className="hover:text-secondary hover:bg-secondary/5 rounded-full transition-all duration-300 ease-out flex items-center justify-center min-h-[44px] min-w-[44px] relative"
+          >
             <ShoppingBag strokeWidth={1.5} className="w-5 h-5" />
-            <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-              0
-            </span>
+            {itemCount > 0 && (
+              <span className="absolute top-0 right-0 bg-secondary text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                {itemCount}
+              </span>
+            )}
           </button>
           <Link 
             href="/login" 

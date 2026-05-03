@@ -1,0 +1,324 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Checkout - Lovely Smell EG</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Tajawal:wght@300;400;500;700;800;900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#747878",
+                        "inverse-surface": "#35302a",
+                        "on-surface": "#1f1b15",
+                        "on-secondary-fixed": "#271900",
+                        "background": "#fff8f3",
+                        "surface-container-low": "#fcf2e9",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-container": "#9e9188",
+                        "on-surface-variant": "#444748",
+                        "inverse-on-surface": "#f9efe6",
+                        "surface-variant": "#ebe1d8",
+                        "primary-container": "#2c2c2c",
+                        "tertiary-container": "#332a24",
+                        "secondary-fixed-dim": "#e5c18a",
+                        "on-background": "#1f1b15",
+                        "tertiary-fixed-dim": "#d2c4ba",
+                        "surface": "#fff8f3",
+                        "on-secondary-container": "#795e30",
+                        "on-primary-fixed-variant": "#474747",
+                        "surface-container": "#f6ece3",
+                        "on-secondary-fixed-variant": "#5b4317",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#ebe1d8",
+                        "outline-variant": "#c4c7c7",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#949393",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary": "#1d1610",
+                        "tertiary-fixed": "#efe0d5",
+                        "secondary-fixed": "#ffdeab",
+                        "inverse-primary": "#c8c6c5",
+                        "primary": "#171818",
+                        "on-primary-fixed": "#1b1c1c",
+                        "primary-fixed": "#e4e2e1",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#f0e6dd",
+                        "secondary": "#755a2c",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#4f453e",
+                        "on-tertiary-fixed": "#221a14",
+                        "secondary-container": "#ffdaa1",
+                        "surface-tint": "#5f5e5e",
+                        "surface-dim": "#e2d8cf",
+                        "surface-bright": "#fff8f3",
+                        "antique-gold": "#C4A36E",
+                        "soft-cream": "#FDF9F3",
+                        "deep-charcoal": "#2C2C2C",
+                        "warm-sand": "#F5F1EA"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px",
+                        "checkout": "16px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "margin": "64px",
+                        "stack-lg": "24px",
+                        "gutter": "32px",
+                        "stack-md": "16px",
+                        "container-max": "1440px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Tajawal", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "body-md": ["Tajawal", "sans-serif"],
+                        "body-lg": ["Tajawal", "sans-serif"],
+                        "headline-lg": ["Tajawal", "sans-serif"],
+                        "display-xl": ["Tajawal", "sans-serif"],
+                        "inter": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    },
+                    "boxShadow": {
+                        "ambient": "0 4px 30px rgba(196,163,110,0.1)",
+                        "card": "0 8px 32px rgba(44, 44, 44, 0.05)"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Input Styling */
+        .input-field {
+            @apply w-full bg-warm-sand border-none rounded-lg py-4 px-4 font-body-md text-on-surface focus:ring-2 focus:ring-antique-gold transition-all duration-300;
+        }
+        
+        .radio-card {
+            @apply border border-outline-variant rounded-checkout p-4 cursor-pointer transition-all duration-300 hover:border-antique-gold hover:bg-surface-container-low flex items-center justify-between;
+        }
+        .radio-card.selected {
+            @apply border-antique-gold bg-surface-container-low ring-1 ring-antique-gold;
+        }
+        
+        /* Disable scrollbar for cleaner look on small lists */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(196,163,110,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(196,163,110,0.5); }
+    </style>
+</head>
+<body class="bg-soft-cream text-on-surface min-h-screen flex flex-col font-body-md selection:bg-antique-gold selection:text-white">
+<!-- Minimal Checkout Header -->
+<header class="w-full bg-white/25 backdrop-blur-xl border-b border-antique-gold/30 sticky top-0 z-50">
+<div class="max-w-container-max mx-auto px-margin py-6 flex justify-between items-center dir-rtl">
+<div class="flex items-center gap-2 text-antique-gold">
+<span class="material-symbols-outlined filled text-xl" style="">lock</span>
+<span class="font-label-sm uppercase tracking-widest text-on-surface-variant" style="">دفع آمن</span>
+</div>
+<a class="text-2xl font-light tracking-[0.3em] text-deep-charcoal font-headline-md block text-center absolute left-1/2 -translate-x-1/2" href="#" style="">
+                LOVELY SMELL EG
+            </a>
+<a class="text-on-surface-variant hover:text-antique-gold transition-colors duration-300 font-label-sm uppercase tracking-widest flex items-center gap-2" href="#" style="">
+<span class="material-symbols-outlined text-lg transform rotate-180" style="">arrow_back</span>
+                العودة للتسوق
+            </a>
+</div>
+</header>
+<!-- Main Checkout Canvas -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin py-section-gap grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Right Column (Forms) - RTL: So it appears on the right -->
+<div class="lg:col-span-7 flex flex-col gap-stack-lg">
+<h1 class="font-headline-lg text-headline-lg mb-stack-md" style="">إتمام الطلب</h1>
+<!-- Step 1: Shipping -->
+<section class="bg-white rounded-checkout shadow-card p-8 relative overflow-hidden">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-8 h-8 rounded-full bg-deep-charcoal text-white flex items-center justify-center font-bold text-sm" style="">1</div>
+<h2 class="font-headline-md text-headline-md text-deep-charcoal" style="">معلومات التوصيل</h2>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<div class="md:col-span-2">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2" style="">الاسم الكامل</label>
+<input class="input-field" placeholder="أدخل اسمك الكامل" type="text">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2" style="">رقم الهاتف</label>
+<input class="input-field dir-ltr text-right" placeholder="+20 100 000 0000" type="tel">
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2" style="">المحافظة</label>
+<div class="relative">
+<select class="input-field appearance-none pr-4 pl-10 cursor-pointer">
+<option disabled="" selected="" value="">اختر المحافظة</option>
+<option>القاهرة</option>
+<option>الجيزة</option>
+<option>الإسكندرية</option>
+</select>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-antique-gold pointer-events-none" style="">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-2">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-2" style="">العنوان التفصيلي</label>
+<textarea class="input-field resize-none" placeholder="اسم الشارع، رقم العمارة، رقم الشقة..." rows="3"></textarea>
+</div>
+</form>
+</section>
+<!-- Step 2: Payment -->
+<section class="bg-white rounded-checkout shadow-card p-8">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-8 h-8 rounded-full border border-outline-variant text-on-surface-variant flex items-center justify-center font-bold text-sm" style="">2</div>
+<h2 class="font-headline-md text-headline-md text-deep-charcoal opacity-80" style="">طريقة الدفع</h2>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<!-- COD Option (Selected) -->
+<label class="radio-card selected relative" style="">
+<div class="flex items-center gap-4">
+<div class="w-5 h-5 rounded-full border-2 border-antique-gold flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-antique-gold"></div>
+</div>
+<div>
+<div class="font-body-lg text-body-lg font-medium" style="">الدفع عند الاستلام</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1" style="">ادفع نقداً عند استلام طلبك</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-antique-gold text-3xl" style="">payments</span>
+</label>
+<!-- Credit Card Option (Disabled) -->
+<label class="radio-card opacity-60 cursor-not-allowed" style="">
+<div class="flex items-center gap-4">
+<div class="w-5 h-5 rounded-full border-2 border-outline-variant"></div>
+<div>
+<div class="font-body-lg text-body-lg font-medium text-on-surface-variant" style="">البطاقة الائتمانية</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1" style="">قريباً</div>
+</div>
+</div>
+<div class="flex gap-1 text-outline-variant">
+<span class="material-symbols-outlined text-2xl" style="">credit_card</span>
+</div>
+</label>
+</div>
+</section>
+<!-- CTA -->
+<div class="mt-stack-lg">
+<button class="w-full bg-deep-charcoal text-antique-gold rounded-full py-6 font-headline-md text-body-lg hover:shadow-[0_0_20px_rgba(196,163,110,0.3)] transition-all duration-300 flex items-center justify-center gap-3 group" style="">
+<span class="" style="">تقديم الطلب</span>
+<span class="material-symbols-outlined transform group-hover:-translate-x-2 transition-transform duration-300" style="">arrow_left_alt</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant mt-4 flex items-center justify-center gap-2" style="">
+<span class="material-symbols-outlined text-sm" style="">lock</span>
+                    البيانات مشفرة ومحمية بالكامل
+                </p>
+</div>
+</div>
+<!-- Left Column (Order Summary) - Sticky -->
+<div class="lg:col-span-5 sticky top-32">
+<div class="bg-white rounded-checkout shadow-card p-8 border border-antique-gold/10">
+<h3 class="font-headline-md text-[24px] mb-6 border-b border-antique-gold/10 pb-4" style="">ملخص الطلب</h3>
+<!-- Free Shipping Progress -->
+<div class="mb-8 bg-surface-container-low p-4 rounded-lg">
+<p class="font-body-md text-sm mb-2 flex items-center gap-2 text-deep-charcoal" style="">
+<span class="material-symbols-outlined text-antique-gold text-lg" style="">local_shipping</span>
+                        متبقي <span class="font-inter font-semibold" style="">250 ج.م</span> لشحن مجاني!
+                    </p>
+<div class="w-full bg-outline-variant/30 rounded-full h-1.5 overflow-hidden">
+<div class="bg-antique-gold h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<!-- Items List -->
+<div class="flex flex-col gap-4 mb-8 max-h-[300px] overflow-y-auto pr-2">
+<!-- Item 1 -->
+<div class="flex gap-4 items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 relative group">
+<div class="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
+<img alt="Product thumbnail" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-500 group-hover:scale-110" data-alt="Close up of a luxury amber perfume bottle on soft cream silk with warm spotlighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGO1FyocqkBHUF3gqsQnSjVTcHu0AGBKEX9XL-Fs7x9zdbNwi3wHwuE9kZ-uGgte6YQnbQx_Dm6ZGMmFgNGI5c4TO2wiaKur6rwxapIp4hxOTB84BCk3NRXdPerTNAF6EMHZxjcpgkTZj_3SPhOKOHGA7u3VThdbxRBe6l0hRGpyXBxwJedKhQX68D_tze7ow4P5FDDSRJVP7uDX6eSRwUzNrduA2UI8xRX-bTR7oICz-Q8j26JKRoXG65fwSSXkW5G0yvogQq" style="">
+</div>
+<div class="flex-grow">
+<h4 class="font-body-md text-sm font-medium line-clamp-1" style="">عود ملكي أصفهان</h4>
+<p class="font-label-sm text-[10px] text-on-surface-variant mt-1" style="">الكمية: 1</p>
+</div>
+<div class="font-inter font-semibold text-sm whitespace-nowrap text-deep-charcoal" style="">
+                            1,250 ج.م
+                        </div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4 items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 relative group">
+<div class="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
+<img alt="Product thumbnail" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-500 group-hover:scale-110" data-alt="Minimalist clear glass perfume bottle with rose gold cap on white marble, bright soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2NQSzW7ygOEbYU9WxzYwRyXJIqJLuR4Qt6cWfZEIe-IaANOlJKFjM8Ns6XAlcmPd-u6SZkQWqhYZFrR2hPaM9VOYsOUFrwrFtlKL4GPCmjua8LJGoMNBjekzDYbMM_OZchW3KJxX1DTqfkRaq6a3qZZUwH4NwJtUU0ZvU_TFJ8ZwCPBdniAnBfUccX0BF-LlGpfVsThaMaYBCD0ErQsEeA7CLVrOmbIcJCcbBywL1kWBaq9-6l-MRqZ56DvgIOIBsQ2dGke-f" style="">
+</div>
+<div class="flex-grow">
+<h4 class="font-body-md text-sm font-medium line-clamp-1" style="">ورد طائفي مركز</h4>
+<p class="font-label-sm text-[10px] text-on-surface-variant mt-1" style="">الكمية: 2</p>
+</div>
+<div class="font-inter font-semibold text-sm whitespace-nowrap text-deep-charcoal" style="">
+                            1,800 ج.م
+                        </div>
+</div>
+<!-- Item 3 -->
+<div class="flex gap-4 items-center">
+<div class="w-16 h-16 rounded-lg overflow-hidden bg-surface-container flex-shrink-0 relative group">
+<div class="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
+<img alt="Product thumbnail" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-500 group-hover:scale-110" data-alt="Dark sophisticated matte black fragrance bottle with gold accents against dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBWkcAwU_Bnmnw14WUO0kjIQGzhDV1V2E2Z1Chwc2KU39y1Qm043s78ByF2xjvtCE0dVJf1nf0wBVpRTs4wAA25kggdhQk60n6wGtRP6UUaV7mLpEMPAVrBF4XMTlY_FWD0nh3958FtaFsWIbt-qlFlb5opqkZYiIBsRWFD9i6eCrcSqUfrsMxa50tZYjdLgiKXzCux0BX0o4Kguorj-jOXfiUkZsFYEfZuWqzVH-4FyQ4-Q4eJYBfB2XzzGJqkQCGFTCxc3HG" style="">
+</div>
+<div class="flex-grow">
+<h4 class="font-body-md text-sm font-medium line-clamp-1" style="">مسك الغزال الأسود</h4>
+<p class="font-label-sm text-[10px] text-on-surface-variant mt-1" style="">الكمية: 1</p>
+</div>
+<div class="font-inter font-semibold text-sm whitespace-nowrap text-deep-charcoal" style="">
+                            850 ج.م
+                        </div>
+</div>
+</div>
+<!-- Totals -->
+<div class="border-t border-antique-gold/10 pt-6 space-y-4">
+<div class="flex justify-between font-body-md text-sm text-on-surface-variant">
+<span class="" style="">المجموع الفرعي</span>
+<span class="font-inter" style="">3,900 ج.م</span>
+</div>
+<div class="flex justify-between font-body-md text-sm text-on-surface-variant">
+<span class="" style="">تكلفة الشحن</span>
+<span class="font-inter" style="">50 ج.م</span>
+</div>
+<div class="flex justify-between items-end border-t border-antique-gold/10 pt-4 mt-4">
+<div>
+<span class="font-headline-md text-lg block" style="">الإجمالي</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant" style="">شاملاً ضريبة القيمة المضافة</span>
+</div>
+<span class="font-inter font-bold text-xl text-deep-charcoal" style="">3,950 ج.م</span>
+</div>
+</div>
+<!-- Help Link -->
+<div class="mt-8 pt-6 border-t border-antique-gold/10 text-center">
+<a class="inline-flex items-center gap-2 text-on-surface-variant hover:text-deep-charcoal transition-colors font-label-sm" href="#" style="">
+<span class="material-symbols-outlined text-lg" style="">support_agent</span>
+                        تحتاج مساعدة؟ تواصل معنا عبر واتساب
+                    </a>
+</div>
+</div>
+</div>
+</main>
+</body></html>
