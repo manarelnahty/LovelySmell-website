@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Search, User, ShoppingBag, Plus, ArrowDown, Instagram } from 'lucide-react';
 import { useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
@@ -8,6 +9,7 @@ import { FadeUp, StaggerContainer, StaggerItem, AnimatedCounter } from '@/compon
 import { SectionDivider } from '@/components/section-divider';
 import { Marquee } from '@/components/marquee';
 import { BackToTop } from '@/components/back-to-top';
+import { Logo } from '@/components/logo';
 
 export default function Page() {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -43,21 +45,19 @@ export default function Page() {
             </nav>
 
             <div className="flex-shrink-0 flex items-center justify-center">
-              <span className="font-playfair text-2xl tracking-[0.2em] font-semibold text-[#2C2C2C]">
-                LOVELY SMELL EG
-              </span>
+              <Logo />
             </div>
 
             <div className="flex items-center gap-4">
               <button className="text-[#6B6058] hover:text-[#C4A36E] transition-colors p-2">
                 <Search className="w-5 h-5" />
               </button>
-              <button
+              <Link
+                href="/login"
                 className="text-[#6B6058] font-medium hover:text-[#C4A36E] transition-colors p-2 flex items-center"
-                onClick={() => setIsSignedIn(!isSignedIn)}
               >
                 {isSignedIn ? <User className="w-5 h-5" /> : "تسجيل الدخول"}
-              </button>
+              </Link>
               <button className="text-[#C4A36E] hover:text-[#A88A58] transition-colors p-2 relative">
                 <ShoppingBag className="w-5 h-5" />
                 <span className="absolute top-0 right-0 bg-[#C4A36E] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
@@ -73,12 +73,11 @@ export default function Page() {
       <section className="relative h-[600px] md:h-[700px] w-full overflow-hidden">
         <motion.div className="absolute inset-0" style={{ y: heroParallaxY }}>
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJgmIwBlWzHtLh36o1_4nCGhUOHnke5lFbEXf9E_5CQgQF8hpbm4WM-YXLawkXiw4Z7qhtNYkC6vTacefwluK76EQGIyTd3SjxjI8us3IwvSSWONBhwBp76-xz3XHu7Qu3KA843PXUA8dmhYu2A4uiMNRf995NsqIylZibyLQAYX34PvVqO7fSfmGk99RSNbja19_aB7oNuD9wBml4tHcCRi0wuCeD1gmzZwi0dQXZOAOeXyWKAawJ9RhxayY_ndBtNBzOIq01"
+            src="/hero-perfume.png"
             alt="Hero Perfume"
             fill
-            className="object-cover object-center scale-110"
+            className="object-cover object-center scale-105"
             priority
-            referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
         </motion.div>
@@ -264,9 +263,7 @@ export default function Page() {
         <FadeUp>
           <div className="max-w-7xl mx-auto px-4 flex flex-col items-center">
             <div className="mb-6">
-              <span className="font-playfair text-2xl tracking-[0.2em] font-semibold text-[#C4A36E]">
-                LOVELY SMELL EG
-              </span>
+              <Logo className="justify-center" />
             </div>
 
             <div className="flex gap-5 mb-8">
