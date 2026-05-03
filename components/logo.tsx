@@ -1,3 +1,4 @@
+"use client";
 import { motion } from 'motion/react';
 
 export function Logo({ className = '', dark = false }: { className?: string, dark?: boolean }) {
