@@ -3,8 +3,27 @@ import { TopNavBar } from '@/components/TopNavBar';
 import { Logo } from '@/components/logo';
 import { ProductFilter } from './ProductFilter';
 import { ProductGrid } from './ProductGrid';
+import { mockProducts } from '@/lib/data/products';
 
-export default function ShopPage() {
+export default async function ShopPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const resolvedParams = await searchParams;
+  const category = typeof resolvedParams.category === 'string' ? resolvedParams.category : null;
+  const query = typeof resolvedParams.q === 'string' ? resolvedParams.q : null;
+
+  let filteredProducts = mockProducts;
+
+  if (category && category !== "الكل") {
+    filteredProducts = filteredProducts.filter(p => p.category.includes(category));
+  }
+
+  if (query) {
+    const lowerQuery = query.toLowerCase();
+    filteredProducts = filteredProducts.filter(p => 
+      p.name.toLowerCase().includes(lowerQuery) || 
+      p.description.toLowerCase().includes(lowerQuery)
+    );
+  }
+
   return (
     <div className="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
       <TopNavBar />
@@ -24,7 +43,7 @@ export default function ShopPage() {
         <ProductFilter />
 
         {/* Section 3: Bento Product Grid */}
-        <ProductGrid />
+        <ProductGrid products={filteredProducts} />
 
         {/* Section 5: Pagination */}
         <div className="flex justify-center mt-stack-lg">
