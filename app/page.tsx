@@ -10,7 +10,7 @@ import { SectionDivider } from '@/components/section-divider';
 import { Marquee } from '@/components/marquee';
 import { TopNavBar } from '@/components/TopNavBar';
 import { BackToTop } from '@/components/back-to-top';
-import { Logo } from '@/components/logo';
+import { SiteFooter } from '@/components/SiteFooter';
 
 export default function Page() {
   const { scrollY } = useScroll();
@@ -114,7 +114,7 @@ export default function Page() {
           <FadeUp>
             <div className="flex justify-between items-end mb-12">
               <h2 className="text-4xl font-bold text-[#2C2C2C]">الأكثر مبيعاً</h2>
-              <a href="#" className="text-[#C4A36E] hover:text-[#A88A58] transition-colors relative after:content-[''] after:absolute after:bottom-[-2px] after:right-0 after:w-full after:h-[1px] after:bg-current">
+              <a href="/shop" className="text-[#C4A36E] hover:text-[#A88A58] transition-colors relative after:content-[''] after:absolute after:bottom-[-2px] after:right-0 after:w-full after:h-[1px] after:bg-current">
                 عرض الكل
               </a>
             </div>
@@ -123,10 +123,10 @@ export default function Page() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <StaggerContainer className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6 order-2 lg:order-1" staggerDelay={0.12}>
               {[
-                { name: "ورد جوري", price: "EGP 150", img: "https://picsum.photos/seed/perfume_a/400/400", id: 1 },
-                { name: "مسك الليل", price: "EGP 180", img: "https://picsum.photos/seed/perfume1/400/400", id: 2 },
-                { name: "عنبر صافي", price: "EGP 200", img: "https://picsum.photos/seed/perfume_b/400/400", id: 3 },
-                { name: "ياسمين الشام", price: "EGP 160", img: "https://picsum.photos/seed/perfume2/400/400", id: 4 },
+                { name: "ورد جوري",      price: "EGP 150", img: "/images/product_ward_jouri.png",  id: 1 },
+                { name: "مسك الليل",     price: "EGP 180", img: "/images/product_musk_layl.png",   id: 2 },
+                { name: "عنبر صافي",     price: "EGP 200", img: "/images/product_anbar_safi.png",  id: 3 },
+                { name: "ياسمين الشام",  price: "EGP 160", img: "/images/product_yasmin_sham.png", id: 4 },
               ].map((item) => (
                 <StaggerItem key={item.id}>
                   <div className="bg-white rounded-3xl p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full">
@@ -135,8 +135,8 @@ export default function Page() {
                         src={item.img}
                         alt={item.name}
                         fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                        referrerPolicy="no-referrer"
                       />
                     </div>
                     <div className="flex justify-between items-end mt-auto">
@@ -156,11 +156,11 @@ export default function Page() {
             <FadeUp className="order-1 lg:order-2">
               <div className="relative bg-[#2C2C2C] rounded-3xl overflow-hidden group h-[600px] lg:h-full">
                 <Image
-                  src="https://picsum.photos/seed/perfume3/600/800"
+                  src="/images/product_oud_malaki.png"
                   alt="عود ملكي"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-80"
-                  referrerPolicy="no-referrer"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-8 flex justify-between items-end text-white">
@@ -210,41 +210,7 @@ export default function Page() {
         </StaggerContainer>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#F5F1EA] py-16 text-center">
-        <FadeUp>
-          <div className="max-w-7xl mx-auto px-4 flex flex-col items-center">
-            <div className="mb-6">
-              <Logo className="justify-center" />
-            </div>
-
-            <div className="flex gap-5 mb-8">
-              <a href="#" className="w-10 h-10 rounded-full border border-[#C4A36E]/40 flex items-center justify-center text-[#C4A36E] hover:bg-[#C4A36E] hover:text-white transition-colors">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-[#C4A36E]/40 flex items-center justify-center text-[#C4A36E] hover:bg-[#C4A36E] hover:text-white transition-colors">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-[#C4A36E]/40 flex items-center justify-center text-[#C4A36E] hover:bg-[#C4A36E] hover:text-white transition-colors">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-              </a>
-            </div>
-
-            <p className="text-[#6B6058] text-sm mb-8">اشترك في نشرتنا البريدية لتصلك أحدث العروض</p>
-
-            <div className="flex gap-6 mb-8 text-sm font-medium text-[#6B6058]">
-              <a href="#" className="hover:text-[#C4A36E] transition-colors">الخصوصية</a>
-              <a href="#" className="hover:text-[#C4A36E] transition-colors">الشروط</a>
-              <a href="#" className="hover:text-[#C4A36E] transition-colors">الشحن</a>
-              <a href="#" className="hover:text-[#C4A36E] transition-colors">الاسترجاع</a>
-            </div>
-
-            <p className="text-gray-400 text-xs">
-              © 2024 لوفلي سميل إي جي. صممت بكل حب.
-            </p>
-          </div>
-        </FadeUp>
-      </footer>
+      <SiteFooter />
 
       <BackToTop />
     </main>
