@@ -1,6 +1,8 @@
 import type {Metadata} from 'next';
 import { Tajawal, Playfair_Display } from 'next/font/google';
 import { LenisProvider } from '@/components/lenis-provider';
+import { CartProvider } from '@/lib/context/CartContext';
+import { CartDrawer } from '@/components/CartDrawer';
 import './globals.css';
 
 const tajawal = Tajawal({
@@ -23,7 +25,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="ar" dir="rtl" className={`${tajawal.variable} ${playfair.variable}`}>
       <body className="font-tajawal bg-[#FDF9F3] text-[#2C2C2C]" suppressHydrationWarning>
-        <LenisProvider>{children}</LenisProvider>
+        <CartProvider>
+          <LenisProvider>{children}</LenisProvider>
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );
