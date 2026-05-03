@@ -8,66 +8,18 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { FadeUp, StaggerContainer, StaggerItem, AnimatedCounter } from '@/components/animated';
 import { SectionDivider } from '@/components/section-divider';
 import { Marquee } from '@/components/marquee';
+import { TopNavBar } from '@/components/TopNavBar';
 import { BackToTop } from '@/components/back-to-top';
 import { Logo } from '@/components/logo';
 
 export default function Page() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
   const { scrollY } = useScroll();
 
-  const navBg = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(253,249,243,0.5)', 'rgba(253,249,243,0.95)']
-  );
-  const navBorder = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(245,241,234,0)', 'rgba(245,241,234,1)']
-  );
   const heroParallaxY = useTransform(scrollY, [0, 600], [0, 150]);
 
   return (
-    <main className="min-h-screen">
-      {/* Navbar */}
-      <motion.header
-        style={{ backgroundColor: navBg, borderColor: navBorder }}
-        className="sticky top-0 z-50 backdrop-blur-md border-b"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <nav className="hidden md:flex gap-8 items-center">
-              <a href="#" className="flex-shrink-0 text-[#C4A36E] font-medium transition-colors hover:text-[#2C2C2C]">الرئيسية</a>
-              <a href="#" className="text-[#6B6058] font-medium transition-colors hover:text-[#2C2C2C]">المتجر</a>
-              <a href="#" className="text-[#6B6058] font-medium transition-colors hover:text-[#2C2C2C]">المجموعات</a>
-              <a href="#" className="text-[#6B6058] font-medium transition-colors hover:text-[#2C2C2C]">قصتنا</a>
-              <a href="#" className="text-[#6B6058] font-medium transition-colors hover:text-[#2C2C2C]">تواصل معنا</a>
-            </nav>
-
-            <div className="flex-shrink-0 flex items-center justify-center">
-              <Logo />
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button className="text-[#6B6058] hover:text-[#C4A36E] transition-colors p-2">
-                <Search className="w-5 h-5" />
-              </button>
-              <Link
-                href="/login"
-                className="text-[#6B6058] font-medium hover:text-[#C4A36E] transition-colors p-2 flex items-center"
-              >
-                {isSignedIn ? <User className="w-5 h-5" /> : "تسجيل الدخول"}
-              </Link>
-              <button className="text-[#C4A36E] hover:text-[#A88A58] transition-colors p-2 relative">
-                <ShoppingBag className="w-5 h-5" />
-                <span className="absolute top-0 right-0 bg-[#C4A36E] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-                  0
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </motion.header>
+    <main className="min-h-screen pt-[88px] md:pt-[96px]">
+      <TopNavBar />
 
       {/* Hero Section */}
       <section className="relative h-[600px] md:h-[700px] w-full overflow-hidden">
