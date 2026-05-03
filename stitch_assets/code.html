@@ -1,0 +1,332 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>جميع العطور | Lovely Smell EG</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Tajawal:wght@400;500;700;800&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#221a14",
+                    "background": "#fff8f3",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#444748",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "on-primary-fixed-variant": "#474747",
+                    "on-tertiary-container": "#9e9188",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#fcf2e9",
+                    "secondary-fixed": "#ffdeab",
+                    "secondary": "#755a2c",
+                    "tertiary-fixed": "#efe0d5",
+                    "surface-variant": "#ebe1d8",
+                    "surface-dim": "#e2d8cf",
+                    "on-secondary-fixed-variant": "#5b4317",
+                    "surface-container-highest": "#ebe1d8",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#d2c4ba",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#5f5e5e",
+                    "on-background": "#1f1b15",
+                    "on-secondary-fixed": "#271900",
+                    "surface-container-high": "#f0e6dd",
+                    "on-primary-fixed": "#1b1c1c",
+                    "on-tertiary-fixed-variant": "#4f453e",
+                    "primary-fixed": "#e4e2e1",
+                    "surface-container": "#f6ece3",
+                    "outline-variant": "#c4c7c7",
+                    "surface-bright": "#fff8f3",
+                    "inverse-on-surface": "#f9efe6",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#e5c18a",
+                    "primary": "#171818",
+                    "secondary-container": "#ffdaa1",
+                    "surface": "#fff8f3",
+                    "inverse-surface": "#35302a",
+                    "on-surface": "#1f1b15",
+                    "primary-container": "#2c2c2c",
+                    "tertiary": "#1d1610",
+                    "outline": "#747878",
+                    "on-secondary-container": "#795e30",
+                    "inverse-primary": "#c8c6c5",
+                    "tertiary-container": "#332a24",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#949393"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "stack-lg": "24px",
+                    "gutter": "32px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "container-max": "1440px",
+                    "margin": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Tajawal"
+                    ],
+                    "headline-lg": [
+                            "Tajawal"
+                    ],
+                    "body-md": [
+                            "Tajawal"
+                    ],
+                    "body-lg": [
+                            "Tajawal"
+                    ],
+                    "display-xl": [
+                            "Tajawal"
+                    ]
+            },
+            "fontSize": {
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-md": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg": [
+                            "40px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-xl": [
+                            "64px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-white/25 backdrop-blur-[20px] dark:bg-black/25 border-b border-[#C4A36E]/30 shadow-[0_4px_20px_rgba(196,163,110,0.1)]">
+<div class="flex flex-row-reverse justify-between items-center w-full px-16 py-6 max-w-[1440px] mx-auto">
+<!-- Brand -->
+<a class="text-2xl font-light tracking-[0.2em] text-[#2C2C2C] dark:text-stone-100" href="#" style="">Lovely Smell EG</a>
+<!-- Navigation Links -->
+<ul class="hidden md:flex gap-8 font-serif text-sm tracking-widest uppercase items-center">
+<li class="" style="">
+<a class="text-[#C4A36E] border-b border-[#C4A36E] pb-1 font-medium scale-95 duration-300" href="#" style="">
+                        المتجر
+                    </a>
+</li>
+<li class="" style="">
+<a class="text-[#2C2C2C] dark:text-stone-300 hover:text-[#C4A36E] transition-all duration-500 ease-out scale-95 duration-300" href="#" style="">
+                        عن الدار
+                    </a>
+</li>
+<li class="" style="">
+<a class="text-[#2C2C2C] dark:text-stone-300 hover:text-[#C4A36E] transition-all duration-500 ease-out scale-95 duration-300" href="#" style="">
+                        المكونات
+                    </a>
+</li>
+<li class="" style="">
+<a class="text-[#2C2C2C] dark:text-stone-300 hover:text-[#C4A36E] transition-all duration-500 ease-out scale-95 duration-300" href="#" style="">
+                        الحكايات
+                    </a>
+</li>
+</ul>
+<!-- Actions -->
+<div class="flex items-center gap-6 text-[#C4A36E]">
+<button class="hover:text-[#2C2C2C] transition-all duration-500 ease-out scale-95 duration-300 flex items-center justify-center" style="">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;wght&quot; 300;">shopping_bag</span>
+</button>
+<button class="hover:text-[#2C2C2C] transition-all duration-500 ease-out scale-95 duration-300 flex items-center justify-center" style="">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;wght&quot; 300;">person</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-section-gap px-margin pb-section-gap max-w-container-max mx-auto w-full">
+<!-- Section 1: Editorial Heading -->
+<header class="flex flex-col items-center justify-center text-center mb-16 space-y-stack-md pt-12">
+<h1 class="font-display-xl text-display-xl text-on-background" style="">جميع العطور</h1>
+<div class="w-10 h-[1px] bg-secondary"></div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md" style="">
+                اكتشف مجموعتنا الكاملة من العطور الفاخرة، المصممة بشغف لتعكس شخصيتك الفريدة.
+            </p>
+</header>
+<!-- Section 2: Floating Filter Bar -->
+<div class="glass-panel border border-secondary/20 rounded-full px-6 py-4 mb-stack-lg flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[100px] z-40 shadow-sm shadow-secondary/5">
+<!-- Search -->
+<div class="relative w-full md:w-auto flex-shrink-0">
+<input class="w-full md:w-64 bg-surface-container-lowest/50 border border-outline-variant rounded-full py-2 px-4 text-body-md font-body-md text-on-background focus:border-secondary focus:ring-0 placeholder:text-on-surface-variant/70" placeholder="ابحث عن عطر..." type="text">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/70" style="">search</span>
+</div>
+<!-- Categories -->
+<div class="flex items-center gap-2 overflow-x-auto hide-scrollbar w-full md:w-auto justify-center">
+<button class="bg-primary-container text-on-primary font-label-sm text-label-sm px-6 py-2.5 rounded-full whitespace-nowrap transition-colors" style="">الكل</button>
+<button class="border border-outline-variant text-on-surface hover:bg-surface-variant font-label-sm text-label-sm px-6 py-2.5 rounded-full whitespace-nowrap transition-colors" style="">رجالي</button>
+<button class="border border-outline-variant text-on-surface hover:bg-surface-variant font-label-sm text-label-sm px-6 py-2.5 rounded-full whitespace-nowrap transition-colors" style="">نسائي</button>
+<button class="border border-outline-variant text-on-surface hover:bg-surface-variant font-label-sm text-label-sm px-6 py-2.5 rounded-full whitespace-nowrap transition-colors" style="">صيفي</button>
+<button class="border border-outline-variant text-on-surface hover:bg-surface-variant font-label-sm text-label-sm px-6 py-2.5 rounded-full whitespace-nowrap transition-colors" style="">شرقي</button>
+<button class="border border-outline-variant text-on-surface hover:bg-surface-variant font-label-sm text-label-sm px-6 py-2.5 rounded-full whitespace-nowrap transition-colors" style="">غربي</button>
+</div>
+<!-- Sort -->
+<div class="flex items-center gap-2 cursor-pointer w-full md:w-auto justify-end text-on-surface-variant hover:text-secondary transition-colors">
+<span class="font-label-sm text-label-sm" style="">ترتيب حسب</span>
+<span class="material-symbols-outlined" style="">tune</span>
+</div>
+</div>
+<!-- Section 3: Bento Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-section-gap">
+<!-- Row 1: Featured (2x2) -->
+<div class="md:col-span-2 md:row-span-2 bg-surface-container-lowest rounded overflow-hidden relative group shadow-sm hover:shadow-md transition-shadow">
+<img alt="عطر مميز" class="w-full h-full object-cover aspect-square md:aspect-auto" data-alt="luxury perfume bottle with gold accents dramatically lit against a dark velvet background" src="https://m.media-amazon.com/images/I/613-ekx0XmL._AC_SY879_.jpg" style="">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"></div>
+<div class="absolute top-6 right-6 bg-surface-container-lowest/90 backdrop-blur px-4 py-1.5 rounded-full text-label-sm font-label-sm text-secondary" style="">عطر حصري</div>
+<div class="absolute bottom-6 right-6 left-6 flex justify-between items-end">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-secondary mb-2" style="">ليالي الشرق</h3>
+<p class="font-body-md text-body-md text-on-secondary/80" style="">مزيج ساحر من العود والورد الطائفي</p>
+</div>
+<button class="bg-primary-container text-on-primary rounded-full w-12 h-12 flex items-center justify-center hover:shadow-[0_0_15px_rgba(196,163,110,0.5)] transition-all" style="">
+<span class="material-symbols-outlined" style="">add</span>
+</button>
+</div>
+</div>
+<!-- Row 1: Standard Card 1 -->
+<div class="col-span-1 bg-surface-container-lowest rounded overflow-hidden relative group border border-outline-variant/30 flex flex-col">
+<div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-variant/20 p-8 flex items-center justify-center">
+<img alt="عطر" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" data-alt="minimalist crystal perfume bottle on white marble pedestal with soft natural light" src="https://m.media-amazon.com/images/I/6184-db9cOL._AC_SX679_.jpg" style="">
+<div class="absolute top-4 right-4 bg-surface-container-lowest/80 backdrop-blur border border-secondary/20 px-3 py-1 rounded-full text-label-sm font-label-sm text-secondary" style="">صيفي</div>
+</div>
+<div class="p-4 flex justify-between items-end flex-grow bg-surface-container-lowest">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-background mb-1" style="">نسيم البحر</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" style="">٣٥٠ ج.م</p>
+</div>
+<button class="border border-secondary text-secondary rounded-full w-8 h-8 flex items-center justify-center hover:bg-secondary/5 transition-colors" style="">
+<span class="material-symbols-outlined text-sm" style="">add</span>
+</button>
+</div>
+</div>
+<!-- Row 1: Editorial Cell -->
+<div class="col-span-1 bg-surface-variant rounded flex items-center justify-center p-8 text-center relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIj48L3JlY3Q+CjxwYXRoIGQ9Ik0wIDBMOCA4Wk04IDBMMCA4WiIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEiPjwvcGF0aD4KPC9zdmc+')] bg-cover bg-center" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuD8tTAoGfWj5ckRWxo1DIWoBnVNNoyMNU6rObGiiMVM3uxV5CdiGGtfBGhIXgwI-UISKU7IX3p5jgx1f7a7Nnvx0giQEyf1UY9pW2Nn2SWZ9pYD2ooFIITWRDWBB1hAbxpeOvrsZEKxAdBd8IF2EHa9rVy7n_UHXk7NYYEq8_KypAPb5GQviEJe-IcVqIuyKhBdfTVOx7df1X3yN-g6sUhnSqitPvHCWCqKsFDeJk4j5m9M9QTmHT50JxTP5nbHOgZjJV_B4Gpa&quot;); opacity: 0.2;"></div>
+<h3 class="font-headline-md text-headline-md text-secondary leading-tight relative z-10" style="">
+                    فن<br>العطارة<br>الأصيلة
+                </h3>
+</div>
+<!-- Row 2: Standard Card 2 -->
+<div class="col-span-1 bg-surface-container-lowest rounded overflow-hidden relative group border border-outline-variant/30 flex flex-col">
+<div class="relative w-full aspect-[3/4] overflow-hidden bg-surface-variant/20 p-8 flex items-center justify-center">
+<img alt="عطر" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" data-alt="elegant amber glass perfume bottle on dried flowers with warm evening light" src="https://m.media-amazon.com/images/I/61w18c-7qSL._AC_SX679_.jpg" style="">
+<div class="absolute top-4 right-4 bg-surface-container-lowest/80 backdrop-blur border border-secondary/20 px-3 py-1 rounded-full text-label-sm font-label-sm text-secondary" style="">شرقي</div>
+</div>
+<div class="p-4 flex justify-between items-end flex-grow bg-surface-container-lowest">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-background mb-1" style="">عود ملكي</h3>
+<p class="font-body-md text-body-md text-on-surface-variant" style="">٥٠٠ ج.م</p>
+</div>
+<button class="border border-secondary text-secondary rounded-full w-8 h-8 flex items-center justify-center hover:bg-secondary/5 transition-colors" style="">
+<span class="material-symbols-outlined text-sm" style="">add</span>
+</button>
+</div>
+</div>
+<!-- Row 2: Bento Month Perfume (Glassmorphism) -->
+<div class="col-span-1 glass-panel border border-secondary/30 rounded p-6 flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary/10 rounded-full blur-2xl group-hover:bg-secondary/20 transition-colors duration-700"></div>
+<div class="relative z-10">
+<span class="inline-block px-3 py-1 bg-surface-container-lowest/50 backdrop-blur rounded-full font-label-sm text-label-sm text-on-surface-variant mb-4" style="">عطر الشهر</span>
+<h3 class="font-headline-md text-headline-md text-on-background mb-2" style="">روح الورد</h3>
+<p class="font-body-md text-body-md text-on-surface-variant/80" style="">تجربة عطرية تنقلك إلى حقول الورد في الصباح الباكر.</p>
+</div>
+<div class="mt-8 flex justify-end relative z-10">
+<span class="material-symbols-outlined text-secondary text-3xl group-hover:translate-x-[-8px] transition-transform duration-300 rtl:group-hover:translate-x-[8px]" style="">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Section 5: Pagination -->
+<div class="flex justify-center mt-stack-lg">
+<button class="border-[1.5px] border-secondary text-secondary hover:bg-secondary/5 font-label-sm text-label-sm px-10 py-3 rounded-full transition-colors flex items-center gap-2" style="">
+                تحميل المزيد
+                <span class="material-symbols-outlined text-sm" style="">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Floating WhatsApp Action Button -->
+<a aria-label="تواصل معنا عبر واتساب" class="fixed bottom-8 left-8 bg-secondary text-on-secondary p-4 rounded-full shadow-[0_4px_20px_rgba(117,90,44,0.3)] z-50 hover:scale-105 transition-transform flex items-center justify-center" href="#" style="">
+<svg fill="currentColor" height="24" viewBox="0 0 16 16" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
+</svg>
+</a>
+<!-- Footer (Shared Component) -->
+<footer class="bg-[#F5F1EA] dark:bg-stone-950 w-full mt-[120px] pb-12 pt-20 border-t border-[#C4A36E]/20">
+<div class="flex flex-col items-center justify-center space-y-8 px-16 max-w-[1440px] mx-auto dir-rtl opacity-80 hover:opacity-100 transition-opacity">
+<div class="text-xl font-serif text-[#2C2C2C] dark:text-stone-200" style="">Lovely Smell EG</div>
+<ul class="flex flex-wrap justify-center gap-8 font-sans text-xs tracking-wide leading-loose">
+<li class="" style=""><a class="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors" href="#" style="">الخصوصية</a></li>
+<li class="" style=""><a class="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors" href="#" style="">الشروط والأحكام</a></li>
+<li class="" style=""><a class="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors" href="#" style="">الاستدامة</a></li>
+<li class="" style=""><a class="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors" href="#" style="">تواصل معنا</a></li>
+</ul>
+<div class="text-[#C4A36E] font-sans text-xs tracking-wide leading-loose mt-8" style="">
+                © ٢٠٢٤ دار لومينا للعطور. جميع الحقوق محفوظة.
+            </div>
+</div>
+</footer>
+</body></html>
