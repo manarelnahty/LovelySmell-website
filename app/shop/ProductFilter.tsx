@@ -1,7 +1,8 @@
 "use client";
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const categories = ["الكل", "رجالي", "نسائي", "صيفي", "شرقي", "غربي"];
 
@@ -45,45 +46,53 @@ export function ProductFilter() {
   };
 
   return (
-    <div className="glass-panel border border-secondary/20 rounded-full px-6 py-4 mb-stack-lg flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[100px] z-40 shadow-sm shadow-secondary/5">
-      {/* Search */}
-      <div className="relative w-full md:w-auto flex-shrink-0">
-        <input 
-          className="w-full md:w-64 bg-surface-container-lowest/50 border border-outline-variant rounded-full py-2 px-4 pr-12 text-body-md font-body-md text-on-background focus:border-secondary focus:ring-0 placeholder:text-on-surface-variant/70 min-h-[44px] outline-none transition-colors" 
-          placeholder="ابحث عن عطر..." 
-          type="text" 
-          aria-label="Search products"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/70 w-5 h-5 pointer-events-none" />
-      </div>
-      
-      {/* Categories */}
-      <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar w-full md:w-auto justify-center py-1">
-        {categories.map((category) => {
-          const isActive = currentCategory === category;
-          return (
-            <button 
-              key={category}
-              onClick={() => handleCategoryChange(category)}
-              className={`${
-                isActive 
-                  ? 'bg-primary-container text-on-primary' 
-                  : 'border border-outline-variant text-on-surface hover:bg-surface-variant'
-              } font-label-sm text-label-sm px-6 rounded-full whitespace-nowrap transition-all duration-300 min-h-[44px]`}
-            >
-              {category}
-            </button>
-          );
-        })}
-      </div>
+    <div className="sticky top-[80px] md:top-[100px] z-40 mb-12 px-4 md:px-0">
+      <div className="glass-panel border border-secondary/20 rounded-[2rem] md:rounded-full px-6 py-4 flex flex-col lg:flex-row items-center justify-between gap-4 shadow-xl shadow-secondary/5">
+        
+        {/* Search */}
+        <div className="relative w-full lg:w-72 flex-shrink-0">
+          <input 
+            className="w-full bg-white/40 border border-secondary/10 rounded-full py-2 px-4 pr-12 text-sm font-alexandria text-[#2C2C2C] focus:border-secondary/30 focus:ring-0 placeholder:text-on-surface-variant/50 min-h-[48px] outline-none transition-all focus:bg-white/60" 
+            placeholder="ابحث عن عطر..." 
+            type="text" 
+            aria-label="Search products"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-secondary/40 w-5 h-5 pointer-events-none" />
+          {isPending && (
+            <div className="absolute left-4 top-1/2 -translate-y-1/2">
+              <div className="w-4 h-4 border-2 border-secondary/20 border-t-secondary rounded-full animate-spin" />
+            </div>
+          )}
+        </div>
+        
+        {/* Categories */}
+        <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar w-full lg:w-auto justify-start lg:justify-center py-1 -mx-2 px-2 lg:mx-0 lg:px-0 snap-x">
+          {categories.map((category) => {
+            const isActive = currentCategory === category;
+            return (
+              <button 
+                key={category}
+                onClick={() => handleCategoryChange(category)}
+                className={`${
+                  isActive 
+                    ? 'bg-[#2C2C2C] text-white shadow-lg' 
+                    : 'bg-white/20 text-[#2C2C2C] hover:bg-white/40'
+                } font-alexandria text-xs font-medium px-6 rounded-full whitespace-nowrap transition-all duration-300 min-h-[44px] flex items-center justify-center snap-center`}
+              >
+                {category}
+              </button>
+            );
+          })}
+        </div>
 
-      {/* Sort */}
-      <button className="flex items-center gap-2 w-full md:w-auto justify-end text-on-surface-variant hover:text-secondary transition-colors min-h-[44px] px-2" aria-label="Sort products">
-        <span className="font-label-sm text-label-sm">ترتيب حسب</span>
-        <SlidersHorizontal className="w-5 h-5" />
-      </button>
+        {/* Sort (Desktop only text, mobile icon only or refined) */}
+        <button className="flex items-center gap-2 w-full lg:w-auto justify-end text-[#2C2C2C] hover:text-secondary transition-colors min-h-[44px] px-2 font-alexandria text-xs" aria-label="Sort products">
+          <span className="font-medium tracking-wider">ترتيب حسب</span>
+          <SlidersHorizontal className="w-5 h-5 opacity-70" />
+        </button>
+      </div>
     </div>
   );
 }

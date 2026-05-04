@@ -59,17 +59,17 @@ const socialLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="w-full bg-[#F5F1EA] border-t border-secondary/10 dir-rtl">
+    <footer className="w-full bg-[#F5F1EA] border-t border-secondary/10 font-alexandria">
       {/* Main footer grid */}
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Brand column */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 text-right">
           <Logo />
-          <p className="font-body-md text-sm text-on-surface-variant leading-relaxed max-w-[200px]">
+          <p className="text-sm text-on-surface-variant font-light leading-relaxed max-w-[200px]">
             عطور فاخرة من قلب القاهرة إلى العالم.
           </p>
           {/* Social links */}
-          <div className="flex gap-3">
+          <div className="flex gap-3 justify-end sm:justify-start">
             {socialLinks.map((s) => (
               <a
                 key={s.label}
@@ -86,14 +86,14 @@ export function SiteFooter() {
         </div>
 
         {/* Shop links */}
-        <div>
-          <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-5">المتجر</h4>
+        <div className="text-right">
+          <h4 className="text-xs text-secondary uppercase tracking-[0.2em] font-medium mb-6">المتجر</h4>
           <ul className="flex flex-col gap-3">
             {footerLinks.shop.map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className="font-body-md text-sm text-on-surface-variant hover:text-secondary transition-colors"
+                  className="text-sm text-on-surface-variant font-light hover:text-secondary transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -103,14 +103,14 @@ export function SiteFooter() {
         </div>
 
         {/* Account links */}
-        <div>
-          <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-5">حسابي</h4>
+        <div className="text-right">
+          <h4 className="text-xs text-secondary uppercase tracking-[0.2em] font-medium mb-6">حسابي</h4>
           <ul className="flex flex-col gap-3">
             {footerLinks.account.map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className="font-body-md text-sm text-on-surface-variant hover:text-secondary transition-colors"
+                  className="text-sm text-on-surface-variant font-light hover:text-secondary transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -120,14 +120,14 @@ export function SiteFooter() {
         </div>
 
         {/* Info / Legal links */}
-        <div>
-          <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-5">معلومات</h4>
+        <div className="text-right">
+          <h4 className="text-xs text-secondary uppercase tracking-[0.2em] font-medium mb-6">معلومات</h4>
           <ul className="flex flex-col gap-3">
             {footerLinks.info.map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className="font-body-md text-sm text-on-surface-variant hover:text-secondary transition-colors"
+                  className="text-sm text-on-surface-variant font-light hover:text-secondary transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -138,11 +138,11 @@ export function SiteFooter() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-secondary/10 py-6 px-6 md:px-16 max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p className="font-sans text-xs text-on-surface-variant/60 tracking-wider">
+      <div className="border-t border-secondary/10 py-8 px-6 md:px-16 max-w-[1440px] mx-auto flex flex-col sm:flex-row-reverse items-center justify-between gap-6">
+        <p className="text-[10px] text-on-surface-variant/60 tracking-widest uppercase font-light">
           © 2025 LOVELY SMELL EG. جميع الحقوق محفوظة.
         </p>
-        <div className="flex gap-5 font-sans text-xs text-on-surface-variant">
+        <div className="flex gap-6 text-[10px] text-on-surface-variant uppercase tracking-widest font-light">
           <Link href="/legal-policies" className="hover:text-secondary transition-colors">الخصوصية</Link>
           <Link href="/legal-policies" className="hover:text-secondary transition-colors">الشروط</Link>
           <Link href="/shipping-policy" className="hover:text-secondary transition-colors">الشحن والإرجاع</Link>

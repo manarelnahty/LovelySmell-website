@@ -41,17 +41,17 @@ export default function Page() {
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="bg-white/30 backdrop-blur-xl border border-white/20 p-10 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
+            className="bg-white/30 backdrop-blur-xl border border-white/20 p-6 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-[#1E1E1E] mb-4 leading-tight">
+            <h1 className="text-3xl md:text-6xl font-bold text-[#2C2C2C] mb-4 leading-tight">
               اكتشف عطرك
               <br />
               المثالي
             </h1>
-            <p className="text-[#4A4A4A] text-lg md:text-xl mb-8 leading-relaxed">
+            <p className="text-[#4A4A4A] text-base md:text-xl font-light mb-6 md:mb-8 leading-relaxed">
               رحلة عطرية تأخذك إلى عوالم من الفخامة والجمال. حيث تلتقي الأصالة بالحداثة.
             </p>
-            <button className="bg-[#2C2C2C] text-white px-10 py-4 rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg text-lg">
+            <button className="bg-[#2C2C2C] text-white px-8 md:px-10 py-3 md:py-4 rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg text-base md:text-lg">
               تسوق الآن
             </button>
           </motion.div>
@@ -72,9 +72,9 @@ export default function Page() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="flex flex-col gap-8 order-2 lg:order-1">
             <FadeUp>
-              <div className="bg-[#F5F1EA] rounded-3xl p-10 flex flex-col justify-center min-h-[300px]">
-                <span className="text-[#C4A36E] text-6xl font-playfair leading-none mb-2">&ldquo;</span>
-                <h2 className="text-3xl lg:text-4xl leading-snug font-medium text-[#2C2C2C]">
+              <div className="bg-[#F5F1EA] rounded-3xl p-6 md:p-10 flex flex-col justify-center min-h-[250px] md:min-h-[300px]">
+                <span className="text-[#C4A36E] text-5xl md:text-6xl font-playfair leading-none mb-2">&ldquo;</span>
+                <h2 className="text-2xl md:text-4xl leading-snug font-medium text-[#2C2C2C]">
                   العطر هو المفتاح السري الذي يفتح أبواب الذاكرة&rdquo;
                 </h2>
               </div>
@@ -129,8 +129,8 @@ export default function Page() {
                 { name: "ياسمين الشام",  price: "EGP 160", img: "/images/product_yasmin_sham.png", id: 4 },
               ].map((item) => (
                 <StaggerItem key={item.id}>
-                  <div className="bg-white rounded-3xl p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full">
-                    <div className="relative h-48 w-full mb-6">
+                  <div className="bg-white rounded-3xl p-5 md:p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full">
+                    <div className="relative h-40 md:h-48 w-full mb-6">
                       <Image
                         src={item.img}
                         alt={item.name}
@@ -143,9 +143,9 @@ export default function Page() {
                       <button className="text-[#C4A36E] border border-[#C4A36E] rounded-full p-2 hover:bg-[#C4A36E] hover:text-white transition-colors">
                         <Plus className="w-4 h-4" />
                       </button>
-                      <div className="text-left font-serif" dir="ltr">
-                        <h4 className="text-lg font-bold text-[#2C2C2C] mb-1 font-tajawal text-right" dir="rtl">{item.name}</h4>
-                        <span className="text-[#C4A36E] text-sm">{item.price}</span>
+                      <div className="text-left font-alexandria" dir="ltr">
+                        <h4 className="text-lg font-medium text-[#2C2C2C] mb-1 text-right" dir="rtl">{item.name}</h4>
+                        <span className="text-[#C4A36E] text-sm font-light">{item.price}</span>
                       </div>
                     </div>
                   </div>

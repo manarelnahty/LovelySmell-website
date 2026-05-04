@@ -1,11 +1,55 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingCart, Images, Sun, Heart, TreePine, MessageCircle } from 'lucide-react';
 import { TopNavBar } from '@/components/TopNavBar';
-import { Logo } from '@/components/logo';
+import { SiteFooter } from '@/components/SiteFooter';
 import { AddToCartButton } from '@/components/AddToCartButton';
 import { mockProducts } from '@/lib/data/products';
 import { notFound } from 'next/navigation';
+
+const SITE_URL = 'https://lovelysmell.netlify.app';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const product = mockProducts.find((p) => p.id === id);
+
+  if (!product) {
+    return { title: 'منتج غير موجود' };
+  }
+
+  return {
+    title: `${product.name} — عطر فاخر`,
+    description: product.description,
+    alternates: {
+      canonical: `/shop/${id}`,
+    },
+    openGraph: {
+      title: `${product.name} — Lovely Smell EG`,
+      description: product.description,
+      url: `/shop/${id}`,
+      images: [
+        {
+          url: product.image,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+    },
+  };
+}
+
+/* Pre-generate static paths for known products */
+export async function generateStaticParams() {
+  return mockProducts.map((product) => ({
+    id: product.id,
+  }));
+}
 
 export default async function ProductDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
@@ -16,9 +60,35 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
   if (!product) {
     notFound();
   }
+
+  /* JSON-LD for Google rich product snippets */
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: product.image.startsWith('http')
+      ? product.image
+      : `${SITE_URL}${product.image}`,
+    brand: {
+      '@type': 'Brand',
+      name: 'Lovely Smell EG',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: 'EGP',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}/shop/${product.id}`,
+    },
+  };
   
   return (
     <div className="font-body-md text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col bg-background dir-rtl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <TopNavBar />
       
       <main className="flex-grow pt-[120px] pb-section-gap px-4 md:px-margin w-full max-w-container-max mx-auto space-y-section-gap">
@@ -126,23 +196,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#F5F1EA] dark:bg-stone-950 w-full mt-auto pb-12 pt-20 border-t border-[#C4A36E]/20">
-        <div className="flex flex-col items-center justify-center space-y-8 px-16 max-w-container-max mx-auto dir-rtl opacity-80 hover:opacity-100 transition-opacity">
-          <div className="mb-2">
-            <Logo />
-          </div>
-          <ul className="flex flex-wrap justify-center gap-8 font-sans text-xs tracking-wide leading-loose">
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">الخصوصية</a></li>
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">الشروط والأحكام</a></li>
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">سياسة الاسترجاع</a></li>
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">تواصل معنا</a></li>
-          </ul>
-          <p className="text-xs text-[#A09890] font-sans tracking-widest mt-8">
-            © 2024 LOVELY SMELL EG. ARTISANAL FRAGRANCE HOUSE.
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {/* Floating WhatsApp Button */}
       <a
