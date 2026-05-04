@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { TopNavBar } from '@/components/TopNavBar';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Truck, Clock, CreditCard, RotateCcw, AlertCircle, HelpCircle, ChevronDown, MapPin } from 'lucide-react';
@@ -45,9 +46,12 @@ const faqs = [
   },
 ];
 
-export const metadata = {
-  title: 'سياسة الشحن والإرجاع | Lovely Smell EG',
-  description: 'تعرّف على سياسة الشحن والتوصيل والإرجاع لدى Lovely Smell EG',
+export const metadata: Metadata = {
+  title: 'سياسة الشحن والإرجاع',
+  description: 'تعرّف على سياسة الشحن والتوصيل والإرجاع لدى Lovely Smell EG. نوفر توصيل سريع لجميع محافظات مصر.',
+  alternates: {
+    canonical: '/shipping-policy',
+  },
 };
 
 export default function ShippingPolicyPage() {
