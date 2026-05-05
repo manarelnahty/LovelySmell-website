@@ -126,7 +126,7 @@ export default function LegalPoliciesPage() {
                     : 'هل لديك استفسارات حول الشروط والأحكام؟'}
                 </p>
                 <a
-                  href="https://wa.me/"
+                  href="https://wa.me/201018580523"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-3 rounded-full border-[1.5px] border-secondary text-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-secondary/5 active:scale-[0.98] transition-all"
