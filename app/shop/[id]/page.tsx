@@ -148,7 +148,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
       <a
         aria-label="تواصل معنا عبر واتساب"
         className="fixed bottom-8 left-8 bg-[#25D366] text-white p-4 rounded-full shadow-[0_4px_20px_rgba(37,211,102,0.4)] z-50 hover:scale-110 hover:shadow-[0_8px_30px_rgba(37,211,102,0.5)] active:scale-95 transition-all duration-300 flex items-center justify-center min-w-[56px] min-h-[56px]"
-        href="https://wa.me/"
+        href="https://wa.me/201018580523"
         target="_blank"
         rel="noopener noreferrer"
       >

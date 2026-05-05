@@ -184,10 +184,15 @@ export function CartDrawer() {
               >
                 إتمام الطلب
               </Link>
-            <button className="w-full py-3.5 bg-transparent border-[1.5px] border-secondary text-secondary font-body-md text-body-md rounded-full hover:bg-secondary/5 active:scale-[0.98] transition-all duration-200 flex justify-center items-center gap-2">
+            <a
+              href="https://wa.me/201018580523"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 bg-transparent border-[1.5px] border-secondary text-secondary font-body-md text-body-md rounded-full hover:bg-secondary/5 active:scale-[0.98] transition-all duration-200 flex justify-center items-center gap-2"
+            >
               <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
               أكمل طلبك عبر واتساب
-            </button>
+            </a>
 
             <div className="text-center pt-1">
               <button

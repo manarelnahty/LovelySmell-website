@@ -183,7 +183,7 @@ export default function ShippingPolicyPage() {
               فريق خدمة العملاء لدينا مستعد دائماً للمساعدة في أي وقت.
             </p>
             <a
-              href="https://wa.me/"
+              href="https://wa.me/201018580523"
               target="_blank"
               rel="noopener noreferrer"
               className="relative z-10 inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full border-[1.5px] border-secondary text-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-secondary/5 transition-colors mt-1"
