@@ -1,0 +1,24 @@
+{
+  "mcp": {
+    "[https://gemini-api-docs-mcp.dev](https://gemini-api-docs-mcp.dev)": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "[https://gemini-api-docs-mcp.dev](https://gemini-api-docs-mcp.dev)"
+      ],
+      "enabled": true,
+      "environment": {}
+    },
+    "gemini-interactions-api": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "@google/gemini-interactions-api"
+      ],
+      "enabled": true,
+      "environment": {}
+    }
+  }
+}

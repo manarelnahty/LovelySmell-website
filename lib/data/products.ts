@@ -16,7 +16,7 @@ export const mockProducts: Product[] = [
     name: "فن العطارة الأصيلة",
     price: 1850,
     category: ["شرقي", "رجالي", "نسائي"],
-    image: "/images/product_authentic_perfume.png",
+    image: "https://i.ibb.co/23B6G1wP/product-authentic-perfume.jpg",
     description: "عطر يعانق الروح، يمزج بين عبق الشرق القديم ولمسة العصر الحديث. تركيبة فريدة تأخذك في رحلة حسية عبر الزمن.",
     isEditorial: true
   },
@@ -25,7 +25,7 @@ export const mockProducts: Product[] = [
     name: "ليالي الشرق",
     price: 1200,
     category: ["شرقي", "نسائي"],
-    image: "/images/featured_perfume.png",
+    image: "https://i.ibb.co/NgKMVZhw/featured-perfume.jpg",
     description: "مزيج ساحر من العود والورد الطائفي يعكس جمال ليالي الشرق.",
     isFeatured: true
   },
@@ -50,7 +50,7 @@ export const mockProducts: Product[] = [
     name: "روح الورد",
     price: 650,
     category: ["نسائي", "صيفي"],
-    image: "/images/perfume_womens_pink.png",
+    image: "https://i.ibb.co/LdcJ5bgC/perfume-womens-pink.jpg",
     description: "تجربة عطرية تنقلك إلى حقول الورد في الصباح الباكر.",
     isMonthPerfume: true
   },
@@ -59,7 +59,7 @@ export const mockProducts: Product[] = [
     name: "المحيط الأزرق",
     price: 450,
     category: ["رجالي", "صيفي", "غربي"],
-    image: "/images/perfume_mens_blue.png",
+    image: "https://i.ibb.co/84DwxCSc/perfume-mens-blue.jpg",
     description: "عطر ذكوري منعش وجذاب، يجسد قوة وحيوية المحيط."
   },
   {
@@ -67,7 +67,7 @@ export const mockProducts: Product[] = [
     name: "مسك خالص",
     price: 550,
     category: ["شرقي", "نسائي", "رجالي"],
-    image: "/images/perfume_unisex_minimal.png",
+    image: "https://i.ibb.co/fYfTLWVC/perfume-unisex-minimal.jpg",
     description: "رائحة المسك الصافية والنقية، عطر هادئ ومريح يناسب جميع الأوقات."
   },
   {
@@ -75,7 +75,7 @@ export const mockProducts: Product[] = [
     name: "ليل الصحراء",
     price: 850,
     category: ["شرقي", "رجالي"],
-    image: "/images/featured_perfume.png",
+    image: "https://i.ibb.co/NgKMVZhw/featured-perfume.jpg",
     description: "عطر يجمع بين دفء الصحراء وغموض الليل مع نفحات من التوابل."
   },
   {
@@ -83,7 +83,7 @@ export const mockProducts: Product[] = [
     name: "زهر الربيع",
     price: 320,
     category: ["نسائي", "صيفي"],
-    image: "/images/perfume_womens_pink.png",
+    image: "https://i.ibb.co/LdcJ5bgC/perfume-womens-pink.jpg",
     description: "باقة من أزهار الربيع المتفتحة في زجاجة عطر، أنوثة طاغية ورقة."
   },
   {
@@ -91,7 +91,7 @@ export const mockProducts: Product[] = [
     name: "خشب كلاسيكي",
     price: 400,
     category: ["رجالي", "غربي"],
-    image: "/images/perfume_mens_blue.png",
+    image: "https://i.ibb.co/84DwxCSc/perfume-mens-blue.jpg",
     description: "عطر خشبي كلاسيكي يضفي لمسة من الأناقة والوقار."
   },
   {
@@ -107,7 +107,7 @@ export const mockProducts: Product[] = [
     name: "ياسمين أبيض",
     price: 380,
     category: ["نسائي", "غربي"],
-    image: "/images/product_authentic_perfume.png",
+    image: "https://i.ibb.co/23B6G1wP/product-authentic-perfume.jpg",
     description: "رائحة الياسمين الأبيض النقية، عطر زاهي ومفعم بالحياة."
   },
   {
@@ -115,7 +115,7 @@ export const mockProducts: Product[] = [
     name: "جلد أسود",
     price: 600,
     category: ["رجالي", "غربي"],
-    image: "/images/perfume_mens_blue.png",
+    image: "https://i.ibb.co/84DwxCSc/perfume-mens-blue.jpg",
     description: "عطر جرئ يمزج بين رائحة الجلد الفاخرة والتوابل الدافئة."
   },
   {
@@ -123,7 +123,7 @@ export const mockProducts: Product[] = [
     name: "سماء الفانيليا",
     price: 420,
     category: ["نسائي", "صيفي", "غربي"],
-    image: "/images/perfume_unisex_minimal.png",
+    image: "https://i.ibb.co/fYfTLWVC/perfume-unisex-minimal.jpg",
     description: "حلاوة الفانيليا مع لمسات خفيفة من الفواكه الاستوائية."
   },
   {
@@ -131,7 +131,7 @@ export const mockProducts: Product[] = [
     name: "زعفران ملكي",
     price: 1500,
     category: ["شرقي", "رجالي", "نسائي"],
-    image: "/images/product_authentic_perfume.png",
+    image: "https://i.ibb.co/23B6G1wP/product-authentic-perfume.jpg",
     description: "عطر استثنائي يرتكز على الزعفران النادر، الملقب بالذهب الأحمر."
   }
 ];

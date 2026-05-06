@@ -1,0 +1,22 @@
+{
+  "context_servers": {
+    "[https://gemini-api-docs-mcp.dev](https://gemini-api-docs-mcp.dev)": {
+      "source": "custom",
+      "command": "npx",
+      "args": [
+        "-y",
+        "[https://gemini-api-docs-mcp.dev](https://gemini-api-docs-mcp.dev)"
+      ],
+      "env": {}
+    },
+    "gemini-interactions-api": {
+      "source": "custom",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google/gemini-interactions-api"
+      ],
+      "env": {}
+    }
+  }
+}

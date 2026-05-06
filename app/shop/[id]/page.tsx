@@ -41,6 +41,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
               src={product.image} 
               alt={product.name} 
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105" 
               priority
             />
@@ -112,6 +113,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
             src="/images/editorial_scent_story.png" 
             alt="High-end editorial background for luxury perfume brand" 
             fill
+            sizes="100vw"
             className="object-cover" 
           />
           <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>

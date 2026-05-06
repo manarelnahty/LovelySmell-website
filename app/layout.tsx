@@ -3,6 +3,7 @@ import { Tajawal, Playfair_Display } from 'next/font/google';
 import { LenisProvider } from '@/components/lenis-provider';
 import { CartProvider } from '@/lib/context/CartContext';
 import { CartDrawer } from '@/components/CartDrawer';
+import { AIChat } from '@/components/AIChat';
 import './globals.css';
 
 const tajawal = Tajawal({
@@ -28,6 +29,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <CartProvider>
           <LenisProvider>{children}</LenisProvider>
           <CartDrawer />
+          <AIChat />
         </CartProvider>
       </body>
     </html>

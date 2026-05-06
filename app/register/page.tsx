@@ -18,6 +18,7 @@ export default function RegisterPage() {
           src="/luxury-perfume.png"
           alt="Luxury Perfume"
           fill
+          sizes="50vw"
           className="object-cover object-center scale-105 transition-transform duration-[10s] hover:scale-100"
           priority
         />
