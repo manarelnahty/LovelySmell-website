@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "[https://gemini-api-docs-mcp.dev](https://gemini-api-docs-mcp.dev)": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "[https://gemini-api-docs-mcp.dev](https://gemini-api-docs-mcp.dev)"
+      ]
+    },
+    "gemini-interactions-api": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@google/gemini-interactions-api"
+      ]
+    }
+  }
+}
