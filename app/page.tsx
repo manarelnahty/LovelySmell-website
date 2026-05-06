@@ -59,6 +59,7 @@ export default function Page() {
             src="/hero-perfume.png"
             alt="Hero Perfume"
             fill
+            sizes="100vw"
             className="object-cover object-center scale-105"
             priority
           />
@@ -125,6 +126,7 @@ export default function Page() {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSi_9ewOj7qniDE3p9JOp2jqNR-4gc1mjSzImdMwFxo4vToIusOZnzDB8OzWC_aJ5xoANdisqLzduRxcRJuYomKks7hCNuFdbypDtl_iaANZc9tXuRqz3MaFYE2FdqfQuPNFJspsxUcW6P8tM7oZQHP3nc7-WkGwHsZBYfCVM-HAuNSV7DxAqdr-y_VVZh2fle4tzTL9WsDZqaevZdmo2K6eI0dEtQSmdsujLvBcrSxGdZppc-CZU_rBTPDjYSTnURCLtT84t8"
                 alt="Rare Ingredients"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
@@ -246,6 +248,7 @@ export default function Page() {
                   src={src}
                   alt={`Instagram highlight ${i + 1}`}
                   fill
+                  sizes="(max-width: 768px) 240px, 200px"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
