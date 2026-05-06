@@ -48,7 +48,7 @@ const socialLinks = [
   },
   {
     label: 'WhatsApp',
-    href: 'https://wa.me/',
+    href: 'https://wa.me/201018580523',
     icon: (
       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
         <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
@@ -59,17 +59,17 @@ const socialLinks = [
 
 export function SiteFooter() {
   return (
-    <footer className="w-full bg-[#F5F1EA] border-t border-secondary/10 font-alexandria">
+    <footer className="w-full bg-[#F5F1EA] border-t border-secondary/10 dir-rtl">
       {/* Main footer grid */}
       <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Brand column */}
-        <div className="flex flex-col gap-5 text-right">
+        <div className="flex flex-col gap-5">
           <Logo />
-          <p className="text-sm text-on-surface-variant font-light leading-relaxed max-w-[200px]">
+          <p className="font-body-md text-sm text-on-surface-variant leading-relaxed max-w-[200px]">
             عطور فاخرة من قلب القاهرة إلى العالم.
           </p>
           {/* Social links */}
-          <div className="flex gap-3 justify-end sm:justify-start">
+          <div className="flex gap-3">
             {socialLinks.map((s) => (
               <a
                 key={s.label}
@@ -86,14 +86,14 @@ export function SiteFooter() {
         </div>
 
         {/* Shop links */}
-        <div className="text-right">
-          <h4 className="text-xs text-secondary uppercase tracking-[0.2em] font-medium mb-6">المتجر</h4>
+        <div>
+          <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-5">المتجر</h4>
           <ul className="flex flex-col gap-3">
             {footerLinks.shop.map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className="text-sm text-on-surface-variant font-light hover:text-secondary transition-colors"
+                  className="font-body-md text-sm text-on-surface-variant hover:text-secondary transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -103,14 +103,14 @@ export function SiteFooter() {
         </div>
 
         {/* Account links */}
-        <div className="text-right">
-          <h4 className="text-xs text-secondary uppercase tracking-[0.2em] font-medium mb-6">حسابي</h4>
+        <div>
+          <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-5">حسابي</h4>
           <ul className="flex flex-col gap-3">
             {footerLinks.account.map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className="text-sm text-on-surface-variant font-light hover:text-secondary transition-colors"
+                  className="font-body-md text-sm text-on-surface-variant hover:text-secondary transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -120,14 +120,14 @@ export function SiteFooter() {
         </div>
 
         {/* Info / Legal links */}
-        <div className="text-right">
-          <h4 className="text-xs text-secondary uppercase tracking-[0.2em] font-medium mb-6">معلومات</h4>
+        <div>
+          <h4 className="font-label-sm text-label-sm text-secondary uppercase tracking-wider mb-5">معلومات</h4>
           <ul className="flex flex-col gap-3">
             {footerLinks.info.map((l) => (
               <li key={l.label}>
                 <Link
                   href={l.href}
-                  className="text-sm text-on-surface-variant font-light hover:text-secondary transition-colors"
+                  className="font-body-md text-sm text-on-surface-variant hover:text-secondary transition-colors"
                 >
                   {l.label}
                 </Link>
@@ -138,11 +138,11 @@ export function SiteFooter() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-secondary/10 py-8 px-6 md:px-16 max-w-[1440px] mx-auto flex flex-col sm:flex-row-reverse items-center justify-between gap-6">
-        <p className="text-[10px] text-on-surface-variant/60 tracking-widest uppercase font-light">
+      <div className="border-t border-secondary/10 py-6 px-6 md:px-16 max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p className="font-sans text-xs text-on-surface-variant/60 tracking-wider">
           © 2025 LOVELY SMELL EG. جميع الحقوق محفوظة.
         </p>
-        <div className="flex gap-6 text-[10px] text-on-surface-variant uppercase tracking-widest font-light">
+        <div className="flex gap-5 font-sans text-xs text-on-surface-variant">
           <Link href="/legal-policies" className="hover:text-secondary transition-colors">الخصوصية</Link>
           <Link href="/legal-policies" className="hover:text-secondary transition-colors">الشروط</Link>
           <Link href="/shipping-policy" className="hover:text-secondary transition-colors">الشحن والإرجاع</Link>

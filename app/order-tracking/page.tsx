@@ -259,7 +259,7 @@ export default function OrderTrackingPage() {
                 تتبع طلب آخر
               </button>
               <a
-                href="https://wa.me/"
+                href="https://wa.me/201018580523"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md"

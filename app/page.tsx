@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Search, User, ShoppingBag, Plus, ArrowDown, Instagram } from 'lucide-react';
+import { Search, User, ShoppingBag, Plus, ArrowDown, Instagram, Check } from 'lucide-react';
 import { useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { FadeUp, StaggerContainer, StaggerItem, AnimatedCounter } from '@/components/animated';
@@ -11,11 +11,42 @@ import { Marquee } from '@/components/marquee';
 import { TopNavBar } from '@/components/TopNavBar';
 import { BackToTop } from '@/components/back-to-top';
 import { SiteFooter } from '@/components/SiteFooter';
+import { useCart } from '@/lib/context/CartContext';
+import { mockProducts, Product } from '@/lib/data/products';
+
+// Inline product catalogue used by the Best Sellers section
+const BEST_SELLERS: Array<{ id: string; label: string; price: string; img: string }> = [
+  { id: 'rooh-al-ward',    label: 'ورد جوري',     price: 'EGP 150', img: '/images/product_ward_jouri.png'  },
+  { id: 'pure-musk',      label: 'مسك الليل',    price: 'EGP 180', img: '/images/product_musk_layl.png'   },
+  { id: 'golden-amber',   label: 'عنبر صافي',    price: 'EGP 200', img: '/images/product_anbar_safi.png'  },
+  { id: 'white-jasmine',  label: 'ياسمين الشام', price: 'EGP 160', img: '/images/product_yasmin_sham.png' },
+];
 
 export default function Page() {
   const { scrollY } = useScroll();
+  const { addToCart } = useCart();
+  // Tracks which product id was just added (for brief feedback animation)
+  const [addedId, setAddedId] = useState<string | null>(null);
 
   const heroParallaxY = useTransform(scrollY, [0, 600], [0, 150]);
+
+  function handleAddToCart(productId: string) {
+    // Find the matching Product from the data store, or build a minimal one
+    const product: Product = mockProducts.find(p => p.id === productId) ?? {
+      id: productId,
+      name: BEST_SELLERS.find(b => b.id === productId)?.label ?? productId,
+      price: parseInt(
+        (BEST_SELLERS.find(b => b.id === productId)?.price ?? 'EGP 0').replace(/\D/g, ''),
+        10
+      ),
+      category: [],
+      image: BEST_SELLERS.find(b => b.id === productId)?.img ?? '',
+      description: '',
+    };
+    addToCart(product);
+    setAddedId(productId);
+    setTimeout(() => setAddedId(null), 1200);
+  }
 
   return (
     <main className="min-h-screen pt-[88px] md:pt-[96px]">
@@ -41,17 +72,17 @@ export default function Page() {
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="bg-white/30 backdrop-blur-xl border border-white/20 p-6 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
+            className="bg-white/30 backdrop-blur-xl border border-white/20 p-10 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
           >
-            <h1 className="text-3xl md:text-6xl font-bold text-[#2C2C2C] mb-4 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold text-[#1E1E1E] mb-4 leading-tight">
               اكتشف عطرك
               <br />
               المثالي
             </h1>
-            <p className="text-[#4A4A4A] text-base md:text-xl font-light mb-6 md:mb-8 leading-relaxed">
+            <p className="text-[#4A4A4A] text-lg md:text-xl mb-8 leading-relaxed">
               رحلة عطرية تأخذك إلى عوالم من الفخامة والجمال. حيث تلتقي الأصالة بالحداثة.
             </p>
-            <button className="bg-[#2C2C2C] text-white px-8 md:px-10 py-3 md:py-4 rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg text-base md:text-lg">
+            <button className="bg-[#2C2C2C] text-white px-10 py-4 rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg text-lg">
               تسوق الآن
             </button>
           </motion.div>
@@ -72,9 +103,9 @@ export default function Page() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="flex flex-col gap-8 order-2 lg:order-1">
             <FadeUp>
-              <div className="bg-[#F5F1EA] rounded-3xl p-6 md:p-10 flex flex-col justify-center min-h-[250px] md:min-h-[300px]">
-                <span className="text-[#C4A36E] text-5xl md:text-6xl font-playfair leading-none mb-2">&ldquo;</span>
-                <h2 className="text-2xl md:text-4xl leading-snug font-medium text-[#2C2C2C]">
+              <div className="bg-[#F5F1EA] rounded-3xl p-10 flex flex-col justify-center min-h-[300px]">
+                <span className="text-[#C4A36E] text-6xl font-playfair leading-none mb-2">&ldquo;</span>
+                <h2 className="text-3xl lg:text-4xl leading-snug font-medium text-[#2C2C2C]">
                   العطر هو المفتاح السري الذي يفتح أبواب الذاكرة&rdquo;
                 </h2>
               </div>
@@ -122,35 +153,41 @@ export default function Page() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <StaggerContainer className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6 order-2 lg:order-1" staggerDelay={0.12}>
-              {[
-                { name: "ورد جوري",      price: "EGP 150", img: "/images/product_ward_jouri.png",  id: 1 },
-                { name: "مسك الليل",     price: "EGP 180", img: "/images/product_musk_layl.png",   id: 2 },
-                { name: "عنبر صافي",     price: "EGP 200", img: "/images/product_anbar_safi.png",  id: 3 },
-                { name: "ياسمين الشام",  price: "EGP 160", img: "/images/product_yasmin_sham.png", id: 4 },
-              ].map((item) => (
-                <StaggerItem key={item.id}>
-                  <div className="bg-white rounded-3xl p-5 md:p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full">
-                    <div className="relative h-40 md:h-48 w-full mb-6">
-                      <Image
-                        src={item.img}
-                        alt={item.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                      />
-                    </div>
-                    <div className="flex justify-between items-end mt-auto">
-                      <button className="text-[#C4A36E] border border-[#C4A36E] rounded-full p-2 hover:bg-[#C4A36E] hover:text-white transition-colors">
-                        <Plus className="w-4 h-4" />
-                      </button>
-                      <div className="text-left font-alexandria" dir="ltr">
-                        <h4 className="text-lg font-medium text-[#2C2C2C] mb-1 text-right" dir="rtl">{item.name}</h4>
-                        <span className="text-[#C4A36E] text-sm font-light">{item.price}</span>
+              {BEST_SELLERS.map((item) => {
+                const isAdded = addedId === item.id;
+                return (
+                  <StaggerItem key={item.id}>
+                    <div className="bg-white rounded-3xl p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full">
+                      <div className="relative h-48 w-full mb-6">
+                        <Image
+                          src={item.img}
+                          alt={item.label}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
+                        />
+                      </div>
+                      <div className="flex justify-between items-end mt-auto">
+                        <button
+                          onClick={() => handleAddToCart(item.id)}
+                          aria-label={`أضف ${item.label} إلى السلة`}
+                          className={`border rounded-full p-2 transition-all duration-300 active:scale-90 ${
+                            isAdded
+                              ? 'bg-green-500 border-green-500 text-white scale-110'
+                              : 'text-[#C4A36E] border-[#C4A36E] hover:bg-[#C4A36E] hover:text-white'
+                          }`}
+                        >
+                          {isAdded ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                        </button>
+                        <div className="text-left font-serif" dir="ltr">
+                          <h4 className="text-lg font-bold text-[#2C2C2C] mb-1 font-tajawal text-right" dir="rtl">{item.label}</h4>
+                          <span className="text-[#C4A36E] text-sm">{item.price}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </StaggerItem>
-              ))}
+                  </StaggerItem>
+                );
+              })}
             </StaggerContainer>
 
             <FadeUp className="order-1 lg:order-2">
@@ -168,8 +205,16 @@ export default function Page() {
                     <h3 className="text-3xl font-bold mb-2">عود ملكي</h3>
                     <p className="text-gray-300">نفحات شرقية دافئة</p>
                   </div>
-                  <button className="bg-white/20 hover:bg-white text-white hover:text-black backdrop-blur-md rounded-full p-4 transition-all">
-                    <Plus className="w-6 h-6" />
+                  <button
+                    onClick={() => handleAddToCart('oud-malaki')}
+                    aria-label="أضف عود ملكي إلى السلة"
+                    className={`backdrop-blur-md rounded-full p-4 transition-all duration-300 active:scale-90 ${
+                      addedId === 'oud-malaki'
+                        ? 'bg-green-500 text-white scale-110'
+                        : 'bg-white/20 hover:bg-white text-white hover:text-black'
+                    }`}
+                  >
+                    {addedId === 'oud-malaki' ? <Check className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
                   </button>
                 </div>
               </div>

@@ -79,7 +79,7 @@ export default function OrderSuccessPage() {
               تتبع طلبك
             </Link>
             <a
-              href="https://wa.me/"
+              href="https://wa.me/201018580523"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full py-4 rounded-full bg-transparent border-[1.5px] border-secondary text-secondary font-label-sm text-label-sm uppercase tracking-wider hover:bg-secondary/5 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
@@ -92,7 +92,7 @@ export default function OrderSuccessPage() {
 
         {/* WhatsApp Support Card */}
         <a
-          href="https://wa.me/"
+          href="https://wa.me/201018580523"
           target="_blank"
           rel="noopener noreferrer"
           className="w-full bg-white/60 backdrop-blur-xl rounded-2xl p-5 border border-secondary/20 flex items-center justify-center gap-3 hover:bg-white/80 transition-colors duration-300 shadow-[0_4px_20px_-10px_rgba(196,163,110,0.15)]"
