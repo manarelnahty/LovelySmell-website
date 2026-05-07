@@ -5,7 +5,9 @@ import { Logo } from '@/components/logo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Lock, Truck, ArrowRight, ChevronDown } from 'lucide-react';
+import { saveOrder, Order } from '@/lib/data/adminProducts';
 
 const GOVERNORATES = [
   'القاهرة', 'الجيزة', 'الإسكندرية', 'البحيرة', 'الشرقية',
@@ -20,13 +22,48 @@ const SHIPPING_COST = 50;
 const FREE_SHIPPING_THRESHOLD = 1500;
 
 export default function CheckoutPage() {
-  const { items, cartTotal } = useCart();
+  const { items, cartTotal, clearCart } = useCart();
+  const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'card'>('cod');
+  const [customerName, setCustomerName] = useState('');
+  const [phone, setPhone]               = useState('');
+  const [governorate, setGovernorate]   = useState('');
+  const [address, setAddress]           = useState('');
+  const [submitting, setSubmitting]     = useState(false);
 
   const shippingCost = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const grandTotal = cartTotal + shippingCost;
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
   const progressPct = Math.min(100, (cartTotal / FREE_SHIPPING_THRESHOLD) * 100);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!customerName.trim() || !phone.trim() || !governorate || !address.trim()) return;
+    setSubmitting(true);
+    const order: Order = {
+      id: `order-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      createdAt: new Date().toISOString(),
+      customerName,
+      phone,
+      governorate,
+      address,
+      items: items.map((i) => ({
+        productId:    i.product.id,
+        productName:  i.product.name,
+        productImage: i.product.image,
+        quantity:     i.quantity,
+        price:        i.product.price,
+      })),
+      subtotal:      cartTotal,
+      shippingCost,
+      grandTotal,
+      paymentMethod,
+      status: 'جديد',
+    };
+    saveOrder(order);
+    clearCart();
+    router.push('/order-success');
+  }
 
   return (
     <div className="bg-[#FDF9F3] text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-secondary/30">
@@ -61,12 +98,15 @@ export default function CheckoutPage() {
               <h2 className="font-headline-md text-[24px] text-on-surface">معلومات التوصيل</h2>
             </div>
 
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <form id="checkout-form" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="md:col-span-2">
                 <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">الاسم الكامل</label>
                 <input
                   type="text"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="أدخل اسمك الكامل"
+                  required
                   className="w-full bg-[#F5F1EA] border-none rounded-xl py-4 px-4 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary/50 outline-none transition-all duration-300"
                 />
               </div>
@@ -74,8 +114,11 @@ export default function CheckoutPage() {
                 <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">رقم الهاتف</label>
                 <input
                   type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   placeholder="+20 100 000 0000"
                   dir="ltr"
+                  required
                   className="w-full bg-[#F5F1EA] border-none rounded-xl py-4 px-4 text-on-surface text-right placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary/50 outline-none transition-all duration-300"
                 />
               </div>
@@ -83,10 +126,12 @@ export default function CheckoutPage() {
                 <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">المحافظة</label>
                 <div className="relative">
                   <select
-                    defaultValue=""
+                    value={governorate}
+                    onChange={(e) => setGovernorate(e.target.value)}
+                    required
                     className="w-full bg-[#F5F1EA] border-none rounded-xl py-4 px-4 pr-4 pl-10 text-on-surface appearance-none cursor-pointer focus:ring-2 focus:ring-secondary/50 outline-none transition-all duration-300"
                   >
-                    <option value="" disabled>اختر المحافظة</option>
+                    <option value="">اختر المحافظة</option>
                     {GOVERNORATES.map(g => <option key={g}>{g}</option>)}
                   </select>
                   <ChevronDown className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary pointer-events-none w-4 h-4" />
@@ -96,7 +141,10 @@ export default function CheckoutPage() {
                 <label className="block font-label-sm text-label-sm text-on-surface-variant mb-2">العنوان التفصيلي</label>
                 <textarea
                   rows={3}
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                   placeholder="اسم الشارع، رقم العمارة، رقم الشقة..."
+                  required
                   className="w-full bg-[#F5F1EA] border-none rounded-xl py-4 px-4 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-secondary/50 outline-none transition-all duration-300 resize-none"
                 />
               </div>
@@ -148,8 +196,13 @@ export default function CheckoutPage() {
 
           {/* CTA */}
           <div>
-            <button className="w-full bg-primary-container text-secondary rounded-full py-5 font-body-lg text-body-lg hover:shadow-[0_0_25px_rgba(196,163,110,0.35)] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group">
-              <span>تقديم الطلب</span>
+            <button
+              form="checkout-form"
+              type="submit"
+              disabled={submitting || items.length === 0}
+              className="w-full bg-primary-container text-secondary rounded-full py-5 font-body-lg text-body-lg hover:shadow-[0_0_25px_rgba(196,163,110,0.35)] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <span>{submitting ? 'جاري التقديم...' : 'تقديم الطلب'}</span>
               <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300 rtl:rotate-180" strokeWidth={1.5} />
             </button>
             <p className="text-center font-label-sm text-label-sm text-on-surface-variant mt-4 flex items-center justify-center gap-2">
