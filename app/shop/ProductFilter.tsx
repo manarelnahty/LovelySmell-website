@@ -45,7 +45,7 @@ export function ProductFilter() {
   };
 
   return (
-    <div className="glass-panel border border-secondary/20 rounded-full px-6 py-4 mb-stack-lg flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[100px] z-40 shadow-sm shadow-secondary/5">
+    <div className="glass-panel border border-secondary/20 rounded-3xl md:rounded-full px-4 py-3 md:px-6 md:py-4 mb-stack-lg flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[80px] md:top-[100px] z-40 shadow-sm shadow-secondary/5">
       {/* Search */}
       <div className="relative w-full md:w-auto flex-shrink-0">
         <input 

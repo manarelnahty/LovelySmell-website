@@ -29,10 +29,10 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
       <TopNavBar />
 
       {/* Main Content */}
-      <main className="flex-grow pt-section-gap px-margin pb-section-gap max-w-container-max mx-auto w-full">
+      <main className="flex-grow pt-8 md:pt-section-gap px-4 md:px-margin pb-8 md:pb-section-gap max-w-container-max mx-auto w-full">
         {/* Section 1: Editorial Heading */}
-        <header className="flex flex-col items-center justify-center text-center mb-16 space-y-stack-md pt-12">
-          <h1 className="font-display-xl text-display-xl text-on-background">جميع العطور</h1>
+        <header className="flex flex-col items-center justify-center text-center mb-12 md:mb-16 space-y-stack-md pt-20 md:pt-12">
+          <h1 className="font-display-xl text-4xl md:text-display-xl text-on-background">جميع العطور</h1>
           <div className="w-10 h-[1px] bg-secondary"></div>
           <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
             اكتشف مجموعتنا الكاملة من العطور الفاخرة، المصممة بشغف لتعكس شخصيتك الفريدة.

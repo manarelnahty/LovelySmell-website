@@ -40,13 +40,21 @@ export default function LoginPage() {
       </div>
 
       {/* Form Side - Renders on the Left in RTL */}
-      <div className="flex flex-col justify-center px-8 sm:px-16 lg:px-24 xl:px-32 relative min-h-screen overflow-y-auto py-12">
+      <div className="flex flex-col justify-center px-6 md:px-16 lg:px-24 xl:px-32 relative min-h-screen overflow-y-auto py-12">
+        {/* Back Button & Logo Header for Mobile */}
+        <div className="absolute top-6 left-6 right-6 flex justify-between items-center lg:hidden">
+          <Link href="/" className="flex items-center gap-1.5 text-[#6B6058] hover:text-[#C4A36E] transition-colors group">
+            <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+            <span className="font-tajawal text-xs font-medium">الرئيسية</span>
+          </Link>
+          <Logo />
+        </div>
         {/* Back Button */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="absolute top-8 left-8 lg:left-12"
+          className="absolute top-10 left-10 lg:left-12 hidden lg:block"
         >
           <Link href="/" className="flex items-center gap-2 text-[#6B6058] hover:text-[#C4A36E] transition-colors group">
             <span className="font-tajawal text-sm font-medium">العودة للرئيسية</span>
@@ -59,7 +67,7 @@ export default function LoginPage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="absolute top-8 right-8 lg:right-12"
+          className="absolute top-10 right-10 lg:right-12 hidden lg:block"
         >
           <Logo />
         </motion.div>

@@ -68,7 +68,7 @@ export default function LegalPoliciesPage() {
     <div className="bg-[#FDF9F3] text-on-surface min-h-screen flex flex-col font-body-md antialiased">
       <TopNavBar />
 
-      <main className="flex-grow pt-32 pb-24 px-6 md:px-16">
+      <main className="flex-grow pt-24 md:pt-32 pb-12 md:pb-24 px-4 md:px-16">
         <div className="max-w-[900px] mx-auto dir-rtl">
 
           {/* Page Title */}

@@ -92,7 +92,7 @@ export default function OrderTrackingPage() {
     <div className="bg-[#FDF9F3] text-on-surface min-h-screen flex flex-col font-body-md antialiased">
       <TopNavBar />
 
-      <main className="flex-grow pt-32 pb-24 px-6 md:px-16 max-w-[1440px] mx-auto w-full">
+      <main className="flex-grow pt-24 md:pt-32 pb-12 md:pb-24 px-4 md:px-16 max-w-[1440px] mx-auto w-full">
         {/* Header */}
         <section className="text-center mb-12 mt-8">
           <h1 className="font-headline-md text-headline-md text-on-background mb-3">تتبع طلبك</h1>

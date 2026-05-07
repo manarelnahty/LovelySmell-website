@@ -22,7 +22,7 @@ export function ProductGrid({ products }: ProductGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-gutter mb-section-gap">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-gutter mb-12 md:mb-section-gap">
       {products.map((product) => {
         // Featured (2x2) Card
         if (product.isFeatured) {
