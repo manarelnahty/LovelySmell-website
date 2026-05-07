@@ -4,6 +4,7 @@ import { Logo } from '@/components/logo';
 import { ProductFilter } from './ProductFilter';
 import { ProductGrid } from './ProductGrid';
 import { mockProducts } from '@/lib/data/products';
+import { SiteFooter } from '@/components/SiteFooter';
 
 export default async function ShopPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const resolvedParams = await searchParams;
@@ -61,23 +62,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
         </svg>
       </a>
 
-      {/* Footer */}
-      <footer className="bg-[#F5F1EA] dark:bg-stone-950 w-full mt-[120px] pb-12 pt-20 border-t border-[#C4A36E]/20">
-        <div className="flex flex-col items-center justify-center space-y-8 px-16 max-w-container-max mx-auto dir-rtl opacity-80 hover:opacity-100 transition-opacity">
-          <div className="mb-2">
-            <Logo />
-          </div>
-          <ul className="flex flex-wrap justify-center gap-8 font-sans text-xs tracking-wide leading-loose">
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">الخصوصية</a></li>
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">الشروط والأحكام</a></li>
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">الاستدامة</a></li>
-            <li><a className="text-[#6B6058] dark:text-stone-400 hover:text-[#2C2C2C] dark:hover:text-white underline-offset-4 underline transition-colors min-h-[44px] flex items-center" href="#">تواصل معنا</a></li>
-          </ul>
-          <div className="text-[#C4A36E] font-sans text-xs tracking-wide leading-loose mt-8">
-            © ٢٠٢٤ دار لومينا للعطور. جميع الحقوق محفوظة.
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
