@@ -73,9 +73,9 @@ export default function Page() {
             initial={{ opacity: 0, y: 30, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="bg-white/30 backdrop-blur-xl border border-white/20 p-10 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
+            className="bg-white/30 backdrop-blur-xl border border-white/20 p-6 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
           >
-            <h1 className="text-4xl md:text-6xl font-bold text-[#1E1E1E] mb-4 leading-tight">
+            <h1 className="text-3xl md:text-6xl font-bold text-[#1E1E1E] mb-4 leading-tight">
               اكتشف عطرك
               <br />
               المثالي
@@ -100,12 +100,12 @@ export default function Page() {
       </section>
 
       {/* Quote & Featured Image */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div className="flex flex-col gap-8 order-2 lg:order-1">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 items-center">
+          <div className="flex flex-col gap-4 md:gap-8 order-2 lg:order-1">
             <FadeUp>
-              <div className="bg-[#F5F1EA] rounded-3xl p-10 flex flex-col justify-center min-h-[300px]">
-                <span className="text-[#C4A36E] text-6xl font-playfair leading-none mb-2">&ldquo;</span>
+              <div className="bg-[#F5F1EA] rounded-3xl p-6 md:p-10 flex flex-col justify-center min-h-[250px] md:min-h-[300px]">
+                <span className="text-[#C4A36E] text-5xl md:text-6xl font-playfair leading-none mb-2">&ldquo;</span>
                 <h2 className="text-3xl lg:text-4xl leading-snug font-medium text-[#2C2C2C]">
                   العطر هو المفتاح السري الذي يفتح أبواب الذاكرة&rdquo;
                 </h2>
@@ -113,8 +113,8 @@ export default function Page() {
             </FadeUp>
 
             <FadeUp delay={0.2}>
-              <div className="bg-[#2C2C2C] rounded-3xl p-10 flex flex-col justify-center items-center text-center min-h-[200px]">
-                <AnimatedCounter target={2000} suffix="+" className="text-[#C4A36E] text-5xl font-bold mb-2" />
+              <div className="bg-[#2C2C2C] rounded-3xl p-6 md:p-10 flex flex-col justify-center items-center text-center min-h-[150px] md:min-h-[200px]">
+                <AnimatedCounter target={2000} suffix="+" className="text-[#C4A36E] text-4xl md:text-5xl font-bold mb-2" />
                 <p className="text-gray-300">عميل سعيد</p>
               </div>
             </FadeUp>
@@ -142,11 +142,11 @@ export default function Page() {
       <SectionDivider />
 
       {/* Best Sellers Section */}
-      <section className="bg-[#FDF9F3] py-24">
+      <section className="bg-[#FDF9F3] py-12 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeUp>
-            <div className="flex justify-between items-end mb-12">
-              <h2 className="text-4xl font-bold text-[#2C2C2C]">الأكثر مبيعاً</h2>
+            <div className="flex justify-between items-end mb-8 md:mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#2C2C2C]">الأكثر مبيعاً</h2>
               <a href="/shop" className="text-[#C4A36E] hover:text-[#A88A58] transition-colors relative after:content-[''] after:absolute after:bottom-[-2px] after:right-0 after:w-full after:h-[1px] after:bg-current">
                 عرض الكل
               </a>
@@ -228,7 +228,7 @@ export default function Page() {
       <Marquee text="LOVELY SMELL EG  ·  LUXURY FRAGRANCES  ·  SINCE 2024" />
 
       {/* Instagram / Gallery Section */}
-      <section className="py-24 text-center">
+      <section className="py-12 md:py-24 text-center">
         <FadeUp>
           <h2 className="text-3xl font-bold text-[#2C2C2C] mb-2 font-playfair tracking-wide">LovelySmellEG@</h2>
           <p className="text-[#6B6058] mb-10">شاركنا لحظاتك العطرية</p>

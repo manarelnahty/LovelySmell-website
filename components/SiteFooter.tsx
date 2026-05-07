@@ -61,7 +61,7 @@ export function SiteFooter() {
   return (
     <footer className="w-full bg-[#F5F1EA] border-t border-secondary/10 dir-rtl">
       {/* Main footer grid */}
-      <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-16 py-10 md:py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
         {/* Brand column */}
         <div className="flex flex-col gap-5">
           <Logo />

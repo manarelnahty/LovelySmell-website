@@ -21,7 +21,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
     <div className="font-body-md text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col bg-background dir-rtl">
       <TopNavBar />
       
-      <main className="flex-grow pt-[120px] pb-section-gap px-4 md:px-margin w-full max-w-container-max mx-auto space-y-section-gap">
+      <main className="flex-grow pt-24 md:pt-[120px] pb-12 md:pb-section-gap px-4 md:px-margin w-full max-w-container-max mx-auto space-y-12 md:space-y-section-gap">
         {/* Breadcrumbs */}
         <nav className="flex text-on-tertiary-container font-label-sm text-label-sm gap-2 mt-8 flex-wrap items-center">
           <Link className="hover:text-secondary transition-colors" href="/">الرئيسية</Link>
@@ -83,7 +83,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
         {/* Scent Pyramid Bento Grid */}
         <section className="mt-section-gap">
           <h2 className="font-headline-md text-headline-md text-on-surface text-center mb-stack-lg">الهرم العطري</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-gutter">
             {/* Top Notes */}
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <Sun className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
@@ -108,7 +108,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
         </section>
 
         {/* Editorial Break */}
-        <section className="mt-section-gap relative rounded-xl overflow-hidden h-[500px]">
+        <section className="mt-12 md:mt-section-gap relative rounded-xl overflow-hidden h-[400px] md:h-[500px]">
           <Image 
             src="/images/editorial_scent_story.png" 
             alt="High-end editorial background for luxury perfume brand" 
@@ -118,7 +118,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
           />
           <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/40 to-transparent"></div>
           <div className="absolute inset-y-0 right-0 w-full md:w-[60%] lg:w-1/2 p-8 md:p-margin flex items-center">
-            <div className="glass-panel p-8 md:p-12 rounded-lg shadow-lg w-full backdrop-blur-md bg-white/10 border border-white/20">
+            <div className="glass-panel p-6 md:p-12 rounded-lg shadow-lg w-full backdrop-blur-md bg-white/10 border border-white/20">
               <h3 className="font-headline-md text-headline-md text-white mb-stack-md">قصة العطر</h3>
               <p className="font-body-md text-body-md text-white/90 leading-relaxed text-lg md:text-xl">
                   استلهمنا هذا العطر من ليالي الصحراء الدافئة، حيث يمتزج سكون الليل مع عبق التاريخ. صُنع بعناية فائقة ليكون توقيعك الشخصي الذي لا يُنسى، يحمل في طياته أسرار العطارة الشرقية العريقة.

@@ -55,7 +55,7 @@ export default function ShippingPolicyPage() {
     <div className="bg-[#FDF9F3] text-on-surface min-h-screen flex flex-col font-body-md antialiased">
       <TopNavBar />
 
-      <main className="flex-grow pt-36 pb-24 px-6 md:px-16 max-w-[1440px] mx-auto w-full">
+      <main className="flex-grow pt-24 md:pt-36 pb-12 md:pb-24 px-4 md:px-16 max-w-[1440px] mx-auto w-full">
         {/* Page Header */}
         <div className="text-center mb-16 dir-rtl">
           <h1 className="font-headline-lg text-headline-lg text-primary-container mb-4">سياسة الشحن والإرجاع</h1>
@@ -65,7 +65,7 @@ export default function ShippingPolicyPage() {
         </div>
 
         {/* Main Card */}
-        <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(196,163,110,0.1)] p-8 md:p-16 border border-secondary/10 dir-rtl">
+        <div className="bg-white rounded-2xl shadow-[0_8px_32px_rgba(196,163,110,0.1)] p-6 md:p-16 border border-secondary/10 dir-rtl">
           <div className="flex flex-col gap-20">
 
             {/* Section 1: Shipping */}

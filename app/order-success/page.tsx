@@ -44,7 +44,7 @@ export default function OrderSuccessPage() {
           </p>
 
           {/* Order Details Box */}
-          <div className="w-full bg-[#F5F1EA] rounded-xl p-6 flex flex-col gap-4 text-right mb-8 border border-secondary/20">
+          <div className="w-full bg-[#F5F1EA] rounded-xl p-4 md:p-6 flex flex-col gap-4 text-right mb-8 border border-secondary/20">
             <div className="flex justify-between items-center pb-4 border-b border-secondary/20">
               <span className="font-body-md text-body-md text-on-surface-variant">رقم الطلب</span>
               <span className="font-label-sm text-label-sm text-on-surface uppercase font-bold tracking-wider">{orderNumber}</span>
