@@ -1,4 +1,11 @@
-EGYContries/
+node_modules
+.next
+.netlify
+dist
+build
+.env
+.env.local
+.git
 scratch/
 stitch_assets/
 .agents/
