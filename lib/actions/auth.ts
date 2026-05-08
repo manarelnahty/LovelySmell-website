@@ -59,8 +59,11 @@ export async function signInWithGoogle() {
   // Get the site URL for the redirect
   const headersList = await (await import('next/headers')).headers()
   const host = headersList.get('host')
-  const protocol = headersList.get('x-forwarded-proto') || 'http'
-  const origin = headersList.get('origin') || `${protocol}://${host}`
+  const protocol = headersList.get('x-forwarded-proto') || 'https' // Default to https for production
+  let origin = headersList.get('origin') || process.env.URL || `${protocol}://${host}`
+  
+  // Ensure origin doesn't have a trailing slash for consistency
+  if (origin.endsWith('/')) origin = origin.slice(0, -1)
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -90,8 +93,10 @@ export async function forgotPassword(prevState: any, formData: FormData) {
   const email = formData.get('email') as string
   const headersList = await (await import('next/headers')).headers()
   const host = headersList.get('host')
-  const protocol = headersList.get('x-forwarded-proto') || 'http'
-  const origin = headersList.get('origin') || `${protocol}://${host}`
+  const protocol = headersList.get('x-forwarded-proto') || 'https'
+  let origin = headersList.get('origin') || process.env.URL || `${protocol}://${host}`
+  
+  if (origin.endsWith('/')) origin = origin.slice(0, -1)
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/reset-password`,
