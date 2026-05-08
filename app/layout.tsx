@@ -20,6 +20,15 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'Lovely Smell EG',
   description: 'اكتشف عطرك المثالي - Lovely Smell EG',
+  icons: {
+    icon: [
+      { url: '/ls-monogram.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/ls-monogram.png', type: 'image/png' },
+    ],
+    shortcut: '/ls-monogram.png',
+  },
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
