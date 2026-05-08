@@ -57,7 +57,7 @@ export async function signInWithGoogle() {
   const supabase = await createClient()
   
   // Get the site URL for the redirect
-  const origin = (await import('next/headers')).headers().get('origin')
+  const origin = (await (await import('next/headers')).headers()).get('origin')
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -85,7 +85,7 @@ export async function logout() {
 export async function forgotPassword(prevState: any, formData: FormData) {
   const supabase = await createClient()
   const email = formData.get('email') as string
-  const origin = (await import('next/headers')).headers().get('origin')
+  const origin = (await (await import('next/headers')).headers()).get('origin')
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${origin}/auth/callback?next=/reset-password`,
