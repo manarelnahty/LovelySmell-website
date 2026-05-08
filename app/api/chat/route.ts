@@ -1,8 +1,8 @@
 import { mockProducts } from "@/lib/data/products";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const GEMINI_MODEL = "gemini-1.5-flash";
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?key=${GEMINI_API_KEY}&alt=sse`;
 
 export async function POST(req: Request) {
   try {
@@ -38,73 +38,37 @@ ${JSON.stringify(productContext, null, 2)}
 - إذا خرج عن موضوع العطور، أعِد توجيهه بلطف.
 - اجعل ردودك موجزة لكن مفيدة.`;
 
-    const contents = messages.map((m: { role: string; content: string }) => ({
-      role: m.role === "user" ? "user" : "model",
-      parts: [{ text: m.content }],
-    }));
+    const model = genAI.getGenerativeModel({
+      model: GEMINI_MODEL,
+      systemInstruction: systemPrompt,
+    });
 
-    const body = {
-      system_instruction: {
-        parts: [{ text: systemPrompt }],
-      },
-      contents,
+    const chat = model.startChat({
+      history: messages.slice(0, -1).map((m: any) => ({
+        role: m.role === "user" ? "user" : "model",
+        parts: [{ text: m.content }],
+      })),
       generationConfig: {
         maxOutputTokens: 800,
         temperature: 0.7,
       },
-    };
-
-    const geminiRes = await fetch(GEMINI_API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
     });
 
-    if (!geminiRes.ok) {
-      const errText = await geminiRes.text();
-      console.error("Gemini API error:", errText);
-      return new Response(JSON.stringify({ error: "Gemini API error", details: errText }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+    const lastMessage = messages[messages.length - 1].content;
+    const result = await chat.sendMessageStream(lastMessage);
 
-    // Stream SSE from Gemini, extract text chunks and forward as plain text
     const stream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
-        const reader = geminiRes.body!.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-
         try {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split("\n");
-            buffer = lines.pop() || "";
-
-            for (const line of lines) {
-              if (line.startsWith("data: ")) {
-                const jsonStr = line.slice(6).trim();
-                if (jsonStr === "[DONE]") continue;
-                try {
-                  const parsed = JSON.parse(jsonStr);
-                  const text = parsed?.candidates?.[0]?.content?.parts?.[0]?.text;
-                  if (text) {
-                    controller.enqueue(encoder.encode(text));
-                  }
-                } catch {
-                  // skip invalid JSON lines
-                }
-              }
+          for await (const chunk of result.stream) {
+            const chunkText = chunk.text();
+            if (chunkText) {
+              controller.enqueue(encoder.encode(chunkText));
             }
           }
           controller.close();
         } catch (err) {
-          console.error("Stream read error:", err);
           controller.error(err);
         }
       },
