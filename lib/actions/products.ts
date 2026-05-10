@@ -35,10 +35,13 @@ export async function getProducts(params: {
     .select(`
       *,
       category:categories${params.category && params.category !== 'الكل' ? '!inner' : ''}(name_ar),
-      images:product_images(image_url, is_primary)
+      images:product_images(image_url, is_primary),
+      variations:product_variations(*)
     `, { count: 'exact' })
     .eq('is_active', true)
 
+  // ... existing filter logic ...
+  
   if (params.category && params.category !== 'الكل') {
     query = query.filter('categories.name_ar', 'eq', params.category)
   }
@@ -92,6 +95,13 @@ export async function getProducts(params: {
     isFeatured: p.is_bestseller,
     isEditorial: p.is_editorial,
     isMonthPerfume: p.is_month_perfume,
+    variations: p.variations?.map((v: any) => ({
+      id: v.id,
+      volume: v.volume,
+      unit: v.unit,
+      price: parseFloat(v.price),
+      stock: v.stock
+    })).sort((a: any, b: any) => a.volume - b.volume) || []
   })) as Product[]
 
   return { products, totalCount: count || 0 }
@@ -105,7 +115,8 @@ export async function getProductById(id: string) {
     .select(`
       *,
       category:categories(name_ar),
-      images:product_images(*)
+      images:product_images(*),
+      variations:product_variations(*)
     `)
     .eq('id', id)
     .single()
@@ -132,5 +143,12 @@ export async function getProductById(id: string) {
     isFeatured: data.is_bestseller,
     isEditorial: data.is_editorial,
     isMonthPerfume: data.is_month_perfume,
+    variations: data.variations?.map((v: any) => ({
+      id: v.id,
+      volume: v.volume,
+      unit: v.unit,
+      price: parseFloat(v.price),
+      stock: v.stock
+    })).sort((a: any, b: any) => a.volume - b.volume) || []
   }
 }

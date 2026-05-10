@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ShoppingCart, Images, Sun, Heart, TreePine, MessageCircle } from 'lucide-react';
 import { TopNavBar } from '@/components/TopNavBar';
 import { Logo } from '@/components/logo';
-import { AddToCartButton } from '@/components/AddToCartButton';
+import { ProductPurchaseSection } from '@/components/ProductPurchaseSection';
 import { getProductById } from '@/lib/actions/products';
 import { SiteFooter } from '@/components/SiteFooter';
 import { notFound } from 'next/navigation';
@@ -58,26 +58,10 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
                 {product.category[0]}
             </div>
             <h1 className="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">{product.name}</h1>
-            <p className="font-headline-md text-headline-md text-secondary mb-stack-lg">{product.price} ج.م</p>
             <p className="font-body-md text-body-md text-on-surface-variant mb-stack-lg leading-relaxed">
                 {product.description}
             </p>
-            
-            {/* Size Selector */}
-            <div className="mb-stack-lg">
-              <span className="block font-label-sm text-label-sm text-on-surface-variant mb-stack-sm">الحجم</span>
-              <div className="flex gap-4">
-                <button className="px-8 py-3 rounded-full bg-primary-container text-[#C4A36E] font-label-sm text-label-sm shadow-[0_0_15px_rgba(196,163,110,0.1)] transition-all hover:scale-105">
-                    50ml
-                </button>
-                <button className="px-8 py-3 rounded-full bg-transparent border-[1.5px] border-[#C4A36E] text-on-surface font-label-sm text-label-sm hover:bg-[#C4A36E]/5 transition-colors">
-                    100ml
-                </button>
-              </div>
-            </div>
-            
-            {/* Add to Cart */}
-            <AddToCartButton product={product} />
+            <ProductPurchaseSection product={product} />
           </div>
         </section>
 

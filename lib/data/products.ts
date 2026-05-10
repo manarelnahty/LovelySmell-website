@@ -1,3 +1,11 @@
+export interface ProductVariation {
+  id: string;
+  volume: number;
+  unit: string;
+  price: number;
+  stock: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -9,6 +17,7 @@ export interface Product {
   isFeatured?: boolean;
   isEditorial?: boolean;
   isMonthPerfume?: boolean;
+  variations?: ProductVariation[];
 }
 
 export const mockProducts: Product[] = [

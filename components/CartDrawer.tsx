@@ -7,7 +7,7 @@ import { X, Plus, Minus, ArrowLeft, MessageCircle, ShoppingCart } from 'lucide-r
 import { useEffect, useState } from 'react';
 
 export function CartDrawer() {
-  const { isCartOpen, closeCart, items, cartTotal, itemCount, updateQuantity, removeFromCart } = useCart();
+  const { isCartOpen, closeCart, items, cartTotal, itemCount, updateQuantity, updateVariation, removeFromCart } = useCart();
   // isVisible controls whether we keep the element in the DOM (for exit animation)
   const [isVisible, setIsVisible] = useState(false);
   // isAnimated controls the CSS transition class (translate-x)
@@ -103,59 +103,87 @@ export function CartDrawer() {
               </button>
             </div>
           ) : (
-            items.map((item, index) => (
-              <div
-                key={item.product.id}
-                className="flex items-start gap-4 bg-white/80 p-4 rounded-xl shadow-[0_4px_20px_rgba(196,163,110,0.08)] border border-secondary/10"
-                style={{ animationDelay: `${index * 60}ms` }}
-              >
-                <div className="w-[80px] h-[100px] bg-surface-container-low rounded-lg overflow-hidden shrink-0 flex items-center justify-center relative border border-secondary/10">
-                  <Image
-                    alt={item.product.name}
-                    src={item.product.image}
-                    fill
-                    className="object-contain p-2"
-                  />
-                </div>
-                <div className="flex-1 flex flex-col min-w-0">
-                  <div className="flex justify-between items-start gap-2">
-                    <div className="min-w-0">
-                      <h3 className="font-body-lg text-body-lg text-primary-container font-bold line-clamp-1">{item.product.name}</h3>
-                      <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">{item.product.category[0]}</p>
+            items.map((item, index) => {
+              const cartItemId = item.variationId ? `${item.product.id}-${item.variationId}` : item.product.id;
+              const currentVariation = item.product.variations?.find(v => v.id === item.variationId);
+              const displayPrice = currentVariation ? currentVariation.price : item.product.price;
+
+              return (
+                <div
+                  key={cartItemId}
+                  className="flex flex-col bg-white/80 p-4 rounded-xl shadow-[0_4px_20px_rgba(196,163,110,0.08)] border border-secondary/10"
+                  style={{ animationDelay: `${index * 60}ms` }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-[80px] h-[100px] bg-surface-container-low rounded-lg overflow-hidden shrink-0 flex items-center justify-center relative border border-secondary/10">
+                      <Image
+                        alt={item.product.name}
+                        src={item.product.image}
+                        fill
+                        className="object-contain p-2"
+                      />
                     </div>
-                    <button
-                      onClick={() => removeFromCart(item.product.id)}
-                      className="w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error/10 hover:text-error transition-colors"
-                      aria-label={`إزالة ${item.product.name}`}
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="flex items-center gap-2 border border-secondary/30 rounded-full px-3 py-1">
-                      <button
-                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                        className="w-5 h-5 flex items-center justify-center text-secondary hover:bg-secondary/10 rounded-full transition-colors"
-                        aria-label="تقليل الكمية"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </button>
-                      <span className="font-body-md text-body-md w-5 text-center tabular-nums">{item.quantity}</span>
-                      <button
-                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                        className="w-5 h-5 flex items-center justify-center text-secondary hover:bg-secondary/10 rounded-full transition-colors"
-                        aria-label="زيادة الكمية"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <div className="flex justify-between items-start gap-2">
+                        <div className="min-w-0">
+                          <h3 className="font-body-lg text-body-lg text-primary-container font-bold line-clamp-1">{item.product.name}</h3>
+                          <p className="font-label-sm text-label-sm text-on-surface-variant mt-1">{item.product.category[0]}</p>
+                        </div>
+                        <button
+                          onClick={() => removeFromCart(cartItemId)}
+                          className="w-7 h-7 flex-shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error/10 hover:text-error transition-colors"
+                          aria-label={`إزالة ${item.product.name}`}
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      {/* Variation Switcher inside Cart */}
+                      {item.product.variations && item.product.variations.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-3">
+                          {item.product.variations.map((v) => (
+                            <button
+                              key={v.id}
+                              onClick={() => updateVariation(cartItemId, v.id)}
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-md border transition-all ${
+                                item.variationId === v.id 
+                                  ? 'bg-secondary text-on-secondary border-secondary' 
+                                  : 'bg-surface-variant/5 border-secondary/20 text-secondary/60 hover:border-secondary/40'
+                              }`}
+                            >
+                              {v.volume}ml
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between mt-4">
+                        <div className="flex items-center gap-2 border border-secondary/30 rounded-full px-3 py-1">
+                          <button
+                            onClick={() => updateQuantity(cartItemId, item.quantity - 1)}
+                            className="w-5 h-5 flex items-center justify-center text-secondary hover:bg-secondary/10 rounded-full transition-colors"
+                            aria-label="تقليل الكمية"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          <span className="font-body-md text-body-md w-5 text-center tabular-nums">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(cartItemId, item.quantity + 1)}
+                            className="w-5 h-5 flex items-center justify-center text-secondary hover:bg-secondary/10 rounded-full transition-colors"
+                            aria-label="زيادة الكمية"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
+                        <span className="font-body-lg text-body-lg text-primary-container font-bold tabular-nums">
+                          {(displayPrice * item.quantity).toLocaleString('ar-EG')} ج.م
+                        </span>
+                      </div>
                     </div>
-                    <span className="font-body-lg text-body-lg text-primary-container font-bold tabular-nums">
-                      {(item.product.price * item.quantity).toLocaleString('ar-EG')} ج.م
-                    </span>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
