@@ -12,19 +12,41 @@ import { BackToTop } from '@/components/back-to-top';
 import { SiteFooter } from '@/components/SiteFooter';
 import { useCart } from '@/lib/context/CartContext';
 import { Product } from '@/lib/data/products';
+import { HomeProductCard } from './HomeProductCard';
+import { ShoppingBag } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) {
   const { scrollY } = useScroll();
   const { addToCart } = useCart();
   // Tracks which product id was just added (for brief feedback animation)
   const [addedId, setAddedId] = useState<string | null>(null);
-
+  const router = useRouter();
   const heroParallaxY = useTransform(scrollY, [0, 600], [0, 150]);
 
-  function handleAddToCart(product: Product) {
-    addToCart(product);
+  function handleAddToCart(product: Product, variation?: any) {
+    const cartProduct = {
+      ...product,
+      id: variation ? `${product.id}-${variation.id}` : product.id,
+      price: variation ? variation.price : product.price,
+      selectedVolume: variation?.volume,
+      variationId: variation?.id
+    };
+    addToCart(cartProduct as any);
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1200);
+  }
+
+  function handleBuyNow(product: Product, variation?: any) {
+    const cartProduct = {
+      ...product,
+      id: variation ? `${product.id}-${variation.id}` : product.id,
+      price: variation ? variation.price : product.price,
+      selectedVolume: variation?.volume,
+      variationId: variation?.id
+    };
+    addToCart(cartProduct as any);
+    router.push('/checkout');
   }
 
   // Find a specific featured product if needed, e.g. "oud-malaki"
@@ -138,37 +160,9 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <StaggerContainer className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6 order-2 lg:order-1" staggerDelay={0.12}>
               {bestSellers.slice(0, 4).map((product) => {
-                const isAdded = addedId === product.id;
                 return (
                   <StaggerItem key={product.id}>
-                    <div className="bg-white rounded-3xl p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full">
-                      <div className="relative h-48 w-full mb-6">
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                          className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
-                        />
-                      </div>
-                      <div className="flex justify-between items-end mt-auto">
-                        <button
-                          onClick={() => handleAddToCart(product)}
-                          aria-label={`أضف ${product.name} إلى السلة`}
-                          className={`border rounded-full p-2 transition-all duration-300 active:scale-90 ${
-                            isAdded
-                              ? 'bg-green-500 border-green-500 text-white scale-110'
-                              : 'text-[#C4A36E] border-[#C4A36E] hover:bg-[#C4A36E] hover:text-white'
-                          }`}
-                        >
-                          {isAdded ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-                        </button>
-                        <div className="text-left font-serif" dir="ltr">
-                          <h4 className="text-lg font-bold text-[#2C2C2C] mb-1 font-tajawal text-right" dir="rtl">{product.name}</h4>
-                          <span className="text-[#C4A36E] text-sm">EGP {product.price}</span>
-                        </div>
-                      </div>
-                    </div>
+                    <HomeProductCard product={product} />
                   </StaggerItem>
                 );
               })}
@@ -189,19 +183,42 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
                     <div className="absolute inset-x-0 bottom-0 p-8 flex justify-between items-end text-white">
                       <div>
                         <h3 className="text-3xl font-bold mb-2">{oudMalaki.name}</h3>
-                        <p className="text-gray-300">{oudMalaki.description.slice(0, 50)}...</p>
+                        <p className="text-gray-300 mb-4">{oudMalaki.description.slice(0, 50)}...</p>
+                        
+                        {/* Featured Variations */}
+                        {oudMalaki.variations && oudMalaki.variations.length > 1 && (
+                          <div className="flex gap-2 mb-4">
+                            {oudMalaki.variations.map((v) => (
+                              <button
+                                key={v.id}
+                                className="text-[10px] bg-white/10 hover:bg-white/30 border border-white/20 px-2 py-1 rounded"
+                                onClick={() => handleAddToCart(oudMalaki, v)}
+                              >
+                                {v.volume}ml
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <button
-                        onClick={() => handleAddToCart(oudMalaki)}
-                        aria-label={`أضف ${oudMalaki.name} إلى السلة`}
-                        className={`backdrop-blur-md rounded-full p-4 transition-all duration-300 active:scale-90 ${
-                          addedId === oudMalaki.id
-                            ? 'bg-green-500 text-white scale-110'
-                            : 'bg-white/20 hover:bg-white text-white hover:text-black'
-                        }`}
-                      >
-                        {addedId === oudMalaki.id ? <Check className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
-                      </button>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => handleBuyNow(oudMalaki, oudMalaki.variations?.[0])}
+                          className="bg-[#C4A36E] text-white p-4 rounded-full shadow-lg hover:scale-105 transition-all"
+                        >
+                          <ShoppingBag className="w-6 h-6" />
+                        </button>
+                        <button
+                          onClick={() => handleAddToCart(oudMalaki)}
+                          aria-label={`أضف ${oudMalaki.name} إلى السلة`}
+                          className={`backdrop-blur-md rounded-full p-4 transition-all duration-300 active:scale-90 ${
+                            addedId === oudMalaki.id
+                              ? 'bg-green-500 text-white scale-110'
+                              : 'bg-white/20 hover:bg-white text-white hover:text-black'
+                          }`}
+                        >
+                          {addedId === oudMalaki.id ? <Check className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
+                        </button>
+                      </div>
                     </div>
                   </>
                 )}
