@@ -2,7 +2,7 @@ import { mockProducts } from "@/lib/data/products";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
-const GEMINI_MODEL = "gemini-1.5-flash";
+const GEMINI_MODEL = "gemini-3.1-flash-lite";
 
 export async function POST(req: Request) {
   try {
@@ -43,11 +43,19 @@ ${JSON.stringify(productContext, null, 2)}
       systemInstruction: systemPrompt,
     });
 
+    const chatHistory = messages.slice(0, -1).map((m: any) => ({
+      role: m.role === "user" ? "user" : "model",
+      parts: [{ text: m.content }],
+    }));
+
+    // Gemini requires the first message in history to be from the user.
+    // We remove the initial assistant greeting if it's the first message in history.
+    if (chatHistory.length > 0 && chatHistory[0].role === "model") {
+      chatHistory.shift();
+    }
+
     const chat = model.startChat({
-      history: messages.slice(0, -1).map((m: any) => ({
-        role: m.role === "user" ? "user" : "model",
-        parts: [{ text: m.content }],
-      })),
+      history: chatHistory,
       generationConfig: {
         maxOutputTokens: 800,
         temperature: 0.7,
@@ -69,6 +77,7 @@ ${JSON.stringify(productContext, null, 2)}
           }
           controller.close();
         } catch (err) {
+          console.error("Stream error:", err);
           controller.error(err);
         }
       },
@@ -77,13 +86,17 @@ ${JSON.stringify(productContext, null, 2)}
     return new Response(stream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        "Transfer-Encoding": "chunked",
       },
     });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : "Unknown error";
-    console.error("Chat API Error:", msg);
-    return new Response(JSON.stringify({ error: "Failed to process chat", details: msg }), {
+    console.error("Chat API Error:", error); // Log the full error object
+
+    return new Response(JSON.stringify({
+      error: "Failed to process chat",
+      details: msg,
+      stack: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.stack : undefined) : undefined
+    }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });

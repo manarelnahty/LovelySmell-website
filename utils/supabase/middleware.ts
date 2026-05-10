@@ -30,11 +30,11 @@ export async function updateSession(request: NextRequest) {
   // IMPORTANT: Avoid writing any logic between createServerClient and
   // supabase.auth.getUser(). A simple mistake can make it very hard to debug
   // issues with users being randomly logged out.
-
+ 
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
+ 
   if (
     !user &&
     !request.nextUrl.pathname.startsWith('/login') &&

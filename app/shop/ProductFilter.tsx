@@ -2,10 +2,9 @@
 import { Search, SlidersHorizontal } from 'lucide-react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useState, useTransition } from 'react';
+import { FilterDrawer } from './FilterDrawer';
 
-const categories = ["الكل", "رجالي", "نسائي", "صيفي", "شرقي", "غربي"];
-
-export function ProductFilter() {
+export function ProductFilter({ categories }: { categories: string[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -45,7 +44,7 @@ export function ProductFilter() {
   };
 
   return (
-    <div className="glass-panel border border-secondary/20 rounded-3xl md:rounded-full px-4 py-3 md:px-6 md:py-4 mb-stack-lg flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[80px] md:top-[100px] z-40 shadow-sm shadow-secondary/5">
+    <div className="glass-panel border border-secondary/20 rounded-3xl md:rounded-full px-4 py-3 md:px-6 md:py-4 mb-stack-lg flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[110px] md:top-[120px] z-40 shadow-sm shadow-secondary/5 mt-6">
       {/* Search */}
       <div className="relative w-full md:w-auto flex-shrink-0">
         <input 
@@ -79,11 +78,8 @@ export function ProductFilter() {
         })}
       </div>
 
-      {/* Sort */}
-      <button className="flex items-center gap-2 w-full md:w-auto justify-end text-on-surface-variant hover:text-secondary transition-colors min-h-[44px] px-2" aria-label="Sort products">
-        <span className="font-label-sm text-label-sm">ترتيب حسب</span>
-        <SlidersHorizontal className="w-5 h-5" />
-      </button>
+      {/* Advanced Filter Drawer */}
+      <FilterDrawer categories={categories} />
     </div>
   );
 }

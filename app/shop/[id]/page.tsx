@@ -4,7 +4,7 @@ import { ShoppingCart, Images, Sun, Heart, TreePine, MessageCircle } from 'lucid
 import { TopNavBar } from '@/components/TopNavBar';
 import { Logo } from '@/components/logo';
 import { AddToCartButton } from '@/components/AddToCartButton';
-import { mockProducts } from '@/lib/data/products';
+import { getProductById } from '@/lib/actions/products';
 import { SiteFooter } from '@/components/SiteFooter';
 import { notFound } from 'next/navigation';
 
@@ -12,7 +12,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
   const resolvedParams = await params;
   const productId = resolvedParams.id;
   
-  const product = mockProducts.find(p => p.id === productId);
+  const product = await getProductById(productId);
 
   if (!product) {
     notFound();
@@ -89,21 +89,21 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <Sun className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
               <h3 className="font-body-lg text-body-lg text-on-surface mb-stack-sm font-bold">القمة</h3>
-              <p className="font-body-md text-body-md text-on-surface-variant">برغموت، زعفران، هيل</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">{product.top_notes || 'لمسات منعشة'}</p>
             </div>
             
             {/* Heart Notes */}
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <Heart className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
               <h3 className="font-body-lg text-body-lg text-on-surface mb-stack-sm font-bold">القلب</h3>
-              <p className="font-body-md text-body-md text-on-surface-variant">ورد طائفي، ياسمين، باتشولي</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">{product.heart_notes || 'باقة عطرية فريدة'}</p>
             </div>
             
             {/* Base Notes */}
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <TreePine className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
               <h3 className="font-body-lg text-body-lg text-on-surface mb-stack-sm font-bold">القاعدة</h3>
-              <p className="font-body-md text-body-md text-on-surface-variant">عود، عنبر، مسك أصيل</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">{product.base_notes || 'عمق وأصالة'}</p>
             </div>
           </div>
         </section>
