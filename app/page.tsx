@@ -8,5 +8,5 @@ export default async function Page() {
     limit: 8 
   });
 
-  return <HomeClient bestSellers={bestSellers} />;
+  return <HomeClient bestSellers={bestSellers.products} />;
 }
