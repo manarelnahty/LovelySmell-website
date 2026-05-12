@@ -20,6 +20,9 @@ export function ShopContent({ initialProducts, totalCount, category, query, minP
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [isLoading, setIsLoading] = useState(false);
   const [offset, setOffset] = useState(initialProducts.length);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const hasMore = products.length < totalCount;
 
