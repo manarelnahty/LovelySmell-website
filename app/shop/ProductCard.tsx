@@ -24,11 +24,12 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
   );
 
   const displayPrice = selectedVariation ? selectedVariation.price : product.price;
+  const isOutOfStock = (product.stock ?? 0) <= 0;
 
   const handleBuyNow = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+    if (isOutOfStock) return;
     addToCart(product, 1, selectedVariation?.id);
     router.push('/checkout');
   };
@@ -36,7 +37,7 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+    if (isOutOfStock) return;
     addToCart(product, 1, selectedVariation?.id);
   };
 
@@ -53,6 +54,15 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
             priority={index < 4}
           />
           
+          {/* Out of stock badge */}
+          {isOutOfStock && (
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center z-10">
+              <span className="bg-gray-800/80 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                نفد المخزون
+              </span>
+            </div>
+          )}
+
           {/* Badge */}
           {product.category && product.category.length > 0 && (
             <div className="absolute top-4 right-4 bg-white/80 backdrop-blur border border-outline-variant/20 px-3 py-1 rounded-full text-label-sm font-label-sm text-secondary shadow-sm">
@@ -103,18 +113,28 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
           </div>
 
           <div className="mt-5 flex items-center gap-2">
-            <button 
+            <button
               onClick={handleBuyNow}
-              className="flex-grow bg-secondary text-on-secondary py-2.5 px-4 rounded-xl font-label-md text-sm font-bold shadow-md hover:bg-secondary/90 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              disabled={isOutOfStock}
+              className={`flex-grow py-2.5 px-4 rounded-xl font-label-md text-sm font-bold shadow-md flex items-center justify-center gap-2 transition-all ${
+                isOutOfStock
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-secondary text-on-secondary hover:bg-secondary/90 hover:scale-[1.02] active:scale-[0.98]'
+              }`}
             >
               <ShoppingBag className="w-4 h-4" />
-              <span>اشتري الآن</span>
+              <span>{isOutOfStock ? 'غير متاح' : 'اشتري الآن'}</span>
             </button>
-            
-            <button 
-              aria-label="Add to cart" 
+
+            <button
+              aria-label="Add to cart"
               onClick={handleAddToCart}
-              className="border-2 border-secondary text-secondary rounded-xl w-10 h-10 flex items-center justify-center hover:bg-secondary/10 transition-all active:scale-90 flex-shrink-0"
+              disabled={isOutOfStock}
+              className={`border-2 rounded-xl w-10 h-10 flex items-center justify-center transition-all flex-shrink-0 ${
+                isOutOfStock
+                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+                  : 'border-secondary text-secondary hover:bg-secondary/10 active:scale-90'
+              }`}
             >
               <Plus className="w-5 h-5" />
             </button>

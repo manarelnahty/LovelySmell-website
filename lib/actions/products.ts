@@ -87,6 +87,7 @@ export async function getProducts(params: {
     id: p.id,
     name: p.name_ar,
     price: p.price ? parseFloat(p.price) : 0,
+    stock: p.stock ?? 0,
     category: p.category 
       ? (Array.isArray(p.category) ? p.category.map((c: any) => c.name_ar) : [p.category.name_ar]) 
       : [],
@@ -103,6 +104,7 @@ export async function getProducts(params: {
       stock: v.stock
     })).sort((a: any, b: any) => a.volume - b.volume) || []
   })) as Product[]
+
 
   return { products, totalCount: count || 0 }
 }
