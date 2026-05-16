@@ -5,7 +5,6 @@ coverage/
 *.log
 .env*
 !.env.example
-.env.local
 .agents
 # Local Netlify folder
 .netlify

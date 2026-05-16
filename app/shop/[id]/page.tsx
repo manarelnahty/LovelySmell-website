@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { ShoppingCart, Images, Sun, Heart, TreePine, MessageCircle } from 'lucide-react';
 import { TopNavBar } from '@/components/TopNavBar';
 import { Logo } from '@/components/logo';
-import { AddToCartButton } from '@/components/AddToCartButton';
-import { mockProducts } from '@/lib/data/products';
+import { ProductPurchaseSection } from '@/components/ProductPurchaseSection';
+import { getProductById } from '@/lib/actions/products';
 import { SiteFooter } from '@/components/SiteFooter';
 import { notFound } from 'next/navigation';
 
@@ -12,7 +12,7 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
   const resolvedParams = await params;
   const productId = resolvedParams.id;
   
-  const product = mockProducts.find(p => p.id === productId);
+  const product = await getProductById(productId);
 
   if (!product) {
     notFound();
@@ -58,26 +58,10 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
                 {product.category[0]}
             </div>
             <h1 className="font-headline-lg text-headline-lg text-on-surface mb-stack-sm">{product.name}</h1>
-            <p className="font-headline-md text-headline-md text-secondary mb-stack-lg">{product.price} ج.م</p>
             <p className="font-body-md text-body-md text-on-surface-variant mb-stack-lg leading-relaxed">
                 {product.description}
             </p>
-            
-            {/* Size Selector */}
-            <div className="mb-stack-lg">
-              <span className="block font-label-sm text-label-sm text-on-surface-variant mb-stack-sm">الحجم</span>
-              <div className="flex gap-4">
-                <button className="px-8 py-3 rounded-full bg-primary-container text-[#C4A36E] font-label-sm text-label-sm shadow-[0_0_15px_rgba(196,163,110,0.1)] transition-all hover:scale-105">
-                    50ml
-                </button>
-                <button className="px-8 py-3 rounded-full bg-transparent border-[1.5px] border-[#C4A36E] text-on-surface font-label-sm text-label-sm hover:bg-[#C4A36E]/5 transition-colors">
-                    100ml
-                </button>
-              </div>
-            </div>
-            
-            {/* Add to Cart */}
-            <AddToCartButton product={product} />
+            <ProductPurchaseSection product={product} />
           </div>
         </section>
 
@@ -89,21 +73,21 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <Sun className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
               <h3 className="font-body-lg text-body-lg text-on-surface mb-stack-sm font-bold">القمة</h3>
-              <p className="font-body-md text-body-md text-on-surface-variant">برغموت، زعفران، هيل</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">{product.top_notes || 'لمسات منعشة'}</p>
             </div>
             
             {/* Heart Notes */}
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <Heart className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
               <h3 className="font-body-lg text-body-lg text-on-surface mb-stack-sm font-bold">القلب</h3>
-              <p className="font-body-md text-body-md text-on-surface-variant">ورد طائفي، ياسمين، باتشولي</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">{product.heart_notes || 'باقة عطرية فريدة'}</p>
             </div>
             
             {/* Base Notes */}
             <div className="glass-panel p-8 rounded-lg flex flex-col items-center text-center shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-secondary/20">
               <TreePine className="text-secondary w-10 h-10 mb-stack-md" strokeWidth={1.5} />
               <h3 className="font-body-lg text-body-lg text-on-surface mb-stack-sm font-bold">القاعدة</h3>
-              <p className="font-body-md text-body-md text-on-surface-variant">عود، عنبر، مسك أصيل</p>
+              <p className="font-body-md text-body-md text-on-surface-variant">{product.base_notes || 'عمق وأصالة'}</p>
             </div>
           </div>
         </section>

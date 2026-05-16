@@ -53,7 +53,11 @@ export function AIChat() {
         })
       });
 
-      if (!response.ok) throw new Error('Failed to fetch response');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Chat API error details:', errorData);
+        throw new Error(errorData.details || 'Failed to fetch response');
+      }
 
       const reader = response.body?.getReader();
       const textDecoder = new TextDecoder();

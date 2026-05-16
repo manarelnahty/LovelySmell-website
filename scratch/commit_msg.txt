@@ -1,0 +1,9 @@
+feat(shop): implement advanced filtering, UI/UX polish, and performance optimizations
+
+- Replaced sidebar with premium Drawer using React Portals
+- Integrated custom dual-range price slider and dynamic category pills
+- Added filter notification badge and active filter summary bar
+- Optimized LCP with priority image loading for initial products
+- Implemented seamless fade-in animations for product grid
+- Fixed TypeScript prop mismatches and missing icon imports in ShopContent
+- Adjusted sticky offsets for better visual spacing between navbar and filters
