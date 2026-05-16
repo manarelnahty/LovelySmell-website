@@ -5,8 +5,17 @@ import { useRouter } from 'next/navigation';
 import { Logo } from '@/components/logo';
 import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 
-const ADMIN_EMAIL = 'admin@lovelysmell.com';
-const ADMIN_PASSWORD = 'admin';
+const DEFAULT_EMAIL = 'admin@lovelysmell.com';
+const DEFAULT_PASSWORD = 'admin';
+const CREDS_KEY = 'ls_admin_credentials';
+
+function getAdminCreds(): { email: string; password: string } {
+  try {
+    const raw = localStorage.getItem(CREDS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch {}
+  return { email: DEFAULT_EMAIL, password: DEFAULT_PASSWORD };
+}
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -18,7 +27,8 @@ export default function AdminLoginPage() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    const creds = getAdminCreds();
+    if (email === creds.email && password === creds.password) {
       sessionStorage.setItem('ls_admin_auth', 'true');
       router.push('/admin');
     } else {

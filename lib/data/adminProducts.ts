@@ -1,47 +1,5 @@
-import { Product, mockProducts } from './products';
-
-const STORAGE_KEY = 'ls_admin_products';
-
-export function getAdminProducts(): Product[] {
-  if (typeof window === 'undefined') return mockProducts;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const saved: Product[] = raw ? JSON.parse(raw) : [];
-    // Merge: saved products override mock ones with same id
-    const mockFiltered = mockProducts.filter(
-      (m) => !saved.find((s) => s.id === m.id)
-    );
-    return [...saved, ...mockFiltered];
-  } catch {
-    return mockProducts;
-  }
-}
-
-export function saveAdminProduct(product: Product): void {
-  if (typeof window === 'undefined') return;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const saved: Product[] = raw ? JSON.parse(raw) : [];
-    const idx = saved.findIndex((p) => p.id === product.id);
-    if (idx >= 0) {
-      saved[idx] = product;
-    } else {
-      saved.unshift(product);
-    }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
-  } catch {}
-}
-
-export function deleteAdminProduct(id: string): void {
-  if (typeof window === 'undefined') return;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const saved: Product[] = raw ? JSON.parse(raw) : [];
-    const filtered = saved.filter((p) => p.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-  } catch {}
-}
-
+// NOTE: Product CRUD is handled by Supabase server actions in lib/actions/adminProducts.ts
+// This file only retains Order-related helpers (still localStorage-based).
 export type OrderStatus = 'جديد' | 'قيد التجهيز' | 'تم الشحن' | 'تم التسليم' | 'ملغي';
 
 export interface OrderItem {
