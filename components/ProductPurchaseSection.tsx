@@ -21,13 +21,16 @@ export function ProductPurchaseSection({ product }: ProductPurchaseSectionProps)
   );
 
   const displayPrice = selectedVariation ? selectedVariation.price : product.price;
+  const isOutOfStock = (product.stock ?? 0) <= 0;
 
   const handleBuyNow = () => {
+    if (isOutOfStock) return;
     addToCart(product, 1, selectedVariation?.id);
     router.push('/checkout');
   };
 
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     addToCart(product, 1, selectedVariation?.id);
   };
 
@@ -74,23 +77,29 @@ export function ProductPurchaseSection({ product }: ProductPurchaseSectionProps)
       )}
 
       {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-4">
-        <button 
-          onClick={handleBuyNow}
-          className="flex-grow py-4 px-8 rounded-full bg-secondary text-on-secondary font-bold text-lg flex items-center justify-center gap-3 shadow-xl hover:bg-secondary/90 hover:scale-[1.02] active:scale-[0.98] transition-all"
-        >
-          <ShoppingBag className="w-5 h-5" />
-          <span>اشتري الآن</span>
-        </button>
-        
-        <button 
-          onClick={handleAddToCart}
-          className="py-4 px-8 rounded-full bg-transparent border-2 border-secondary text-secondary font-bold text-lg flex items-center justify-center gap-3 hover:bg-secondary/5 transition-all"
-        >
-          <ShoppingCart className="w-5 h-5" strokeWidth={1.5} />
-          <span>أضف للسلة</span>
-        </button>
-      </div>
+      {isOutOfStock ? (
+        <div className="flex items-center justify-center gap-3 py-5 px-6 rounded-full border-2 border-gray-200 bg-gray-50">
+          <span className="text-gray-400 font-bold text-lg">هذا المنتج غير متاح حالياً — نفد المخزون</span>
+        </div>
+      ) : (
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <button
+            onClick={handleBuyNow}
+            className="flex-grow py-4 px-8 rounded-full bg-secondary text-on-secondary font-bold text-lg flex items-center justify-center gap-3 shadow-xl hover:bg-secondary/90 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          >
+            <ShoppingBag className="w-5 h-5" />
+            <span>اشتري الآن</span>
+          </button>
+
+          <button
+            onClick={handleAddToCart}
+            className="py-4 px-8 rounded-full bg-transparent border-2 border-secondary text-secondary font-bold text-lg flex items-center justify-center gap-3 hover:bg-secondary/5 transition-all"
+          >
+            <ShoppingCart className="w-5 h-5" strokeWidth={1.5} />
+            <span>أضف للسلة</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

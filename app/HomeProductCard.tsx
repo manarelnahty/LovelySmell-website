@@ -21,14 +21,17 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
   );
 
   const displayPrice = selectedVariation ? selectedVariation.price : product.price;
+  const isOutOfStock = (product.stock ?? 0) <= 0;
 
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     addToCart(product, 1, selectedVariation?.id);
     setAddedId(product.id);
     setTimeout(() => setAddedId(null), 1200);
   };
 
   const handleBuyNow = () => {
+    if (isOutOfStock) return;
     addToCart(product, 1, selectedVariation?.id);
     router.push('/checkout');
   };
@@ -37,7 +40,8 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
 
   return (
     <div className="bg-white rounded-3xl p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full relative overflow-hidden">
-      <div className="relative h-48 w-full mb-6 cursor-pointer" onClick={() => router.push(`/shop/${product.id}`)}>
+      <div className="relative h-48 w-full mb-6 cursor-pointer" onClick={() => router.push(`/shop/${product.id}`)}
+      >
         <Image
           src={product.image}
           alt={product.name}
@@ -45,6 +49,11 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
         />
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center rounded-2xl z-10">
+            <span className="bg-gray-800/80 text-white text-xs font-bold px-3 py-1.5 rounded-full">نفد المخزون</span>
+          </div>
+        )}
       </div>
 
       <div className="space-y-4">
@@ -71,20 +80,28 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
           <div className="flex gap-2">
             <button
               onClick={handleAddToCart}
+              disabled={isOutOfStock}
               aria-label={`أضف ${product.name} إلى السلة`}
               className={`border rounded-full p-2.5 transition-all duration-300 active:scale-90 ${
-                isAdded
-                  ? 'bg-green-500 border-green-500 text-white scale-110'
-                  : 'text-[#C4A36E] border-[#C4A36E] hover:bg-[#C4A36E] hover:text-white'
+                isOutOfStock
+                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+                  : isAdded
+                    ? 'bg-green-500 border-green-500 text-white scale-110'
+                    : 'text-[#C4A36E] border-[#C4A36E] hover:bg-[#C4A36E] hover:text-white'
               }`}
             >
               {isAdded ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </button>
-            
+
             <button
               onClick={handleBuyNow}
+              disabled={isOutOfStock}
               aria-label="Buy now"
-              className="bg-[#2C2C2C] text-white rounded-full p-2.5 hover:bg-black transition-all active:scale-90 shadow-sm"
+              className={`rounded-full p-2.5 transition-all active:scale-90 shadow-sm ${
+                isOutOfStock
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-[#2C2C2C] text-white hover:bg-black'
+              }`}
             >
               <ShoppingBag className="w-4 h-4" />
             </button>

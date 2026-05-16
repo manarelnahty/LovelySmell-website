@@ -10,14 +10,20 @@ interface AddToCartButtonProps {
 
 export function AddToCartButton({ product }: AddToCartButtonProps) {
   const { addToCart } = useCart();
+  const isOutOfStock = (product.stock ?? 0) <= 0;
 
   return (
-    <button 
-      onClick={() => addToCart(product)}
-      className="w-full py-4 rounded-full bg-primary-container text-[#C4A36E] font-body-md text-body-md flex items-center justify-center gap-3 hover:shadow-[0_0_20px_rgba(196,163,110,0.2)] transition-all mt-auto md:mt-12"
+    <button
+      onClick={() => { if (!isOutOfStock) addToCart(product); }}
+      disabled={isOutOfStock}
+      className={`w-full py-4 rounded-full font-body-md text-body-md flex items-center justify-center gap-3 transition-all mt-auto md:mt-12 ${
+        isOutOfStock
+          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+          : 'bg-primary-container text-[#C4A36E] hover:shadow-[0_0_20px_rgba(196,163,110,0.2)]'
+      }`}
     >
       <ShoppingCart className="w-5 h-5" strokeWidth={1.5} />
-      أضف إلى السلة
+      {isOutOfStock ? 'نفد المخزون' : 'أضف إلى السلة'}
     </button>
   );
 }
