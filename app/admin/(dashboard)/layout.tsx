@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, Package, ShoppingBag, LogOut, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, LogOut, Menu, X, Settings } from 'lucide-react';
 import { Logo } from '@/components/logo';
 
 const NAV_ITEMS = [
-  { href: '/admin',          label: 'الرئيسية',   icon: LayoutDashboard },
-  { href: '/admin/products', label: 'المنتجات',   icon: Package },
-  { href: '/admin/orders',   label: 'الطلبات',    icon: ShoppingBag },
+  { href: '/admin',           label: 'الرئيسية',   icon: LayoutDashboard },
+  { href: '/admin/products',  label: 'المنتجات',   icon: Package },
+  { href: '/admin/orders',    label: 'الطلبات',    icon: ShoppingBag },
+  { href: '/admin/settings',  label: 'الإعدادات',  icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
