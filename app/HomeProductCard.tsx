@@ -39,35 +39,61 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
   const isAdded = addedId === product.id;
 
   return (
-    <div className="bg-white rounded-3xl p-6 group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-gray-100 hover:border-[#C4A36E]/30 flex flex-col justify-between h-full relative overflow-hidden">
-      <div className="relative h-48 w-full mb-6 cursor-pointer" onClick={() => router.push(`/shop/${product.id}`)}
+    <div className="bg-white rounded-none p-5 group border border-black/[0.04] hover:border-black/[0.1] transition-all duration-500 flex flex-col justify-between h-full relative overflow-hidden">
+      <div 
+        className="relative h-56 w-full mb-5 cursor-pointer bg-gradient-to-tr from-[#fbf9f6] to-[#fefcfb] border border-black/[0.02] flex items-center justify-center overflow-hidden" 
+        onClick={() => router.push(`/shop/${product.id}`)}
       >
         <Image
           src={product.image}
           alt={product.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-          className="object-contain transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-3"
+          className="object-contain p-6 transition-transform duration-700 group-hover:scale-103"
         />
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center rounded-2xl z-10">
-            <span className="bg-gray-800/80 text-white text-xs font-bold px-3 py-1.5 rounded-full">نفد المخزون</span>
+          <div className="absolute inset-0 bg-white/70 backdrop-blur-[1px] flex items-center justify-center z-10">
+            <span className="bg-black/90 text-white text-[10px] uppercase tracking-widest font-medium px-4 py-2 font-sans">نفد المخزون</span>
           </div>
         )}
       </div>
 
-      <div className="space-y-4">
-        {/* Variation Toggle */}
+      <div className="flex flex-col gap-4 mt-auto">
+        {/* Title and Price */}
+        <div className="flex justify-between items-start">
+          <div className="text-left font-sans" dir="ltr">
+            <AnimatePresence mode="wait">
+              <motion.span 
+                key={displayPrice}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-[#C4A36E] text-xs font-semibold tracking-wide font-sans"
+              >
+                EGP {displayPrice}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+          <div className="text-right">
+            <h4 
+              className="text-sm font-light text-[#2C2C2C] hover:text-[#C4A36E] transition-colors duration-300 cursor-pointer line-clamp-1 max-w-[150px]"
+              onClick={() => router.push(`/shop/${product.id}`)}
+            >
+              {product.name}
+            </h4>
+          </div>
+        </div>
+
+        {/* Variation Selection if multiple */}
         {product.variations && product.variations.length > 0 && (
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-1.5 justify-end">
             {product.variations.map((v) => (
               <button
                 key={v.id}
                 onClick={() => setSelectedVariation(v)}
-                className={`text-[9px] font-bold px-2 py-0.5 rounded-md border transition-all ${
+                className={`text-[9px] px-2 py-0.5 border transition-all duration-300 font-sans tracking-wider ${
                   selectedVariation?.id === v.id 
-                    ? 'bg-[#C4A36E] text-white border-[#C4A36E]' 
-                    : 'bg-white border-gray-200 text-gray-400 hover:border-[#C4A36E]/50'
+                    ? 'bg-[#2C2C2C] text-white border-[#2C2C2C]' 
+                    : 'bg-white border-black/[0.08] text-gray-400 hover:border-black/20 hover:text-gray-700'
                 }`}
               >
                 {v.volume}ml
@@ -76,50 +102,31 @@ export function HomeProductCard({ product }: HomeProductCardProps) {
           </div>
         )}
 
-        <div className="flex justify-between items-end">
-          <div className="flex gap-2">
-            <button
-              onClick={handleAddToCart}
-              disabled={isOutOfStock}
-              aria-label={`أضف ${product.name} إلى السلة`}
-              className={`border rounded-full p-2.5 transition-all duration-300 active:scale-90 ${
-                isOutOfStock
-                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
-                  : isAdded
-                    ? 'bg-green-500 border-green-500 text-white scale-110'
-                    : 'text-[#C4A36E] border-[#C4A36E] hover:bg-[#C4A36E] hover:text-white'
-              }`}
-            >
-              {isAdded ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-            </button>
-
-            <button
-              onClick={handleBuyNow}
-              disabled={isOutOfStock}
-              aria-label="Buy now"
-              className={`rounded-full p-2.5 transition-all active:scale-90 shadow-sm ${
-                isOutOfStock
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-[#2C2C2C] text-white hover:bg-black'
-              }`}
-            >
-              <ShoppingBag className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="text-left font-serif" dir="ltr">
-            <h4 className="text-lg font-bold text-[#2C2C2C] mb-1 font-tajawal text-right truncate max-w-[120px]" dir="rtl">{product.name}</h4>
-            <AnimatePresence mode="wait">
-              <motion.span 
-                key={displayPrice}
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-[#C4A36E] text-sm font-bold"
-              >
-                EGP {displayPrice}
-              </motion.span>
-            </AnimatePresence>
-          </div>
+        {/* Unified Luxury bottom actions row */}
+        <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-black/[0.03] font-sans">
+          <button
+            onClick={handleBuyNow}
+            disabled={isOutOfStock}
+            className={`text-center text-[10px] uppercase tracking-widest bg-[#2C2C2C] text-white hover:bg-black py-2.5 transition-colors font-medium ${
+              isOutOfStock ? 'opacity-30 cursor-not-allowed' : ''
+            }`}
+          >
+            شراء
+          </button>
+          
+          <button
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+            className={`text-center text-[10px] uppercase tracking-widest border py-2.5 transition-all font-medium ${
+              isOutOfStock
+                ? 'border-black/[0.06] text-gray-300 cursor-not-allowed'
+                : isAdded
+                  ? 'bg-green-600 border-green-600 text-white'
+                  : 'border-black/[0.12] hover:border-black text-[#2C2C2C] hover:bg-black/[0.02]'
+            }`}
+          >
+            {isAdded ? 'تمت الإضافة' : 'إضافة للسلة'}
+          </button>
         </div>
       </div>
     </div>
