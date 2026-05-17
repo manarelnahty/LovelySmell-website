@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Package, ShoppingBag, TrendingUp, ArrowLeft } from 'lucide-react';
-import { getAdminOrders } from '@/lib/data/adminProducts';
+import { adminGetOrders } from '@/lib/actions/orders';
 import { adminGetProductCount } from '@/lib/actions/adminProducts';
 
 export default function AdminDashboardPage() {
@@ -13,12 +13,16 @@ export default function AdminDashboardPage() {
   const [newOrders, setNewOrders] = useState(0);
 
   useEffect(() => {
-    // Products count comes from Supabase; orders still from localStorage
     adminGetProductCount().then(setProductCount);
-    const orders = getAdminOrders();
-    setOrderCount(orders.length);
-    setRevenue(orders.reduce((sum, o) => sum + o.grandTotal, 0));
-    setNewOrders(orders.filter((o) => o.status === 'جديد').length);
+    
+    adminGetOrders().then(res => {
+      if (res.success && res.data) {
+        const orders = res.data;
+        setOrderCount(orders.length);
+        setRevenue(orders.reduce((sum: number, o: any) => sum + o.total_amount, 0));
+        setNewOrders(orders.filter((o: any) => o.status === 'جديد').length);
+      }
+    });
   }, []);
 
   const stats = [

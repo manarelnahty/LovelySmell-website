@@ -90,7 +90,7 @@ export function CartDrawer() {
         </div>
 
         {/* Cart Items (Scrollable) */}
-        <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5">
+        <div className="flex-1 overflow-y-auto px-8 py-6 space-y-5" data-lenis-prevent="true">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center text-on-surface-variant gap-4">
               <ShoppingCart className="w-16 h-16 text-secondary/30" strokeWidth={1} />

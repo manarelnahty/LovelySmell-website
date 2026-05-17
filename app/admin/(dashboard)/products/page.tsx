@@ -69,6 +69,17 @@ export default function AdminProductsPage() {
 
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    if (showModal || deleteConfirm) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showModal, deleteConfirm]);
+
   function showToast(type: 'success' | 'error', msg: string) {
     setToast({ type, msg });
     setTimeout(() => setToast(null), 3000);
@@ -389,7 +400,10 @@ export default function AdminProductsPage() {
       {/* Add / Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div 
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto overscroll-contain"
+            data-lenis-prevent="true"
+          >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#C4A36E]/10 sticky top-0 bg-white rounded-t-2xl">
               <h2 className="font-bold text-[#2C2C2C]">

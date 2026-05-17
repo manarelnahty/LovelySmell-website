@@ -3,14 +3,17 @@
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import { Logo } from '@/components/logo';
-import { useState, useActionState } from 'react';
+import { useState, useActionState, Suspense } from 'react';
 import { Eye, EyeOff, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { login, signInWithGoogle } from '@/lib/actions/auth';
 
-export default function LoginPage() {
+function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, isPending] = useActionState(login, null);
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get('redirect') || '/';
 
   return (
     <main className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-[#FDF9F3] text-[#2C2C2C]">
@@ -88,6 +91,8 @@ export default function LoginPage() {
           </div>
 
           <form className="space-y-8" action={formAction}>
+            <input type="hidden" name="redirect" value={redirectPath} />
+
             {state?.error && (
               <div className="p-3 bg-red-50 border-r-4 border-red-500 text-red-700 font-tajawal text-sm mb-4 animate-in fade-in slide-in-from-right-2">
                 {state.error}
@@ -201,6 +206,14 @@ export default function LoginPage() {
         </motion.div>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#FDF9F3] flex items-center justify-center"><div className="w-8 h-8 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div></div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
 

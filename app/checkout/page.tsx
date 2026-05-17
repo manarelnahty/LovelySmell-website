@@ -4,10 +4,10 @@ import { useCart } from '@/lib/context/CartContext';
 import { Logo } from '@/components/logo';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Lock, Truck, ArrowRight, ChevronDown } from 'lucide-react';
-import { saveOrder, Order } from '@/lib/data/adminProducts';
+import { createOrder } from '@/lib/actions/orders';
 
 const GOVERNORATES = [
   'القاهرة', 'الجيزة', 'الإسكندرية', 'البحيرة', 'الشرقية',
@@ -30,39 +30,94 @@ export default function CheckoutPage() {
   const [governorate, setGovernorate]   = useState('');
   const [address, setAddress]           = useState('');
   const [submitting, setSubmitting]     = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+
+  useEffect(() => {
+    async function loadUserProfile() {
+      const { createClient } = await import('@/utils/supabase/client');
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        // Enforce login for checkout
+        router.push('/login?redirect=/checkout');
+        return;
+      }
+      
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+        
+      if (profile) {
+        if (profile.full_name) setCustomerName(profile.full_name);
+        if (profile.phone) setPhone(profile.phone);
+        if (profile.governorate) setGovernorate(profile.governorate);
+        if (profile.address) setAddress(profile.address);
+      } else if (user.user_metadata?.full_name) {
+        setCustomerName(user.user_metadata.full_name);
+      }
+      
+      setIsLoadingProfile(false);
+    }
+    
+    loadUserProfile();
+  }, [router]);
 
   const shippingCost = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const grandTotal = cartTotal + shippingCost;
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
   const progressPct = Math.min(100, (cartTotal / FREE_SHIPPING_THRESHOLD) * 100);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!customerName.trim() || !phone.trim() || !governorate || !address.trim()) return;
     setSubmitting(true);
-    const order: Order = {
-      id: `order-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-      createdAt: new Date().toISOString(),
-      customerName,
-      phone,
-      governorate,
-      address,
-      items: items.map((i) => ({
-        productId:    i.product.id,
-        productName:  i.product.name,
-        productImage: i.product.image,
-        quantity:     i.quantity,
-        price:        i.product.price,
-      })),
-      subtotal:      cartTotal,
-      shippingCost,
-      grandTotal,
-      paymentMethod,
-      status: 'جديد',
+
+    const orderPayload = {
+      customer_name: customerName,
+      customer_phone: phone,
+      customer_governorate: governorate,
+      customer_address: address,
+      shipping_fee: shippingCost,
+      total_amount: grandTotal,
+      payment_method: paymentMethod,
+      items: items.map((i) => {
+        const variation = i.variationId 
+          ? i.product.variations?.find(v => v.id === i.variationId)
+          : null;
+        const price = variation ? variation.price : i.product.price;
+        
+        return {
+          product_id: i.product.id,
+          variation_id: i.variationId || null,
+          quantity: i.quantity,
+          unit_price: price,
+          volume: variation ? variation.volume : null,
+          unit: variation ? variation.unit : null,
+        };
+      })
     };
-    saveOrder(order);
-    clearCart();
-    router.push('/order-success');
+
+    const result = await createOrder(orderPayload);
+    
+    if (result.success) {
+      clearCart();
+      router.push(`/order-success?token=${result.trackingToken}`);
+    } else {
+      console.error(result.error);
+      alert('حدث خطأ أثناء تقديم الطلب. يرجى المحاولة مرة أخرى.');
+      setSubmitting(false);
+    }
+  }
+
+  if (isLoadingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FDF9F3]">
+        <div className="w-8 h-8 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
@@ -233,7 +288,7 @@ export default function CheckoutPage() {
             </div>
 
             {/* Items */}
-            <div className="flex flex-col gap-4 mb-6 max-h-[300px] overflow-y-auto">
+            <div className="flex flex-col gap-4 mb-6 max-h-[300px] overflow-y-auto" data-lenis-prevent="true">
               {items.length === 0 ? (
                 <p className="text-center text-on-surface-variant py-8 font-body-md text-body-md">لا توجد منتجات في السلة</p>
               ) : (

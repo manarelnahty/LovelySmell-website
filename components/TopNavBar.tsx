@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { ShoppingBag, User, Menu, X, LogOut, Settings } from 'lucide-react';
+import { ShoppingBag, User, Menu, X, LogOut, Settings, Package } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Logo } from '@/components/logo';
 import { useCart } from '@/lib/context/CartContext';
@@ -75,6 +75,7 @@ export function TopNavBar() {
   const links = [
     { name: 'الرئيسية',     href: '/' },
     { name: 'المتجر',       href: '/shop' },
+    ...(user ? [{ name: 'طلباتي',  href: '/my-orders' }] : []),
     { name: 'تتبع الطلب',  href: '/order-tracking' },
     { name: 'الشحن والإرجاع', href: '/shipping-policy' },
     { name: 'السياسات',    href: '/legal-policies' },
@@ -162,6 +163,14 @@ export function TopNavBar() {
                       transition={{ duration: 0.2 }}
                       className="absolute right-0 top-full mt-2 w-48 bg-white border border-secondary/10 rounded-xl shadow-lg py-2 overflow-hidden dir-rtl"
                     >
+                      <Link
+                        href="/my-orders"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-secondary/5 text-on-surface transition-colors"
+                      >
+                        <Package strokeWidth={1.5} className="w-4 h-4 text-secondary" />
+                        <span>طلباتي</span>
+                      </Link>
                       <Link
                         href="/profile"
                         onClick={() => setIsProfileDropdownOpen(false)}

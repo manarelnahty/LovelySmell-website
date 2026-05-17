@@ -1,17 +1,51 @@
 "use client";
 
 import Link from 'next/link';
-import { useCart } from '@/lib/context/CartContext';
+import { useSearchParams } from 'next/navigation';
+import { getOrderDetailsByToken } from '@/lib/actions/orders';
 import { CheckCircle, ShoppingBag, MessageCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
-export default function OrderSuccessPage() {
-  const { cartTotal, items, itemCount } = useCart();
-  const [orderNumber, setOrderNumber] = useState('#LMN-XXXXX');
+function OrderSuccessContent() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+  
+  const [loading, setLoading] = useState(true);
+  const [orderData, setOrderData] = useState<any>(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    setOrderNumber(`#LMN-${Math.floor(10000 + Math.random() * 90000)}`);
-  }, []);
+    async function fetchOrder() {
+      if (!token) {
+        setError('رابط الطلب غير صالح');
+        setLoading(false);
+        return;
+      }
+      const result = await getOrderDetailsByToken(token);
+      if (result.success) {
+        setOrderData(result.data);
+      } else {
+        setError(result.error || 'حدث خطأ أثناء تحميل الطلب');
+      }
+      setLoading(false);
+    }
+    fetchOrder();
+  }, [token]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">جاري تحميل تفاصيل الطلب...</div>;
+  }
+
+  if (error || !orderData) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center gap-4">
+        <h1 className="text-2xl font-bold text-red-500">{error}</h1>
+        <Link href="/" className="text-secondary underline">العودة للرئيسية</Link>
+      </div>
+    );
+  }
+
+  const itemCount = orderData.order_items?.reduce((acc: number, item: any) => acc + item.quantity, 0) || 0;
 
   return (
     <div className="bg-[#FDF9F3] min-h-screen flex flex-col items-center justify-center p-6 md:p-12 font-body-md text-on-surface">
@@ -47,7 +81,7 @@ export default function OrderSuccessPage() {
           <div className="w-full bg-[#F5F1EA] rounded-xl p-4 md:p-6 flex flex-col gap-4 text-right mb-8 border border-secondary/20">
             <div className="flex justify-between items-center pb-4 border-b border-secondary/20">
               <span className="font-body-md text-body-md text-on-surface-variant">رقم الطلب</span>
-              <span className="font-label-sm text-label-sm text-on-surface uppercase font-bold tracking-wider">{orderNumber}</span>
+              <span className="font-label-sm text-label-sm text-on-surface uppercase font-bold tracking-wider">{orderData.order_number}</span>
             </div>
             <div className="flex justify-between items-center pb-3 border-b border-secondary/10">
               <span className="font-body-md text-body-md text-on-surface-variant">عدد المنتجات</span>
@@ -56,12 +90,12 @@ export default function OrderSuccessPage() {
             <div className="flex justify-between items-center pb-3 border-b border-secondary/10">
               <span className="font-body-md text-body-md text-on-surface-variant">الإجمالي</span>
               <span className="font-label-sm text-label-sm text-secondary uppercase font-bold">
-                {cartTotal > 0 ? cartTotal.toLocaleString('ar-EG') : '—'} ج.م
+                {orderData.total_amount.toLocaleString('ar-EG')} ج.م
               </span>
             </div>
             <div className="flex justify-between items-center pb-3 border-b border-secondary/10">
               <span className="font-body-md text-body-md text-on-surface-variant">طريقة الدفع</span>
-              <span className="font-body-md text-body-md text-on-surface">الدفع عند الاستلام</span>
+              <span className="font-body-md text-body-md text-on-surface">{orderData.payment_method === 'cod' ? 'الدفع عند الاستلام' : 'بطاقة ائتمانية'}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="font-body-md text-body-md text-on-surface-variant">موعد التوصيل المتوقع</span>
@@ -104,5 +138,13 @@ export default function OrderSuccessPage() {
         </a>
       </main>
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#FDF9F3]">جاري التحميل...</div>}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }

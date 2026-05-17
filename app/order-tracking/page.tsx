@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { TopNavBar } from '@/components/TopNavBar';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Truck, HelpCircle, Package, CheckCheck, Clock } from 'lucide-react';
+import { trackOrder } from '@/lib/actions/orders';
 
 type OrderStatus = 'placed' | 'preparing' | 'shipped' | 'delivered';
 
@@ -18,32 +19,6 @@ interface MockOrder {
   items: { name: string; qty: string }[];
 }
 
-// Mock order lookup — in production, this would call an API
-const MOCK_ORDERS: Record<string, MockOrder> = {
-  'LMN-37772': {
-    orderNumber: 'LMN-37772',
-    date: '3 مايو 2025',
-    total: '1,850 ج.م',
-    payment: 'الدفع عند الاستلام',
-    status: 'shipped',
-    address: 'شارع التحرير، عمارة 15، شقة 4\nالدقي، الجيزة، مصر',
-    items: [
-      { name: 'فن العطارة الأصيلة', qty: '1 × 100ml' },
-    ],
-  },
-  'LMN-00001': {
-    orderNumber: 'LMN-00001',
-    date: '1 مايو 2025',
-    total: '3,050 ج.م',
-    payment: 'الدفع عند الاستلام',
-    status: 'delivered',
-    address: 'شارع النيل، برج الأهرام\nالمعادي، القاهرة، مصر',
-    items: [
-      { name: 'ليالي الشرق', qty: '1 × 50ml' },
-      { name: 'روح الورد', qty: '2 × 50ml' },
-    ],
-  },
-};
 
 const STEPS: { key: OrderStatus; label: string; icon: React.ReactNode }[] = [
   { key: 'placed',    label: 'تم الطلب',      icon: <Package className="w-3 h-3" /> },
@@ -68,21 +43,32 @@ export default function OrderTrackingPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLookup = () => {
+  const handleLookup = async () => {
     setError('');
     setResult(null);
     setLoading(true);
 
-    setTimeout(() => {
-      const key = orderNum.replace('#', '').trim().toUpperCase();
-      const order = MOCK_ORDERS[key];
-      if (order) {
-        setResult(order);
-      } else {
-        setError('لم يتم العثور على طلب بهذا الرقم. تأكد من الرقم وحاول مرة أخرى.');
-      }
+    const key = orderNum.replace('#', '').trim().toUpperCase();
+    const phoneTrimmed = phone.trim();
+
+    if (!key || !phoneTrimmed) {
+      setError('يرجى إدخال رقم الطلب ورقم الهاتف.');
       setLoading(false);
-    }, 800);
+      return;
+    }
+
+    try {
+      const res = await trackOrder(key, phoneTrimmed);
+      if (res.success && res.data) {
+        setResult(res.data as MockOrder);
+      } else {
+        setError(res.error || 'لم يتم العثور على طلب بهذا الرقم. تأكد من البيانات وحاول مرة أخرى.');
+      }
+    } catch (err) {
+      setError('حدث خطأ أثناء البحث عن الطلب. يرجى المحاولة لاحقاً.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const currentStepIndex = result ? STATUS_ORDER.indexOf(result.status) : -1;

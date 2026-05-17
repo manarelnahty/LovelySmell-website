@@ -85,7 +85,7 @@ export function FilterDrawer({ categories }: { categories: string[] }) {
             </div>
 
             {/* Scrollable Content */}
-            <div className="flex-grow overflow-y-auto p-8 space-y-12 custom-scrollbar">
+            <div className="flex-grow overflow-y-auto p-8 space-y-12 custom-scrollbar" data-lenis-prevent="true">
               
               {/* Category Selection */}
               <div className="space-y-6">
