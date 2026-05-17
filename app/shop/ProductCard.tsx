@@ -42,52 +42,56 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
   };
 
   return (
-    <motion.div variants={variants} className="col-span-1 group">
-      <div className="block h-full bg-surface-container-lowest rounded-2xl overflow-hidden relative border border-outline-variant/30 flex flex-col hover:shadow-lg transition-all duration-500">
-        <Link href={`/shop/${product.id}`} className="relative w-full aspect-square overflow-hidden bg-surface-variant/10 p-6 flex items-center justify-center">
+    <motion.div variants={variants} className="col-span-1 group flex flex-col">
+      {/* Symmetrical Luxury Container */}
+      <div className="flex flex-col h-full bg-transparent overflow-hidden relative">
+        <Link href={`/shop/${product.id}`} className="relative w-full aspect-[4/5] overflow-hidden bg-[#F5F4F0] border border-[#e8e6df]/50 flex items-center justify-center transition-all duration-700 group-hover:border-[#111]/20">
           <Image 
             src={product.image} 
             alt={product.name} 
             fill
-            sizes="(max-width: 768px) 100vw, 25vw"
-            className="object-contain p-4 group-hover:scale-110 transition-transform duration-700" 
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="object-contain p-6 group-hover:scale-105 transition-transform duration-700 ease-out" 
             priority={index < 4}
           />
           
-          {/* Out of stock badge */}
+          {/* Symmetrical, minimal out of stock overlay */}
           {isOutOfStock && (
-            <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center z-10">
-              <span className="bg-gray-800/80 text-white text-xs font-bold px-3 py-1.5 rounded-full">
+            <div className="absolute inset-0 bg-[#FAF9F6]/85 backdrop-blur-[1px] flex items-center justify-center z-10">
+              <span className="border border-[#111]/25 text-[#111] text-[10px] tracking-[0.2em] font-tajawal px-4 py-2 uppercase bg-white/50">
                 نفد المخزون
               </span>
             </div>
           )}
-
-          {/* Badge */}
-          {product.category && product.category.length > 0 && (
-            <div className="absolute top-4 right-4 bg-white/80 backdrop-blur border border-outline-variant/20 px-3 py-1 rounded-full text-label-sm font-label-sm text-secondary shadow-sm">
-              {product.category[0]}
-            </div>
-          )}
         </Link>
 
-        <div className="p-5 flex flex-col justify-between flex-grow bg-white">
-          <div>
-            <Link href={`/shop/${product.id}`}>
-              <h3 className="font-body-lg text-body-lg text-on-background mb-1 font-medium group-hover:text-secondary transition-colors line-clamp-1">{product.name}</h3>
+        {/* Center-aligned Editorial Content */}
+        <div className="pt-5 pb-2 flex flex-col items-center justify-between flex-grow text-center">
+          <div className="w-full flex flex-col items-center space-y-2">
+            {/* Minimal Luxury Category Tag */}
+            {product.category && product.category.length > 0 && (
+              <span className="text-[9px] uppercase tracking-[0.25em] text-[#888] font-light">
+                {product.category[0]}
+              </span>
+            )}
+            
+            <Link href={`/shop/${product.id}`} className="w-full">
+              <h3 className="font-tajawal font-light text-sm md:text-base text-[#111] tracking-wide hover:opacity-75 transition-opacity line-clamp-1 px-2">
+                {product.name}
+              </h3>
             </Link>
             
-            {/* Volume Selector */}
+            {/* Minimalist sharp-corner volume selectors */}
             {product.variations && product.variations.length > 0 && (
-              <div className="flex flex-wrap gap-2 my-3">
+              <div className="flex flex-wrap justify-center gap-1.5 my-1.5">
                 {product.variations.map((v) => (
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariation(v)}
-                    className={`text-[10px] font-bold px-2 py-1 rounded-md border transition-all ${
+                    className={`text-[9px] font-medium px-2 py-0.5 border transition-all duration-300 ${
                       selectedVariation?.id === v.id 
-                        ? 'bg-secondary text-on-secondary border-secondary shadow-sm' 
-                        : 'bg-surface-variant/10 border-outline-variant/30 text-on-surface-variant hover:border-secondary/50'
+                        ? 'bg-[#C4A36E] text-white border-[#C4A36E]' 
+                        : 'bg-transparent border-[#e2dfd9] text-on-surface-variant/80 hover:border-[#C4A36E]/50'
                     }`}
                   >
                     {v.volume}ml
@@ -96,15 +100,15 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
               </div>
             )}
 
-            {/* Price with Animation */}
-            <div className="h-6 mt-1">
+            {/* Premium center-aligned Price */}
+            <div className="h-5 flex items-center justify-center mt-1">
               <AnimatePresence mode="wait">
                 <motion.p 
                   key={displayPrice}
-                  initial={{ opacity: 0, y: 5 }}
+                  initial={{ opacity: 0, y: 3 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className="font-body-md text-body-md text-secondary font-sans font-bold"
+                  exit={{ opacity: 0, y: -3 }}
+                  className="text-xs md:text-sm font-light text-[#111] font-sans tracking-widest font-bold"
                 >
                   {displayPrice} ج.م
                 </motion.p>
@@ -112,31 +116,32 @@ export function ProductCard({ product, index, variants }: ProductCardProps) {
             </div>
           </div>
 
-          <div className="mt-5 flex items-center gap-2">
+          {/* Symmetrical sharp action row */}
+          <div className="mt-5 w-full flex items-stretch gap-1.5 px-1">
             <button
               onClick={handleBuyNow}
               disabled={isOutOfStock}
-              className={`flex-grow py-2.5 px-4 rounded-xl font-label-md text-sm font-bold shadow-md flex items-center justify-center gap-2 transition-all ${
+              className={`flex-grow py-3 px-4 font-tajawal text-xs tracking-wider transition-all duration-300 flex items-center justify-center gap-2 border transition-colors ${
                 isOutOfStock
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-secondary text-on-secondary hover:bg-secondary/90 hover:scale-[1.02] active:scale-[0.98]'
+                  ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  : 'bg-[#C4A36E] text-white border-[#C4A36E] hover:bg-transparent hover:text-[#C4A36E]'
               }`}
             >
-              <ShoppingBag className="w-4 h-4" />
-              <span>{isOutOfStock ? 'غير متاح' : 'اشتري الآن'}</span>
+              <ShoppingBag className="w-3.5 h-3.5 stroke-[1.2]" />
+              <span>{isOutOfStock ? 'غير متوفر' : 'شراء الآن'}</span>
             </button>
 
             <button
               aria-label="Add to cart"
               onClick={handleAddToCart}
               disabled={isOutOfStock}
-              className={`border-2 rounded-xl w-10 h-10 flex items-center justify-center transition-all flex-shrink-0 ${
+              className={`border w-12 flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
                 isOutOfStock
                   ? 'border-gray-200 text-gray-300 cursor-not-allowed'
-                  : 'border-secondary text-secondary hover:bg-secondary/10 active:scale-90'
+                  : 'border-[#C4A36E]/20 text-[#111] hover:bg-[#C4A36E] hover:text-white hover:border-[#C4A36E]'
               }`}
             >
-              <Plus className="w-5 h-5" />
+              <Plus className="w-4 h-4 stroke-[1.5]" />
             </button>
           </div>
         </div>
