@@ -3,6 +3,7 @@ import { ProductFilter } from './ProductFilter';
 import { ShopContent } from './ShopContent';
 import { SiteFooter } from '@/components/SiteFooter';
 import { getProducts, getCategories } from '@/lib/actions/products';
+import { ShopHero } from './ShopHero';
 
 export default async function ShopPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const resolvedParams = await searchParams;
@@ -23,28 +24,8 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     <div className="bg-[#FAF9F6] text-on-background font-body-md text-body-md antialiased min-h-screen flex flex-col">
       <TopNavBar />
 
-      {/* Editorial Luxury Hero Section */}
-      <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden flex items-center justify-center">
-        {/* Background Image with high-end overlay blending */}
-        <div className="absolute inset-0 bg-[#131110]">
-          <img 
-            src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=1800&auto=format&fit=crop" 
-            alt="Editorial Perfume Banner" 
-            className="w-full h-full object-cover opacity-50 mix-blend-luminosity hover:scale-105 transition-transform duration-10000 ease-out"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#FAF9F6] via-black/15 to-black/40" />
-        </div>
-
-        {/* Symmetrical Scent Editorial Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 pt-16 space-y-4">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-white/80 font-bold">LOVELY SMELL CO.</span>
-          <h1 className="font-light tracking-[0.05em] text-4xl md:text-6xl text-white font-tajawal drop-shadow-sm leading-tight">جميع العطور</h1>
-          <div className="w-12 h-[1.5px] bg-white/40 my-2"></div>
-          <p className="text-xs md:text-sm font-light text-white/90 max-w-lg leading-relaxed tracking-wide">
-            اكتشف مجموعتنا الكاملة من العطور الفاخرة، المصممة بشغف لتعكس شخصيتك الفريدة.
-          </p>
-        </div>
-      </div>
+      {/* Editorial Luxury Hero Section with Parallax Effect */}
+      <ShopHero />
 
       {/* Main Content */}
       <main className="flex-grow px-4 md:px-20 pb-8 md:pb-section-gap max-w-container-max mx-auto w-full -mt-10 md:-mt-12 z-30 relative">
