@@ -203,15 +203,15 @@ export function FilterDrawer({ categories }: { categories: string[] }) {
 
   return (
     <>
-      <button onClick={toggleDrawer} className="relative flex items-center gap-3 text-on-surface-variant hover:text-secondary transition-all duration-300 min-h-[44px] px-5 rounded-full border border-outline-variant bg-white/50 shadow-sm group">
-        <SlidersHorizontal className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-        <span className="font-label-md text-label-md font-bold">تصفية المنتجات</span>
+      <button onClick={toggleDrawer} className="relative flex items-center gap-2.5 text-on-surface-variant/80 hover:text-[#111] transition-all duration-300 min-h-[40px] px-4 py-2 hover:bg-black/5 rounded-full group">
+        <SlidersHorizontal className="w-4.5 h-4.5 stroke-[1.2] group-hover:rotate-90 transition-transform duration-500" />
+        <span className="font-tajawal text-xs font-bold tracking-wide">تصفية</span>
         
         {activeFilterCount > 0 && (
           <motion.span 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-2 -right-2 w-5 h-5 bg-secondary text-on-secondary text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg border-2 border-white"
+            className="absolute -top-1 -right-1 w-4 h-4 bg-[#111] text-white text-[8px] font-sans font-bold rounded-full flex items-center justify-center shadow-md border border-white"
           >
             {activeFilterCount}
           </motion.span>

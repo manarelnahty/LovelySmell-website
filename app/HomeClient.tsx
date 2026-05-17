@@ -53,11 +53,11 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
   const oudMalaki = bestSellers.find(p => p.name.includes('عود ملكي')) || bestSellers[0];
 
   return (
-    <main className="min-h-screen pt-[88px] md:pt-[96px]">
+    <main className="min-h-screen">
       <TopNavBar />
 
       {/* Hero Section */}
-      <section className="relative h-[600px] md:h-[700px] w-full overflow-hidden">
+      <section className="relative h-[650px] md:h-[800px] w-full overflow-hidden">
         <motion.div className="absolute inset-0" style={{ y: heroParallaxY }}>
           <Image
             src="/hero-perfume.png"
@@ -67,39 +67,69 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
             className="object-cover object-center scale-105"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+          {/* Deep luxury vignettes to isolate central card and give perfect visual contrast */}
+          <div className="absolute inset-0 bg-black/45 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/50 z-10" />
         </motion.div>
 
-        <div className="absolute inset-0 shimmer-overlay pointer-events-none" />
+        <div className="absolute inset-0 shimmer-overlay pointer-events-none z-15" />
 
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center z-20">
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+            initial={{ opacity: 0, y: 40, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="bg-white/30 backdrop-blur-xl border border-white/20 p-6 md:p-14 rounded-3xl max-w-xl text-center mx-4 shadow-2xl"
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-white/[0.12] backdrop-blur-[18px] border border-white/30 p-8 md:p-16 rounded-2xl max-w-xl text-center mx-4 shadow-[0_24px_50px_-12px_rgba(0,0,0,0.45)] relative overflow-hidden"
           >
-            <h1 className="text-3xl md:text-6xl font-bold text-[#1E1E1E] mb-4 leading-tight">
+            {/* Ambient luxury glow accents */}
+            <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#C4A36E]/10 rounded-full blur-[60px]" />
+            <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-[#C4A36E]/10 rounded-full blur-[60px]" />
+            
+            <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-[1.3] font-tajawal tracking-wide drop-shadow-md">
               اكتشف عطرك
               <br />
               المثالي
             </h1>
-            <p className="text-[#4A4A4A] text-lg md:text-xl mb-8 leading-relaxed">
+            <p className="text-white/90 text-base md:text-lg mb-8 leading-[1.85] font-light max-w-md mx-auto">
               رحلة عطرية تأخذك إلى عوالم من الفخامة والجمال. حيث تلتقي الأصالة بالحداثة.
             </p>
-            <button className="bg-[#2C2C2C] text-white px-10 py-4 rounded-full hover:bg-black transition-all hover:scale-105 active:scale-95 shadow-lg text-lg">
+            <button 
+              onClick={() => router.push('/shop')}
+              className="bg-[#C4A36E] text-white border border-[#C4A36E] px-12 py-3.5 rounded-none hover:bg-transparent hover:text-[#C4A36E] font-tajawal transition-all duration-300 font-bold tracking-wider hover:scale-105 active:scale-95 shadow-[0_12px_24px_-8px_rgba(196,163,110,0.5)] text-lg"
+            >
               تسوق الآن
             </button>
           </motion.div>
         </div>
 
+        {/* Premium animated vertical line scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/70"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white z-20 cursor-pointer"
+          onClick={() => {
+            window.scrollTo({
+              top: window.innerHeight - 100,
+              behavior: 'smooth'
+            });
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
         >
-          <span className="text-xs tracking-widest">اكتشف المزيد</span>
-          <ArrowDown className="w-4 h-4" />
+          <span className="text-[10px] tracking-[0.2em] uppercase font-light text-white/95">اكتشف المزيد</span>
+          <div className="w-[1px] h-12 bg-white/25 relative overflow-hidden">
+            <motion.div 
+              className="absolute top-0 left-0 right-0 bg-[#C4A36E] w-full"
+              animate={{ 
+                y: ['-100%', '100%'],
+              }}
+              transition={{ 
+                duration: 2.2, 
+                repeat: Infinity, 
+                ease: 'easeInOut' 
+              }}
+              style={{ height: '40%' }}
+            />
+          </div>
         </motion.div>
       </section>
 
