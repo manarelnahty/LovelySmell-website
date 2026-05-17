@@ -43,9 +43,34 @@ export async function createOrder(payload: CreateOrderPayload) {
     return { success: false, error: "Unauthorized. You must be logged in to place an order." };
   }
 
+  // 1. Validate Stock Before Proceeding
+  for (const item of payload.items) {
+    if (item.variation_id) {
+      const { data: variation } = await supabase
+        .from('product_variations')
+        .select('stock')
+        .eq('id', item.variation_id)
+        .single();
+        
+      if (!variation || variation.stock < item.quantity) {
+        return { success: false, error: `عذراً، الكمية المطلوبة من أحد المنتجات غير متوفرة في المخزون حالياً.` };
+      }
+    } else {
+      const { data: product } = await supabase
+        .from('products')
+        .select('stock')
+        .eq('id', item.product_id)
+        .single();
+        
+      if (!product || product.stock < item.quantity) {
+        return { success: false, error: `عذراً، الكمية المطلوبة من أحد المنتجات غير متوفرة في المخزون حالياً.` };
+      }
+    }
+  }
+
   const orderNumber = generateOrderNumber();
 
-  // 1. Insert into orders table
+  // 2. Insert into orders table
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
@@ -68,7 +93,7 @@ export async function createOrder(payload: CreateOrderPayload) {
     return { success: false, error: orderError?.message || "Failed to create order" };
   }
 
-  // 2. Insert order items
+  // 3. Insert order items
   const orderItemsData = payload.items.map(item => ({
     order_id: order.id,
     product_id: item.product_id,
@@ -85,29 +110,37 @@ export async function createOrder(payload: CreateOrderPayload) {
 
   if (itemsError) {
     console.error("Error creating order items:", itemsError);
-    // Ideally we should rollback the order here or handle partial failures, but for simplicity we log it.
     return { success: false, error: "Failed to create order items" };
   }
 
-  // 3. Create tracking token
+  // 4. Deduct Stock (Using secure RPC to bypass RLS restrictions)
+  for (const item of payload.items) {
+    const { data: success, error: rpcError } = await supabase.rpc('decrement_stock', {
+      p_product_id: item.product_id,
+      p_variation_id: item.variation_id || null,
+      p_quantity: item.quantity
+    });
+    
+    if (rpcError || !success) {
+      console.error(`Failed to deduct stock for item ${item.product_id}:`, rpcError);
+    }
+  }
+
+  // 5. Create tracking token
   const token = generateToken();
   const { error: tokenError } = await supabase
     .from('order_tokens')
     .insert({
       order_id: order.id,
       token: token,
-      // Optional: expires_at (e.g., 30 days from now)
       expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
     });
 
   if (tokenError) {
     console.error("Error creating order token:", tokenError);
-    // Even if token fails, the order is placed, but tracking might not work properly.
   }
 
-  // Stock deduction could be done here if required, by querying products/product_variations and updating stock.
-
-  // 4. Clear the user's DB cart upon successful checkout
+  // 6. Clear the user's DB cart upon successful checkout
   try {
     const { clearDbCart } = await import('@/lib/actions/cart');
     await clearDbCart();

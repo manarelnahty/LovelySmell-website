@@ -104,6 +104,23 @@ export default function CheckoutPage() {
     
     if (result.success) {
       clearCart();
+      
+      const whatsappMessage = encodeURIComponent(
+        `أهلاً بك، تم إرسال طلب شراء رقم: ${result.orderNumber}\n` +
+        `الاسم: ${customerName}\n` +
+        `رقم الهاتف: ${phone}\n` +
+        `المحافظة: ${governorate}\n` +
+        `العنوان: ${address}\n\n` +
+        `تفاصيل الطلب:\n` +
+        items.map(i => `- ${i.product.name} (الكمية: ${i.quantity})`).join('\n') +
+        `\nالإجمالي: ${grandTotal} ج.م`
+      );
+      const whatsappUrl = `https://wa.me/201016693794?text=${whatsappMessage}`;
+      
+      // Attempt to open WhatsApp in a new tab
+      window.open(whatsappUrl, '_blank');
+
+      // Then navigate to success page
       router.push(`/order-success?token=${result.trackingToken}`);
     } else {
       console.error(result.error);
@@ -257,7 +274,7 @@ export default function CheckoutPage() {
               disabled={submitting || items.length === 0}
               className="w-full bg-primary-container text-secondary rounded-full py-5 font-body-lg text-body-lg hover:shadow-[0_0_25px_rgba(196,163,110,0.35)] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <span>{submitting ? 'جاري التقديم...' : 'تقديم الطلب'}</span>
+              <span>{submitting ? 'جاري التقديم...' : 'تقديم الطلب عبر واتساب'}</span>
               <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform duration-300 rtl:rotate-180" strokeWidth={1.5} />
             </button>
             <p className="text-center font-label-sm text-label-sm text-on-surface-variant mt-4 flex items-center justify-center gap-2">
