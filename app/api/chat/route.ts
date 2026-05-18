@@ -4,39 +4,31 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const GEMINI_MODEL = "gemini-3.1-flash-lite";
 
+// Pre-compute product context once at module level (not per request)
+const productContext = mockProducts
+  .map(
+    (p) =>
+      `• ${p.name} — ${p.price} ج.م | ${Array.isArray(p.category) ? p.category.join("، ") : p.category} | ${p.description}`
+  )
+  .join("\n");
+
+const systemPrompt = `أنت مساعد عطور أنيق لمتجر "لوفلي سميل" (Lovely Smell) في مصر.
+
+قواعد صارمة:
+- أجب في ٣ أسطر كحد أقصى. كن مختصراً وأنيقاً.
+- لا تكرر الترحيب. رحّب فقط في أول رسالة.
+- اقترح ١-٢ منتج فقط عند الطلب.
+- إذا خرج عن العطور، أعِد توجيهه بلطف.
+- استخدم عربي فصيح مبسّط.
+
+الكتالوج:
+${productContext}
+
+معلومات: توصيل لجميع المحافظات، الدفع عند الاستلام متاح.`;
+
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
-
-    const productContext = mockProducts.map(p => ({
-      name: p.name,
-      price: p.price,
-      description: p.description,
-      category: Array.isArray(p.category) ? p.category.join(", ") : p.category,
-    }));
-
-    const systemPrompt = `أنت خبير عطور فاخر يعمل لدى متجر "لوفلي سميل" (Lovely Smell)، وهو بوتيك عطور راقٍ في مصر.
-هدفك تقديم خدمة عملاء استثنائية وأنيقة ومفيدة.
-
-إرشادات:
-- الأسلوب: راقٍ ومرحِّب ومحترف.
-- اللغة: عربي بالدرجة الأولى (مصري/فصحى)، مع دعم الإنجليزية إن تحدث بها المستخدم.
-- الخبرة: معرفة واسعة بنوتات العطور (شرقي، غربي، عود، مسك، إلخ).
-- الهدف البيعي: مساعدة المستخدم في إيجاد عطره المثالي وتوجيهه نحو الشراء.
-
-معلومات عن المتجر:
-- لوفلي سميل متخصص في العطور الفاخرة الشرقية والغربية.
-- نوفر توصيلاً سريعاً لجميع محافظات مصر.
-- مكوناتنا من أعلى مستوى جودة.
-
-كتالوج المنتجات:
-${JSON.stringify(productContext, null, 2)}
-
-تعليمات:
-- إذا طلب المستخدم توصيات، اقترح 2-3 منتجات من الكتالوج بناءً على تفضيلاته.
-- إذا سأل عن منتج بعينه، قدّم تفاصيله من الكتالوج.
-- إذا خرج عن موضوع العطور، أعِد توجيهه بلطف.
-- اجعل ردودك موجزة لكن مفيدة.`;
 
     const model = genAI.getGenerativeModel({
       model: GEMINI_MODEL,
@@ -49,7 +41,6 @@ ${JSON.stringify(productContext, null, 2)}
     }));
 
     // Gemini requires the first message in history to be from the user.
-    // We remove the initial assistant greeting if it's the first message in history.
     if (chatHistory.length > 0 && chatHistory[0].role === "model") {
       chatHistory.shift();
     }
@@ -57,8 +48,8 @@ ${JSON.stringify(productContext, null, 2)}
     const chat = model.startChat({
       history: chatHistory,
       generationConfig: {
-        maxOutputTokens: 800,
-        temperature: 0.7,
+        maxOutputTokens: 250,
+        temperature: 0.6,
       },
     });
 
@@ -86,19 +77,23 @@ ${JSON.stringify(productContext, null, 2)}
     return new Response(stream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-cache",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : "Unknown error";
-    console.error("Chat API Error:", error); // Log the full error object
+    console.error("Chat API Error:", error);
 
-    return new Response(JSON.stringify({
-      error: "Failed to process chat",
-      details: msg,
-      stack: process.env.NODE_ENV === 'development' ? (error instanceof Error ? error.stack : undefined) : undefined
-    }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        error: "Failed to process chat",
+        details: msg,
+      }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 }

@@ -135,38 +135,48 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
 
       {/* Quote & Featured Image */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 items-center">
-          <div className="flex flex-col gap-4 md:gap-8 order-2 lg:order-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
+          <div className="flex flex-col gap-8 md:gap-12 order-2 lg:order-1 text-right">
             <FadeUp>
-              <div className="bg-[#F5F1EA] rounded-3xl p-6 md:p-10 flex flex-col justify-center min-h-[250px] md:min-h-[300px]">
-                <span className="text-[#C4A36E] text-5xl md:text-6xl font-playfair leading-none mb-2">&ldquo;</span>
-                <h2 className="text-3xl lg:text-4xl leading-snug font-medium text-[#2C2C2C]">
-                  العطر هو المفتاح السري الذي يفتح أبواب الذاكرة&rdquo;
+              <div className="flex flex-col gap-6">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl leading-relaxed font-light text-[#2C2C2C] tracking-wide">
+                  العطر هو المفتاح السري الذي يفتح أبواب الذاكرة
                 </h2>
+                <div className="h-[1px] w-20 bg-[#C4A36E] self-end mt-2" />
               </div>
             </FadeUp>
 
             <FadeUp delay={0.2}>
-              <div className="bg-[#2C2C2C] rounded-3xl p-6 md:p-10 flex flex-col justify-center items-center text-center min-h-[150px] md:min-h-[200px]">
-                <AnimatedCounter target={2000} suffix="+" className="text-[#C4A36E] text-4xl md:text-5xl font-bold mb-2" />
-                <p className="text-gray-300">عميل سعيد</p>
+              <div className="flex flex-col gap-2">
+                <span className="text-xs uppercase tracking-[0.3em] text-[#C4A36E] font-medium font-sans">
+                  TRUSTED BY OVER 2,000 CONNOISSEURS
+                </span>
+                <span className="text-sm text-gray-500 font-light">
+                  محل ثقة أكثر من ٢,٠٠٠ متذوق وعميل شغوف بالعطور الحصرية الفاخرة
+                </span>
               </div>
             </FadeUp>
           </div>
 
           <FadeUp delay={0.1} className="order-1 lg:order-2">
-            <div className="relative h-[550px] rounded-3xl overflow-hidden group">
-              <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSi_9ewOj7qniDE3p9JOp2jqNR-4gc1mjSzImdMwFxo4vToIusOZnzDB8OzWC_aJ5xoANdisqLzduRxcRJuYomKks7hCNuFdbypDtl_iaANZc9tXuRqz3MaFYE2FdqfQuPNFJspsxUcW6P8tM7oZQHP3nc7-WkGwHsZBYfCVM-HAuNSV7DxAqdr-y_VVZh2fle4tzTL9WsDZqaevZdmo2K6eI0dEtQSmdsujLvBcrSxGdZppc-CZU_rBTPDjYSTnURCLtT84t8"
-                alt="Rare Ingredients"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
-              <div className="absolute bottom-8 right-8">
-                <h3 className="text-white text-3xl font-bold">مكونات نادرة</h3>
+            <div className="flex flex-col gap-4">
+              <div className="relative h-[550px] rounded-none overflow-hidden group border border-black/[0.03]">
+                <Image
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSi_9ewOj7qniDE3p9JOp2jqNR-4gc1mjSzImdMwFxo4vToIusOZnzDB8OzWC_aJ5xoANdisqLzduRxcRJuYomKks7hCNuFdbypDtl_iaANZc9tXuRqz3MaFYE2FdqfQuPNFJspsxUcW6P8tM7oZQHP3nc7-WkGwHsZBYfCVM-HAuNSV7DxAqdr-y_VVZh2fle4tzTL9WsDZqaevZdmo2K6eI0dEtQSmdsujLvBcrSxGdZppc-CZU_rBTPDjYSTnURCLtT84t8"
+                  alt="Rare Ingredients"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-103"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="flex flex-col gap-1 text-right mt-2 px-1">
+                <h3 className="text-[#2C2C2C] text-sm uppercase tracking-[0.2em] font-medium font-sans">
+                  RAW & UNIQUE INGREDIENTS / مكونات نادرة
+                </h3>
+                <p className="text-gray-500 text-xs font-light">
+                  مكونات حصرية ذات منشأ طبيعي عالي الجودة مستخلصة بعناية فائقة لتدوم طويلاً
+                </p>
               </div>
             </div>
           </FadeUp>
@@ -199,29 +209,31 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
             </StaggerContainer>
 
             <FadeUp className="order-1 lg:order-2">
-              <div className="relative bg-[#2C2C2C] rounded-3xl overflow-hidden group h-[600px] lg:h-full">
+              <div className="relative bg-gradient-to-tr from-[#f8f5f0] to-[#fcfaf7] rounded-none overflow-hidden group h-[600px] lg:h-full border border-black/[0.04]">
                 {oudMalaki && (
                   <>
-                    <Image
-                      src={oudMalaki.image}
-                      alt={oudMalaki.name}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                    <div className="absolute inset-x-0 bottom-0 p-8 flex justify-between items-end text-white">
-                      <div>
-                        <h3 className="text-3xl font-bold mb-2">{oudMalaki.name}</h3>
-                        <p className="text-gray-300 mb-4">{oudMalaki.description.slice(0, 50)}...</p>
+                    <div className="absolute inset-0 flex items-center justify-center p-12 pb-48">
+                      <Image
+                        src={oudMalaki.image}
+                        alt={oudMalaki.name}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 33vw"
+                        className="object-contain p-12 transition-transform duration-700 group-hover:scale-102 opacity-95"
+                      />
+                    </div>
+                    <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 flex flex-col justify-end bg-gradient-to-t from-white/95 via-white/80 to-transparent pt-20">
+                      <div className="text-right mb-4">
+                        <span className="text-[10px] text-[#C4A36E] uppercase tracking-[0.25em] font-medium block mb-1 font-sans">Featured Scent / عطر متميز</span>
+                        <h3 className="text-2xl font-light text-[#2C2C2C] mb-2">{oudMalaki.name}</h3>
+                        <p className="text-gray-500 text-xs font-light mb-4 line-clamp-2 max-w-sm">{oudMalaki.description}</p>
                         
                         {/* Featured Variations */}
                         {oudMalaki.variations && oudMalaki.variations.length > 1 && (
-                          <div className="flex gap-2 mb-4">
+                          <div className="flex gap-2 justify-end">
                             {oudMalaki.variations.map((v) => (
                               <button
                                 key={v.id}
-                                className="text-[10px] bg-white/10 hover:bg-white/30 border border-white/20 px-2 py-1 rounded"
+                                className="text-[10px] bg-black/[0.02] hover:bg-black/[0.06] text-[#2C2C2C] border border-black/[0.06] px-3 py-1 font-sans tracking-widest"
                                 onClick={() => handleAddToCart(oudMalaki, v)}
                               >
                                 {v.volume}ml
@@ -230,23 +242,24 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
                           </div>
                         )}
                       </div>
-                      <div className="flex gap-3">
+                      
+                      {/* Sleek text-based action bar */}
+                      <div className="grid grid-cols-2 gap-3 w-full font-sans">
                         <button
                           onClick={() => handleBuyNow(oudMalaki, oudMalaki.variations?.[0])}
-                          className="bg-[#C4A36E] text-white p-4 rounded-full shadow-lg hover:scale-105 transition-all"
+                          className="text-center text-[11px] uppercase tracking-widest bg-[#2C2C2C] text-white hover:bg-black py-3 transition-colors text-nowrap font-medium"
                         >
-                          <ShoppingBag className="w-6 h-6" />
+                          شراء الآن
                         </button>
                         <button
                           onClick={() => handleAddToCart(oudMalaki)}
-                          aria-label={`أضف ${oudMalaki.name} إلى السلة`}
-                          className={`backdrop-blur-md rounded-full p-4 transition-all duration-300 active:scale-90 ${
+                          className={`text-center text-[11px] uppercase tracking-widest border py-3 transition-all text-nowrap font-medium ${
                             addedId === oudMalaki.id
-                              ? 'bg-green-500 text-white scale-110'
-                              : 'bg-white/20 hover:bg-white text-white hover:text-black'
+                              ? 'bg-green-600 border-green-600 text-white'
+                              : 'border-black/20 hover:border-black text-[#2C2C2C] hover:bg-black/[0.02]'
                           }`}
                         >
-                          {addedId === oudMalaki.id ? <Check className="w-6 h-6" /> : <Plus className="w-6 h-6" />}
+                          {addedId === oudMalaki.id ? 'تمت الإضافة' : 'إضافة للسلة'}
                         </button>
                       </div>
                     </div>
@@ -263,11 +276,11 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
       {/* Instagram / Gallery Section */}
       <section className="py-12 md:py-24 text-center">
         <FadeUp>
-          <h2 className="text-3xl font-bold text-[#2C2C2C] mb-2 font-playfair tracking-wide">LovelySmellEG@</h2>
-          <p className="text-[#6B6058] mb-10">شاركنا لحظاتك العطرية</p>
+          <h2 className="text-3xl font-light text-[#2C2C2C] mb-2 uppercase tracking-[0.15em] font-sans">LovelySmellEG@</h2>
+          <p className="text-[#6B6058] text-xs uppercase tracking-widest font-light mb-10 font-sans">Share your moments / شاركنا لحظاتك العطرية</p>
         </FadeUp>
 
-        <StaggerContainer className="max-w-7xl mx-auto px-4 flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x snap-mandatory" staggerDelay={0.08}>
+        <StaggerContainer className="max-w-7xl mx-auto px-4 flex gap-2 overflow-x-auto pb-4 hide-scrollbar snap-x snap-mandatory" staggerDelay={0.08}>
           {[
             "https://lh3.googleusercontent.com/aida-public/AB6AXuCro8Rf7nKMNr1i6JzMF9ac2Yy9J47OuhFhSMy7PfOC93JlJjGT7FAagiZwSkzklAMuSIWvHDgwK8KdaXlV_TaOpUWpLJIR9DCGHennq2UtuaTUA4RjYINerXyk-j9aWOsH9afP29dOLysUYnWWBs_NFGs9djwR2ErTFoHKfMEibYNsObtP321PFMvzYqfnWiW3eAETmRf6yYfbtUHMV6TRYAPSF4Iq6FaQbHoaHKdagXzfLhhv59kMQgE0QKErkCBjstOrCb2_",
             "https://lh3.googleusercontent.com/aida-public/AB6AXuCueUgWfPx1GzHOn-CB0pqdb83o8b9-cNKLn0tVA8q5j0bIdnMyagHQpEEENOW9vvJNfiSb8i9aNnRLcIRC1YUd1tHPaqvYKHaiVAQYiZ0ZUnDB-wnF0l_an-W4Mh8LdvEpjAHxioHSMew91zjUaOaAWIaUrGxjgZY__O-oQerylsjxxQMtVP9OjZT6x3jKh1MPZsx_FYRJQIvDmaGCwA-N1bcQBrGHDsJn_cTFPjQVDm9mu77hyWQqbACNixTjg9ajuHIs5u_r",
@@ -276,13 +289,13 @@ export default function HomeClient({ bestSellers }: { bestSellers: Product[] }) 
             "https://lh3.googleusercontent.com/aida-public/AB6AXuCGO1FyocqkBHUF3gqsQnSjVTcHu0AGBKEX9XL-Fs7x9zdbNwi3wHwuE9kZ-uGgte6YQnbQx_Dm6ZGMmFgNGI5c4TO2wiaKur6rwxapIp4hxOTB84BCk3NRXdPerTNAF6EMHZxjcpgkTZj_3SPhOKOHGA7u3VThdbxRBe6l0hRGpyXBxwJedKhQX68D_tze7ow4P5FDDSRJVP7uDX6eSRwUzNrduA2UI8xRX-bTR7oICz-Q8j26JKRoXG65fwSSXkW5G0yvogQq"
           ].map((src, i) => (
             <StaggerItem key={i} className="min-w-[200px] md:min-w-[240px] flex-shrink-0 snap-center">
-              <div className="relative aspect-square rounded-2xl overflow-hidden group">
+              <div className="relative aspect-square rounded-none overflow-hidden group border border-black/[0.03]">
                 <Image
                   src={src}
                   alt={`Instagram highlight ${i + 1}`}
                   fill
                   sizes="(max-width: 768px) 240px, 200px"
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-cover transition-all duration-700 grayscale-[30%] sepia-[15%] group-hover:grayscale-0 group-hover:sepia-0 group-hover:scale-103"
                   referrerPolicy="no-referrer"
                 />
               </div>
