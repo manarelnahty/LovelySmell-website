@@ -124,6 +124,27 @@ export default async function MyOrdersPage() {
                     </div>
                   ))}
                 </div>
+
+                {/* Order Actions Footer */}
+                <div className="mt-6 pt-6 border-t border-secondary/10 flex justify-between items-center gap-4">
+                  <div>
+                    <a
+                      href={`https://wa.me/201016693794?text=${encodeURIComponent(`مرحباً Lovely Smell، أود تقديم طلب إرجاع/استبدال للطلب رقم: ${order.order_number}`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-5 py-2 bg-white border border-[#2C2C2C] text-[#2C2C2C] hover:bg-black hover:text-white rounded-full font-sans text-xs flex items-center gap-1.5 transition-all duration-300"
+                    >
+                      طلب إرجاع / استبدال
+                    </a>
+                  </div>
+                  
+                  <Link
+                    href={`/order-tracking?orderNumber=${order.order_number}`}
+                    className="text-xs font-sans text-[#C4A36E] underline hover:text-[#b38f59] transition-colors"
+                  >
+                    تتبع تفاصيل الشحن
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

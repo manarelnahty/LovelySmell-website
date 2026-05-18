@@ -28,9 +28,11 @@ const securityHeaders: Record<string, string> = {
 export async function middleware(request: NextRequest) {
   const response = await updateSession(request)
 
-  // Apply all security headers to the response
-  for (const [key, value] of Object.entries(securityHeaders)) {
-    response.headers.set(key, value)
+  // Apply all security headers to the response in production to prevent local Webpack/HMR/WebSocket block issues
+  if (process.env.NODE_ENV === 'production') {
+    for (const [key, value] of Object.entries(securityHeaders)) {
+      response.headers.set(key, value)
+    }
   }
 
   return response
