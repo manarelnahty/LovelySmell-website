@@ -153,53 +153,56 @@ export async function createOrder(payload: CreateOrderPayload) {
 
 export async function adminGetOrders() {
   const supabase = await createClient();
-  
-  // Fetch orders with their related items, products, and variations
-  const { data, error } = await supabase
-    .from('orders')
-    .select(`
-      *,
-      order_items (
-        id,
-        quantity,
-        unit_price,
-        volume,
-        unit,
-        variation_id,
-        products (
-          id,
-          name_ar,
-          product_images (
-            image_url,
-            is_primary
-          )
-        ),
-        product_variations (
-          id,
-          volume,
-          unit
-        )
-      )
-    `)
-    .order('created_at', { ascending: false });
 
-  if (error) {
-    console.error("Error fetching admin orders:", error);
+  // Use SECURITY DEFINER RPCs to bypass RLS.
+  // The admin dashboard uses sessionStorage auth (not Supabase auth), so
+  // auth.uid() is null and normal RLS policies cannot grant access.
+  const [{ data: orders, error: ordersError }, { data: items, error: itemsError }] = await Promise.all([
+    supabase.rpc('get_all_orders_admin'),
+    supabase.rpc('get_all_order_items_admin'),
+  ]);
+
+  if (ordersError) {
+    console.error('[adminGetOrders] orders RPC error:', ordersError);
+    return { success: false, data: [] };
+  }
+  if (itemsError) {
+    console.error('[adminGetOrders] items RPC error:', itemsError);
     return { success: false, data: [] };
   }
 
-  // Map data to match expected shape
-  const mappedData = data.map((order: any) => ({
-    ...order,
-    order_items: order.order_items?.map((item: any) => ({
-      ...item,
-      products: item.products ? {
-        id: item.products.id,
-        name: item.products.name_ar,
-        name_en: item.products.name_ar,
-        image: item.products.product_images?.find((img: any) => img.is_primary)?.image_url || item.products.product_images?.[0]?.image_url || ''
-      } : null
-    }))
+  // Group items by order_id
+  const itemsByOrder = new Map<string, any[]>();
+  for (const item of (items ?? [])) {
+    const orderId = item.order_id as string;
+    if (!itemsByOrder.has(orderId)) itemsByOrder.set(orderId, []);
+    itemsByOrder.get(orderId)!.push({
+      id: item.id,
+      quantity: item.quantity,
+      unit_price: Number(item.unit_price),
+      volume: item.volume ?? null,
+      unit: item.unit ?? null,
+      products: {
+        id: item.product_id,
+        name: item.product_name ?? 'منتج غير معروف',
+        image: item.product_image ?? '',
+      },
+    });
+  }
+
+  const mappedData = (orders ?? []).map((order: any) => ({
+    id: order.id,
+    order_number: order.order_number,
+    customer_name: order.customer_name,
+    customer_phone: order.customer_phone,
+    customer_governorate: order.customer_governorate,
+    customer_address: order.customer_address,
+    shipping_fee: Number(order.shipping_fee ?? 0),
+    total_amount: Number(order.total_amount),
+    payment_method: order.payment_method,
+    status: order.status,
+    created_at: order.created_at,
+    order_items: itemsByOrder.get(order.id) ?? [],
   }));
 
   return { success: true, data: mappedData };
@@ -207,14 +210,15 @@ export async function adminGetOrders() {
 
 export async function adminUpdateOrderStatus(orderId: string, status: string) {
   const supabase = await createClient();
-  
-  const { error } = await supabase
-    .from('orders')
-    .update({ status })
-    .eq('id', orderId);
+
+  // Use SECURITY DEFINER RPC to bypass RLS (same reason as adminGetOrders)
+  const { error } = await supabase.rpc('update_order_status_admin', {
+    p_order_id: orderId,
+    p_status: status,
+  });
 
   if (error) {
-    console.error("Error updating order status:", error);
+    console.error('[adminUpdateOrderStatus] RPC error:', error);
     return { success: false, error: error.message };
   }
 

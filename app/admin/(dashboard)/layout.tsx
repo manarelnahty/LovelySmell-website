@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 right-0 z-40 w-64 bg-[#2C2C2C] text-white flex flex-col shadow-2xl transform transition-transform duration-300 ease-in-out
-          ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0 md:static md:flex`}
+          ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0`}
       >
         {/* Logo area */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 space-y-1">
+        <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const isActive = pathname === href;
             return (
@@ -113,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0 md:mr-0">
+      <div className="flex-1 flex flex-col min-w-0 md:mr-64">
         {/* Top bar (mobile) */}
         <header className="md:hidden flex items-center justify-between px-4 py-4 bg-white border-b border-[#C4A36E]/10 shadow-sm sticky top-0 z-20">
           <button

@@ -11,6 +11,16 @@ export interface AdminProductImage {
   display_order: number;
 }
 
+export interface AdminProductVariation {
+  id: string;
+  product_id: string;
+  volume: number;
+  unit: string;
+  price: number;
+  stock: number;
+  is_active: boolean;
+}
+
 export interface AdminProduct {
   id: string;
   name_ar: string;
@@ -29,9 +39,10 @@ export interface AdminProduct {
   category_name: string | null;
   image_url: string | null;          // primary image
   images: AdminProductImage[];
+  variations: AdminProductVariation[];
 }
 
-export type AdminProductUpdate = Partial<Omit<AdminProduct, 'id' | 'images' | 'category_name' | 'image_url'>>;
+export type AdminProductUpdate = Partial<Omit<AdminProduct, 'id' | 'images' | 'variations' | 'category_name' | 'image_url'>>;
 
 // ─── READ ─────────────────────────────────────────────────────────────────────
 
@@ -56,7 +67,8 @@ export async function adminGetProducts(): Promise<AdminProduct[]> {
       base_notes,
       category_id,
       category:categories(name_ar),
-      images:product_images(id, image_url, is_primary, display_order)
+      images:product_images(id, image_url, is_primary, display_order),
+      variations:product_variations(id, product_id, volume, unit, price, stock, is_active)
     `)
     .order('created_at', { ascending: false })
     .returns<any[]>();
@@ -89,6 +101,9 @@ export async function adminGetProducts(): Promise<AdminProduct[]> {
     images: (p.images ?? []).sort(
       (a: AdminProductImage, b: AdminProductImage) => a.display_order - b.display_order,
     ),
+    variations: ((p.variations ?? []) as AdminProductVariation[])
+      .filter((v) => v.is_active)
+      .sort((a, b) => a.volume - b.volume),
   }));
 }
 
@@ -310,4 +325,76 @@ export async function adminGetCategories(): Promise<AdminCategory[]> {
     return [];
   }
   return data as AdminCategory[];
+}
+
+
+// ─── PRODUCT VARIATIONS CRUD ──────────────────────────────────────────────────
+
+export interface AdminVariationUpsert {
+  volume: number;
+  unit?: string;
+  price: number;
+  stock: number;
+}
+
+/**
+ * Upserts a size variation for a product.
+ * The DB UNIQUE(product_id, volume) constraint guarantees no duplicates.
+ * If a row with the same product_id + volume already exists it is updated;
+ * otherwise a new row is inserted.
+ */
+export async function adminUpsertVariation(
+  productId: string,
+  variation: AdminVariationUpsert,
+): Promise<{ success: boolean; variation?: AdminProductVariation; error?: string }> {
+  const supabase = await createClient();
+
+  const payload = {
+    product_id: productId,
+    volume: variation.volume,
+    unit: variation.unit ?? 'ml',
+    price: variation.price,
+    stock: variation.stock,
+    is_active: true,
+  };
+
+  const { data, error } = await supabase
+    .from('product_variations')
+    .upsert(payload, { onConflict: 'product_id,volume', ignoreDuplicates: false })
+    .select('id, product_id, volume, unit, price, stock, is_active')
+    .single();
+
+  if (error) {
+    console.error('[adminUpsertVariation]', error);
+    return { success: false, error: error.message };
+  }
+
+  return {
+    success: true,
+    variation: {
+      ...data,
+      price: parseFloat(data.price),
+    } as AdminProductVariation,
+  };
+}
+
+/**
+ * Soft-deletes (deactivates) a product variation.
+ * Hard delete is avoided to preserve order_items history.
+ */
+export async function adminDeactivateVariation(
+  variationId: string,
+): Promise<{ success: boolean; error?: string }> {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from('product_variations')
+    .update({ is_active: false })
+    .eq('id', variationId);
+
+  if (error) {
+    console.error('[adminDeactivateVariation]', error);
+    return { success: false, error: error.message };
+  }
+  return { success: true };
 }
