@@ -213,7 +213,7 @@ export function CartDrawer() {
                 إتمام الطلب
               </Link>
             <a
-              href={`https://wa.me/201016693794?text=${encodeURIComponent(
+              href={`https://wa.me/201018580523?text=${encodeURIComponent(
                 `أهلاً بك، أريد إتمام طلب الشراء التالي:\n\n` +
                 items.map(i => `- ${i.product.name} (الكمية: ${i.quantity})`).join('\n') +
                 `\n\nالإجمالي (الفرعي): ${cartTotal} ج.م` +

@@ -115,7 +115,7 @@ export default function CheckoutPage() {
         items.map(i => `- ${i.product.name} (الكمية: ${i.quantity})`).join('\n') +
         `\nالإجمالي: ${grandTotal} ج.م`
       );
-      const whatsappUrl = `https://wa.me/201016693794?text=${whatsappMessage}`;
+      const whatsappUrl = `https://wa.me/201018580523?text=${whatsappMessage}`;
       
       // Attempt to open WhatsApp in a new tab
       window.open(whatsappUrl, '_blank');
