@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition, useCallback } from 'react';
-import { Plus, Pencil, Trash2, X, Save, AlertCircle, CheckCircle, Package, Camera, Upload, Loader2, RotateCcw } from 'lucide-react';
+import { Plus, Pencil, Trash2, X, Save, AlertCircle, CheckCircle, Package, Camera, Upload, Loader2, RotateCcw, FlaskConical } from 'lucide-react';
 import {
   adminGetProducts,
   adminCreateProduct,
@@ -10,7 +10,10 @@ import {
   adminDeleteProduct,
   adminRestoreProduct,
   adminGetCategories,
+  adminUpsertVariation,
+  adminDeactivateVariation,
   AdminProduct,
+  AdminProductVariation,
   AdminCategory,
 } from '@/lib/actions/adminProducts';
 
@@ -26,7 +29,14 @@ interface FormState {
   is_bestseller: boolean;
   is_editorial: boolean;
   is_month_perfume: boolean;
-  image: string; // URL shown in preview
+  image: string;
+}
+
+interface VariationDraft {
+  volume: string;
+  unit: string;
+  price: string;
+  stock: string;
 }
 
 const EMPTY_FORM: FormState = {
@@ -42,13 +52,15 @@ const EMPTY_FORM: FormState = {
   image: '',
 };
 
+const EMPTY_VAR: VariationDraft = { volume: '', unit: 'ml', price: '', stock: '0' };
+
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<AdminProduct[]>([]);
   const [categories, setCategories] = useState<AdminCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);      // true = Add mode
-  const [isRestoring, setIsRestoring] = useState(false); // true = Restore mode
+  const [isAdding, setIsAdding] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
   const [editProduct, setEditProduct] = useState<AdminProduct | null>(null);
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [toast, setToast] = useState<ToastState>(null);
@@ -58,6 +70,12 @@ export default function AdminProductsPage() {
   const [isPending, startTransition] = useTransition();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+
+  // ── Variations state ──────────────────────────────────────────────────────
+  const [variations, setVariations] = useState<AdminProductVariation[]>([]);
+  const [varDraft, setVarDraft] = useState<VariationDraft>(EMPTY_VAR);
+  const [varSaving, setVarSaving] = useState(false);
+  const [varEditId, setVarEditId] = useState<string | null>(null); // id being edited
 
   async function load() {
     setLoading(true);
@@ -90,6 +108,9 @@ export default function AdminProductsPage() {
     setIsRestoring(false);
     setEditProduct(null);
     setForm(EMPTY_FORM);
+    setVariations([]);
+    setVarDraft(EMPTY_VAR);
+    setVarEditId(null);
     setShowModal(true);
   }
 
@@ -109,6 +130,9 @@ export default function AdminProductsPage() {
       is_month_perfume: p.is_month_perfume,
       image: p.image_url ?? '',
     });
+    setVariations(p.variations ?? []);
+    setVarDraft(EMPTY_VAR);
+    setVarEditId(null);
     setShowModal(true);
   }
 
@@ -122,13 +146,87 @@ export default function AdminProductsPage() {
       stock: p.stock,
       description_ar: p.description_ar ?? '',
       category_id: p.category_id ?? '',
-      is_active: true, // will be restored
+      is_active: true,
       is_bestseller: p.is_bestseller,
       is_editorial: p.is_editorial,
       is_month_perfume: p.is_month_perfume,
       image: p.image_url ?? '',
     });
+    setVariations(p.variations ?? []);
+    setVarDraft(EMPTY_VAR);
+    setVarEditId(null);
     setShowModal(true);
+  }
+
+  // ── Variation helpers ──────────────────────────────────────────────────────
+  function startEditVar(v: AdminProductVariation) {
+    setVarEditId(v.id);
+    setVarDraft({ volume: String(v.volume), unit: v.unit, price: String(v.price), stock: String(v.stock) });
+  }
+
+  function cancelEditVar() {
+    setVarEditId(null);
+    setVarDraft(EMPTY_VAR);
+  }
+
+  async function handleSaveVariation() {
+    const vol = parseInt(varDraft.volume, 10);
+    const pr = parseFloat(varDraft.price);
+    const st = parseInt(varDraft.stock, 10);
+
+    if (!vol || vol <= 0) { showToast('error', 'يرجى إدخال حجم صحيح'); return; }
+    if (!pr || pr <= 0)   { showToast('error', 'يرجى إدخال سعر صحيح'); return; }
+
+    // For new products without an id yet, store locally only
+    if (!editProduct) {
+      const tempId = `temp-${Date.now()}`;
+      const newVar: AdminProductVariation = { id: tempId, product_id: '', volume: vol, unit: varDraft.unit, price: pr, stock: st, is_active: true };
+      setVariations((prev) => {
+        const idx = prev.findIndex((v) => v.volume === vol);
+        if (idx >= 0) { const upd = [...prev]; upd[idx] = { ...upd[idx], ...newVar, id: upd[idx].id }; return upd; }
+        return [...prev, newVar].sort((a, b) => a.volume - b.volume);
+      });
+      setVarDraft(EMPTY_VAR);
+      setVarEditId(null);
+      return;
+    }
+
+    setVarSaving(true);
+    const result = await adminUpsertVariation(editProduct.id, { volume: vol, unit: varDraft.unit, price: pr, stock: st });
+    setVarSaving(false);
+
+    if (!result.success || !result.variation) {
+      showToast('error', `فشل حفظ الحجم: ${result.error}`);
+      return;
+    }
+
+    setVariations((prev) => {
+      const idx = prev.findIndex((v) => v.volume === result.variation!.volume);
+      if (idx >= 0) { const upd = [...prev]; upd[idx] = result.variation!; return upd; }
+      return [...prev, result.variation!].sort((a, b) => a.volume - b.volume);
+    });
+    // keep products list in sync
+    setProducts((ps) => ps.map((p) => p.id === editProduct.id
+      ? { ...p, variations: variations.map((v) => v.volume === result.variation!.volume ? result.variation! : v) }
+      : p
+    ));
+    setVarDraft(EMPTY_VAR);
+    setVarEditId(null);
+    showToast('success', 'تم حفظ الحجم');
+  }
+
+  async function handleRemoveVariation(v: AdminProductVariation) {
+    // temp (new product not yet saved)
+    if (v.id.startsWith('temp-') || !editProduct) {
+      setVariations((prev) => prev.filter((x) => x.id !== v.id));
+      return;
+    }
+    setVarSaving(true);
+    const result = await adminDeactivateVariation(v.id);
+    setVarSaving(false);
+    if (!result.success) { showToast('error', `فشل الحذف: ${result.error}`); return; }
+    setVariations((prev) => prev.filter((x) => x.id !== v.id));
+    showToast('success', 'تم حذف الحجم');
   }
 
   const handleImageFile = useCallback(async (file: File) => {
@@ -328,6 +426,15 @@ export default function AdminProductsPage() {
                   <span className="text-[10px] bg-[#F5F1EA] text-[#747878] px-2 py-0.5 rounded-full mb-3 inline-block">
                     {p.category_name}
                   </span>
+                )}
+                {p.variations && p.variations.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {p.variations.map((v) => (
+                      <span key={v.id} className="text-[10px] bg-[#2C2C2C]/5 text-[#2C2C2C] border border-[#2C2C2C]/10 px-2 py-0.5 rounded-full font-medium">
+                        {v.volume}{v.unit}
+                      </span>
+                    ))}
+                  </div>
                 )}
                 <div className="flex gap-2 mt-3">
                   {p.is_active ? (
@@ -546,6 +653,81 @@ export default function AdminProductsPage() {
                   </label>
                 ))}
               </div>
+
+              {/* ── Variations (Sizes) ─────────────────────────────────── */}
+              {!isAdding && (
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <FlaskConical className="w-4 h-4 text-[#C4A36E]" />
+                    <label className="text-sm font-medium text-[#444748]">أحجام المنتج (ml)</label>
+                  </div>
+
+                  {/* Existing variations */}
+                  {variations.length > 0 && (
+                    <div className="flex flex-col gap-2 mb-3">
+                      {variations.map((v) => (
+                        <div key={v.id} className="flex items-center gap-2">
+                          {varEditId === v.id ? (
+                            // inline edit row
+                            <>
+                              <input type="number" min={1} value={varDraft.volume}
+                                onChange={(e) => setVarDraft((d) => ({ ...d, volume: e.target.value }))}
+                                className="w-16 bg-[#F5F1EA] rounded-lg py-2 px-2 text-xs outline-none focus:ring-2 focus:ring-[#C4A36E]/40" placeholder="ml" dir="ltr" />
+                              <input type="number" min={0} value={varDraft.price}
+                                onChange={(e) => setVarDraft((d) => ({ ...d, price: e.target.value }))}
+                                className="flex-1 bg-[#F5F1EA] rounded-lg py-2 px-2 text-xs outline-none focus:ring-2 focus:ring-[#C4A36E]/40" placeholder="السعر" dir="ltr" />
+                              <input type="number" min={0} value={varDraft.stock}
+                                onChange={(e) => setVarDraft((d) => ({ ...d, stock: e.target.value }))}
+                                className="w-16 bg-[#F5F1EA] rounded-lg py-2 px-2 text-xs outline-none focus:ring-2 focus:ring-[#C4A36E]/40" placeholder="المخزون" dir="ltr" />
+                              <button onClick={handleSaveVariation} disabled={varSaving}
+                                className="p-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 disabled:opacity-50">
+                                {varSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                              </button>
+                              <button onClick={cancelEditVar} className="p-1.5 rounded-lg bg-[#F5F1EA] text-[#747878] hover:bg-[#C4A36E]/10">
+                                <X className="w-3.5 h-3.5" />
+                              </button>
+                            </>
+                          ) : (
+                            // display row
+                            <>
+                              <span className="text-xs font-semibold text-[#2C2C2C] bg-[#F5F1EA] px-2 py-1.5 rounded-lg min-w-[48px] text-center">{v.volume}{v.unit}</span>
+                              <span className="flex-1 text-xs text-[#444748]">{v.price.toLocaleString('ar-EG')} ج.م</span>
+                              <span className="text-xs text-[#747878]">{v.stock} قطعة</span>
+                              <button onClick={() => startEditVar(v)} className="p-1.5 rounded-lg text-[#C4A36E] hover:bg-[#C4A36E]/10">
+                                <Pencil className="w-3.5 h-3.5" />
+                              </button>
+                              <button onClick={() => handleRemoveVariation(v)} disabled={varSaving}
+                                className="p-1.5 rounded-lg text-red-400 hover:bg-red-50 disabled:opacity-50">
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Add new variation */}
+                  {varEditId === null && (
+                    <div className="flex items-center gap-2 bg-[#F5F1EA] rounded-xl p-3">
+                      <input type="number" min={1} value={varDraft.volume}
+                        onChange={(e) => setVarDraft((d) => ({ ...d, volume: e.target.value }))}
+                        className="w-16 bg-white rounded-lg py-2 px-2 text-xs outline-none focus:ring-2 focus:ring-[#C4A36E]/40 border border-[#C4A36E]/20" placeholder="ml" dir="ltr" />
+                      <input type="number" min={0} value={varDraft.price}
+                        onChange={(e) => setVarDraft((d) => ({ ...d, price: e.target.value }))}
+                        className="flex-1 bg-white rounded-lg py-2 px-2 text-xs outline-none focus:ring-2 focus:ring-[#C4A36E]/40 border border-[#C4A36E]/20" placeholder="السعر (ج.م)" dir="ltr" />
+                      <input type="number" min={0} value={varDraft.stock}
+                        onChange={(e) => setVarDraft((d) => ({ ...d, stock: e.target.value }))}
+                        className="w-16 bg-white rounded-lg py-2 px-2 text-xs outline-none focus:ring-2 focus:ring-[#C4A36E]/40 border border-[#C4A36E]/20" placeholder="مخزون" dir="ltr" />
+                      <button onClick={handleSaveVariation} disabled={varSaving}
+                        className="flex items-center gap-1 bg-[#2C2C2C] text-[#C4A36E] rounded-lg px-3 py-2 text-xs font-medium hover:bg-black disabled:opacity-50">
+                        {varSaving ? <Loader2 className="w-3 h-3 animate-spin" /> : <Plus className="w-3 h-3" />}
+                        إضافة
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Footer */}
